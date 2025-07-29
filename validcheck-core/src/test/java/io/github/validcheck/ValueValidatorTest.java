@@ -1,0 +1,44 @@
+package io.github.validcheck;
+
+import static io.github.validcheck.Check.check;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import org.junit.jupiter.api.Test;
+
+class ValueValidatorTest {
+
+  @Test
+  void basic() {
+    check("value").notNull();
+    check("name", "value").notNull();
+    assertThatThrownBy(() -> check(null).notNull()).hasMessage("parameter must not be null");
+    assertThatThrownBy(() -> check("name", null).notNull()).hasMessage("'name' must not be null");
+
+    check(null).isNull();
+    check("name", null).isNull();
+    assertThatThrownBy(() -> check("value").isNull())
+        .hasMessage("parameter must be null, but it was 'value'");
+    assertThatThrownBy(() -> check("name", "value").isNull())
+        .hasMessage("'name' must be null, but it was 'value'");
+
+    assertThatThrownBy(
+            () ->
+                check("name", new Object())
+                    .satisfies(o -> o.hashCode() == 0, "must have non-zero hashCode"))
+        .hasMessage("'name' must have non-zero hashCode");
+    assertThatThrownBy(
+            () ->
+                check(new Object())
+                    .satisfies(o -> o.hashCode() == 0, "must have non-zero hashCode"))
+        .hasMessage("parameter must have non-zero hashCode")
+        .matches(e -> ((ValidationException) e).errors().size() == 1);
+  }
+
+  @Test
+  void whenThen() {
+    check("string").when(false, ValueValidator::isNull);
+    check("string").when(true, ValueValidator::notNull);
+    assertThatThrownBy(() -> check("string").when(true, ValueValidator::isNull))
+        .hasMessage("parameter must be null, but it was 'string'");
+  }
+}
