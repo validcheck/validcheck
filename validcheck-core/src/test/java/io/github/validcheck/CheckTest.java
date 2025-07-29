@@ -52,7 +52,7 @@ class CheckTest {
     batch.check("email", "john@example.com").notNull();
 
     assertThat(batch.hasErrors()).isTrue();
-    assertThatThrownBy(() -> batch.validate())
+    assertThatThrownBy(batch::validate)
         .isInstanceOf(ValidationException.class)
         .hasMessageContaining("Validation failed with 1 error(s)")
         .hasMessageContaining("- 'age' must be positive");
@@ -66,7 +66,7 @@ class CheckTest {
     batch.check("email", "").notEmpty(); // Error 3
 
     assertThat(batch.hasErrors()).isTrue();
-    assertThatThrownBy(() -> batch.validate())
+    assertThatThrownBy(batch::validate)
         .isInstanceOf(ValidationException.class)
         .hasMessageContaining("Validation failed with 3 error(s)")
         .hasMessageContaining("- 'name' must not be null")
@@ -113,7 +113,7 @@ class CheckTest {
   @Test
   void batchWithDifferentConfigurations() {
     // Test with logActualValue = true (default behavior)
-    var configWithValues = new ValidationConfig(true, true);
+    var configWithValues = new ValidationConfig(true, true, null);
     var batchWithValues = withConfig(configWithValues).batch();
     batchWithValues.check("number", -5).isPositive();
     batchWithValues.check("text", "short").minLength(10);
@@ -124,7 +124,7 @@ class CheckTest {
             "'text' must be at least 10 characters long, but it was 'short'"); // Shows actual value
 
     // Test with logActualValue = false
-    var configNoValues = new ValidationConfig(true, false);
+    var configNoValues = new ValidationConfig(true, false, null);
     var batchNoValues = withConfig(configNoValues).batch();
     batchNoValues.check("number", -5).isPositive();
     batchNoValues.check("text", "short").minLength(10);
@@ -139,7 +139,7 @@ class CheckTest {
             });
 
     // Test with fillStackTrace = false
-    var configNoStack = new ValidationConfig(false, true);
+    var configNoStack = new ValidationConfig(false, true, 2);
     var batchNoStack = withConfig(configNoStack).batch();
     batchNoStack.check("value", (String) null).notNull();
 
@@ -149,7 +149,7 @@ class CheckTest {
     // Verify the exception doesn't have stack trace filled
     exception.satisfies(
         ex -> {
-          var stackTrace = ((ValidationException) ex).getStackTrace();
+          var stackTrace = ex.getStackTrace();
           assertThat(stackTrace)
               .isEmpty(); // Stack trace should be empty when fillStackTrace = false
         });
@@ -157,7 +157,7 @@ class CheckTest {
 
   @Test
   void withConfigCreation() {
-    var config = new ValidationConfig(false, false);
+    var config = new ValidationConfig(false, false, null);
     var configured = withConfig(config);
     assertThat(configured).isInstanceOf(ConfiguredCheck.class);
   }

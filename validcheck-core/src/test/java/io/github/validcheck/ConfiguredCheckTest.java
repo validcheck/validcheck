@@ -10,7 +10,7 @@ class ConfiguredCheckTest {
 
   @Test
   void constructorAndConfig() {
-    var config = new ValidationConfig(false, false);
+    var config = new ValidationConfig(false, false, null);
     var configured = new ConfiguredCheck(config);
 
     // Verify config is used - should not include actual value in error message
@@ -20,8 +20,8 @@ class ConfiguredCheckTest {
 
   @Test
   void isTrueAndIsFalse() {
-    var config = new ValidationConfig(true, true);
-    var configured = new ConfiguredCheck(config);
+    ;
+    var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     configured.isTrue(true, "should not fail");
     configured.isFalse(false, "should not fail");
@@ -32,7 +32,7 @@ class ConfiguredCheckTest {
 
   @Test
   void batchCreation() {
-    var config = new ValidationConfig(false, true);
+    var config = new ValidationConfig(false, true, null);
     var configured = new ConfiguredCheck(config);
 
     var batch = configured.batch();
@@ -42,8 +42,8 @@ class ConfiguredCheckTest {
 
   @Test
   void checkStringMethods() {
-    var config = new ValidationConfig(true, true);
-    var configured = new ConfiguredCheck(config);
+    ;
+    var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test that string-specific methods are available
     assertThat(configured.check("text", "hello")).isInstanceOf(StringValidator.class);
@@ -55,8 +55,8 @@ class ConfiguredCheckTest {
 
   @Test
   void checkNumericMethods() {
-    var config = new ValidationConfig(true, true);
-    var configured = new ConfiguredCheck(config);
+    ;
+    var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test all numeric type overloads work
     assertThat(configured.check("int", 5)).isInstanceOf(NumericValidator.class);
@@ -83,7 +83,7 @@ class ConfiguredCheckTest {
   @Test
   void configurationBehavior() {
     // Test with fillStackTrace = false
-    var noStackConfig = new ValidationConfig(false, true);
+    var noStackConfig = new ValidationConfig(false, true, null);
     var configured = new ConfiguredCheck(noStackConfig);
 
     assertThatThrownBy(() -> configured.check("test", (String) null).notNull())
@@ -91,7 +91,7 @@ class ConfiguredCheckTest {
         .hasMessage("'test' must not be null");
 
     // Test with logActualValue = false
-    var noValueConfig = new ValidationConfig(true, false);
+    var noValueConfig = new ValidationConfig(true, false, null);
     var configuredNoValue = new ConfiguredCheck(noValueConfig);
 
     assertThatThrownBy(() -> configuredNoValue.check("test", "value").isNull())
@@ -100,8 +100,8 @@ class ConfiguredCheckTest {
 
   @Test
   void inheritedMethods() {
-    var config = new ValidationConfig(true, true);
-    var configured = new ConfiguredCheck(config);
+    ;
+    var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test generic check methods are inherited
     configured.check("generic", "value").notNull();

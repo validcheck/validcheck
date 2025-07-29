@@ -28,11 +28,16 @@ import java.util.Collection;
  * @since 1.0
  */
 public final class Check {
-  private static final ValidationConfig DEFAULT_CONFIG = new ValidationConfig(true, true);
-  private static final ValidationContext DEFAULT_CONTEXT = new ValidationContext(DEFAULT_CONFIG);
+  /**
+   * Private constructor to prevent instantiation. This is a utility class with only static methods.
+   */
+  private Check() {}
+
+  private static final ValidationContext DEFAULT_CONTEXT =
+      new ValidationContext(ValidationConfig.DEFAULT);
 
   public static BatchValidationContext batch() {
-    return new BatchValidationContext(DEFAULT_CONFIG);
+    return new BatchValidationContext(ValidationConfig.DEFAULT);
   }
 
   public static ConfiguredCheck withConfig(ValidationConfig config) {
@@ -98,9 +103,4 @@ public final class Check {
   public static <T extends Collection<?>> CollectionValidator<T> check(String name, T value) {
     return DEFAULT_CONTEXT.check(name, value);
   }
-
-  /**
-   * Private constructor to prevent instantiation. This is a utility class with only static methods.
-   */
-  private Check() {}
 }

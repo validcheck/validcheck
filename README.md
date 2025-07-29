@@ -1,7 +1,7 @@
 # ValidCheck
 
-A lightweight Java runtime validation library designed for **method and constructor parameter
-validation** without reflection or external frameworks. Perfect for Java Records and traditional
+A lightweight Java runtime validation library designed for method and constructor parameter
+validation without reflection or external frameworks. Perfect for Java Records and traditional
 classes.
 
 Validating input parameters is essential for reliable code. Bad inputs cause bugs, security issues,
@@ -344,12 +344,13 @@ public class ConfigurationExample {
 
 - **fillStackTrace** (default: true) - Include stack trace in ValidationException
 - **logActualValue** (default: true) - Show actual values in error messages
+- **logValueMaxLength** (default: 128) - Max string length of value in the error message
 
 **Performance tip:** Set `fillStackTrace = false` for better performance in high-throughput
 scenarios.
 
 **Security tip:** Set `logActualValue = false` when validating sensitive data like passwords or
-tokens.
+tokens, or taking input values untrusted sources
 
 ## Requirements
 

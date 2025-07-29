@@ -17,6 +17,7 @@ class ValidationExceptionTest {
     assertThat(exception).isInstanceOf(IllegalArgumentException.class);
   }
 
+  @SuppressWarnings("DataFlowIssue")
   @Test
   void errorsIsImmutable() {
     var originalErrors = List.of("Error 1", "Error 2");

@@ -19,12 +19,23 @@ public class ValueValidator<T> {
     var paramName = name == null ? "parameter" : String.format("'%s'", name);
     var error = String.format("%s " + message, paramName);
     if (logActualValue && context.config.logActualValue) {
-      var valueString =
-          value instanceof String ? String.format("'%s'", value) : String.valueOf(value);
-      return error + String.format(", but it was %s", valueString);
+      var stringValue = valueToString();
+      var formattedValue =
+          value instanceof String ? String.format("'%s'", stringValue) : stringValue;
+      // limit the string length of string representation of the value
+      return error + String.format(", but it was %s", formattedValue);
     }
 
     return error;
+  }
+
+  private String valueToString() {
+    var string = String.valueOf(value);
+    if (string.length() <= context.config.logValueMaxLength) {
+      return string;
+    }
+
+    return string.substring(0, context.config.logValueMaxLength) + "...";
   }
 
   public ValueValidator<T> notNull() {

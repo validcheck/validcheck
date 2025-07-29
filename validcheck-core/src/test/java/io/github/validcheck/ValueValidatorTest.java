@@ -1,6 +1,7 @@
 package io.github.validcheck;
 
 import static io.github.validcheck.Check.check;
+import static io.github.validcheck.Check.withConfig;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
@@ -41,5 +42,15 @@ class ValueValidatorTest {
     check("string").when(true, ValueValidator::notNull);
     assertThatThrownBy(() -> check("string").when(true, ValueValidator::isNull))
         .hasMessage("parameter must be null, but it was 'string'");
+  }
+
+  @Test
+  void longValue() {
+    final var configuredCheck = withConfig(new ValidationConfig(true, true, 4));
+    assertThatThrownBy(() -> configuredCheck.check("s".repeat(512)).isNull())
+        .hasMessage("parameter must be null, but it was 'ssss...'");
+
+    assertThatThrownBy(() -> configuredCheck.check(1_000_000_000_000L).isNull())
+        .hasMessage("parameter must be null, but it was 1000...");
   }
 }
