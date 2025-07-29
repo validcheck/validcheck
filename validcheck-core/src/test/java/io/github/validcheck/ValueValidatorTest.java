@@ -12,7 +12,8 @@ class ValueValidatorTest {
   void basic() {
     check("value").notNull();
     check("name", "value").notNull();
-    assertThatThrownBy(() -> check(null).notNull()).hasMessage("parameter must not be null");
+    assertThatThrownBy(() -> check((String) null).notNull())
+        .hasMessage("parameter must not be null");
     assertThatThrownBy(() -> check("name", (String) null).notNull())
         .hasMessage("'name' must not be null");
 

@@ -1,11 +1,13 @@
 package io.github.validcheck;
 
+import static io.github.validcheck.Check.batch;
 import static io.github.validcheck.Check.check;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class CollectionValidatorTest {
@@ -29,6 +31,7 @@ class CollectionValidatorTest {
   @Test
   void empty() {
     check("list", Collections.emptyList()).empty();
+    check(Collections.emptyList()).empty();
 
     assertThatThrownBy(() -> check("list", List.of("a")).empty())
         .hasMessage("'list' must be empty, but it was [a]");
@@ -86,5 +89,14 @@ class CollectionValidatorTest {
     assertThatThrownBy(
             () -> check("large", List.of("a", "b", "c", "d", "e", "f")).sizeBetween(2, 4))
         .hasMessage("'large' must have between 2 and 4 elements, but it was [a, b, c, d, e, f]");
+  }
+
+  @Test
+  void whenThen() {
+    check(List.of()).satisfies(List::isEmpty, "OK");
+    batch().check(List.of("")).when(true, v -> ((CollectionValidator<List<String>>) v).maxSize(0));
+    assertThatThrownBy(() -> check(List.of()).whenCollection(true, c -> c.minSize(1)))
+        .hasMessage("parameter must have at least 1 elements, but it was []");
+    check(Set.of("X")).whenCollection(true, v -> v.satisfies(s -> !s.isEmpty(), "Error"));
   }
 }

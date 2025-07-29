@@ -66,7 +66,7 @@ class StringValidatorTest {
     check("digits", "12345").matches("\\d+");
 
     assertThatThrownBy(() -> check("invalid", "notanemail").matches(".*@.*\\..*"))
-        .hasMessage("'invalid' must match pattern .*@.*\\..*");
+        .hasMessage("'invalid' must match pattern .*@.*\\..*, but it was 'notanemail'");
   }
 
   @Test
@@ -74,7 +74,7 @@ class StringValidatorTest {
     check("prefix", "hello world").startsWith("hello");
 
     assertThatThrownBy(() -> check("wrong", "world hello").startsWith("hello"))
-        .hasMessage("'wrong' must start with 'hello'");
+        .hasMessage("'wrong' must start with 'hello', but it was 'world hello'");
   }
 
   @Test
@@ -82,7 +82,7 @@ class StringValidatorTest {
     check("suffix", "hello world").endsWith("world");
 
     assertThatThrownBy(() -> check("wrong", "world hello").endsWith("world"))
-        .hasMessage("'wrong' must end with 'world'");
+        .hasMessage("'wrong' must end with 'world', but it was 'world hello'");
   }
 
   @Test
@@ -151,5 +151,9 @@ class StringValidatorTest {
     // Test conditional validation
     check("conditional", "test").whenString(true, validator -> validator.minLength(3));
     check("conditional", "test").whenString(false, validator -> validator.minLength(10));
+
+    check("test").whenString(false, validator -> validator.minLength(10));
+    check("conditional", "test")
+        .when(false, validator -> ((StringValidator) validator).minLength(10));
   }
 }

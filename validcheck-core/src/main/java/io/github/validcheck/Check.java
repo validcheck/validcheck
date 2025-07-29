@@ -52,11 +52,55 @@ public final class Check {
     isTrue(!lie, message);
   }
 
+  public static <T> ValueValidator<T> check(T value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static StringValidator check(String value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Integer> check(int value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Integer> check(Integer value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Long> check(long value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Long> check(Long value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Double> check(double value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Double> check(Double value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Float> check(float value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static NumericValidator<Float> check(Float value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
+  public static <T extends Number> NumericValidator<T> check(T value) {
+    return DEFAULT_CONTEXT.check(value);
+  }
+
   public static <T> ValueValidator<T> check(String name, T value) {
     return DEFAULT_CONTEXT.check(name, value);
   }
 
-  public static <T> ValueValidator<T> check(T value) {
+  public static <T extends Collection<?>> CollectionValidator<T> check(T value) {
     return DEFAULT_CONTEXT.check(value);
   }
 

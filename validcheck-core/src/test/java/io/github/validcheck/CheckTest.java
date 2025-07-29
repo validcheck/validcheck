@@ -200,6 +200,23 @@ class CheckTest {
   }
 
   @Test
+  void checkNumericMethodsWithoutParamName() {
+    // Test all numeric type overloads
+    assertThat(check(5)).isInstanceOf(NumericValidator.class);
+    assertThat(check(Integer.valueOf(5))).isInstanceOf(NumericValidator.class);
+    assertThat(check(5L)).isInstanceOf(NumericValidator.class);
+    assertThat(check(Long.valueOf(5L))).isInstanceOf(NumericValidator.class);
+    assertThat(check(5.0)).isInstanceOf(NumericValidator.class);
+    assertThat(check(Double.valueOf(5.0))).isInstanceOf(NumericValidator.class);
+    assertThat(check(5.0f)).isInstanceOf(NumericValidator.class);
+    assertThat(check(Float.valueOf(5.0f))).isInstanceOf(NumericValidator.class);
+    assertThat(check(new BigDecimal("5"))).isInstanceOf(NumericValidator.class);
+
+    // Test that numeric-specific methods are available
+    check(5).isPositive().min(1).max(10);
+  }
+
+  @Test
   void methodChaining() {
     // Test that all methods return validators that can be chained
     check("complex", "test@example.com")

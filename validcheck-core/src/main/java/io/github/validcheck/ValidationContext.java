@@ -14,6 +14,50 @@ public class ValidationContext {
     return check(null, value);
   }
 
+  public StringValidator check(String value) {
+    return new StringValidator(this, null, value);
+  }
+
+  public NumericValidator<Integer> check(Integer value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public NumericValidator<Integer> check(int value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public NumericValidator<Long> check(Long value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public NumericValidator<Long> check(long value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public NumericValidator<Double> check(Double value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public NumericValidator<Double> check(double value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public NumericValidator<Float> check(Float value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public NumericValidator<Float> check(float value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public <T extends Number> NumericValidator<T> check(T value) {
+    return new NumericValidator<>(this, null, value);
+  }
+
+  public <T extends Collection<?>> CollectionValidator<T> check(T value) {
+    return new CollectionValidator<>(this, null, value);
+  }
+
   public <T> ValueValidator<T> check(String name, T value) {
     return new ValueValidator<>(this, name, value);
   }
