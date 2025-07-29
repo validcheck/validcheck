@@ -321,8 +321,9 @@ public class ConfigurationExample {
     var config =
         new ValidationConfig(
             false, // fillStackTrace - faster exceptions without stack traces
-            false // logActualValue - hide sensitive values in error messages
-        );
+            false, // logActualValue - hide sensitive values in error messages
+            512 // logValueMaxLength - limit the string length of value in the error message
+            );
 
     // Use configured validation
     var fastCheck = withConfig(config);
