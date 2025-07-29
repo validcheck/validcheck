@@ -63,5 +63,6 @@
 
   <modules>
     <module>validcheck-core</module>
+    <module>validcheck-examples</module>
   </modules>
 </project>

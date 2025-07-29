@@ -73,9 +73,17 @@ public record CreateUserRequest(String name, String email, Integer age, String p
     validation.check("name", name).notNull().lengthBetween(1, 100);
     validation.check("email", email).notNull().isEmail();
     validation.check("age", age).notNull().isNonNegative().max(120);
-    validation.check("phone", phone).when(phone != null,
-        validator -> validator.satisfies(p -> p.matches("\\d{10}"), "must be 10 digits")
-    );
+    validation
+        .check("phone", phone)
+        .when(
+            phone != null,
+            validator -> validator.satisfies(p -> p.matches("\\d{10}"), "must be 10 digits"));
+
+    if (!validation.hasErrors()) {
+      // check more business logic and fail manually
+      validation.fail("Business logic error");
+    }
+
     validation.validate(); // Throws with all errors if any validation failed
   }
 
@@ -162,9 +170,7 @@ public class UserService {
   public void updateProfile(String userId, String email, Integer age) {
     check("userId", userId).notNull().lengthBetween(3, 50);
     check("email", email).notNull().isEmail();
-    check("age", age).when(age != null,
-        validator -> validator.isNonNegative().max(120)
-    );
+    check("age", age).when(age != null, validator -> validator.isNonNegative().max(120));
 
     // Business logic here
     System.out.println("Profile updated for user: " + userId);
@@ -267,7 +273,8 @@ public class OrderProcessor {
 
     // Additional business rules
     check("order items", order.getItems())
-        .satisfies(items -> items.stream().allMatch(item -> item.getQuantity() > 0),
+        .satisfies(
+            items -> items.stream().allMatch(item -> item.getQuantity() > 0),
             "all items must have positive quantity");
 
     System.out.println("Order processed successfully");
@@ -278,19 +285,20 @@ public class OrderProcessor {
     var processor = new OrderProcessor();
     var customer = new Customer();
     var item = new OrderItem();
-    var order = new Order() {
-      public List<OrderItem> getItems() {
-        return List.of(item);
-      }
+    var order =
+        new Order() {
+          public List<OrderItem> getItems() {
+            return List.of(item);
+          }
 
-      public Customer getCustomer() {
-        return customer;
-      }
+          public Customer getCustomer() {
+            return customer;
+          }
 
-      public BigDecimal getTotal() {
-        return new BigDecimal("100.00");
-      }
-    };
+          public BigDecimal getTotal() {
+            return new BigDecimal("100.00");
+          }
+        };
     processor.processOrder(order);
     // processor.processOrder(null); // ✗ Throws ValidationException
   }
@@ -310,10 +318,11 @@ public class ConfigurationExample {
 
   public static void main(String[] args) {
     // Custom configuration
-    var config = new ValidationConfig(
-        false, // fillStackTrace - faster exceptions without stack traces
-        false  // logActualValue - hide sensitive values in error messages
-    );
+    var config =
+        new ValidationConfig(
+            false, // fillStackTrace - faster exceptions without stack traces
+            false // logActualValue - hide sensitive values in error messages
+        );
 
     // Use configured validation
     var fastCheck = withConfig(config);
