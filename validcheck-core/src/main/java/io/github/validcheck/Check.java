@@ -61,6 +61,38 @@ public final class Check {
     return DEFAULT_CONTEXT.check(name, value);
   }
 
+  public static NumericValidator<Integer> check(String name, Integer value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static NumericValidator<Long> check(String name, long value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static NumericValidator<Long> check(String name, Long value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static NumericValidator<Double> check(String name, double value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static NumericValidator<Double> check(String name, Double value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static NumericValidator<Float> check(String name, float value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static NumericValidator<Float> check(String name, Float value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static <T extends Number> NumericValidator<T> check(String name, T value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
   /**
    * Private constructor to prevent instantiation. This is a utility class with only static methods.
    */

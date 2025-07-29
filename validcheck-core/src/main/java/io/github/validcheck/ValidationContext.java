@@ -25,6 +25,38 @@ public class ValidationContext {
     return new NumericValidator<>(this, name, value);
   }
 
+  public NumericValidator<Integer> check(String name, int value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
+  public NumericValidator<Long> check(String name, Long value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
+  public NumericValidator<Long> check(String name, long value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
+  public NumericValidator<Double> check(String name, Double value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
+  public NumericValidator<Double> check(String name, double value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
+  public NumericValidator<Float> check(String name, Float value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
+  public NumericValidator<Float> check(String name, float value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
+  public <T extends Number> NumericValidator<T> check(String name, T value) {
+    return new NumericValidator<>(this, name, value);
+  }
+
   public void fail(String message) {
     throwException(List.of(message));
   }

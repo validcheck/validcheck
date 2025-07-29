@@ -70,16 +70,16 @@ public class StringValidator extends ValueValidator<String> {
 
   public StringValidator matches(String regex) {
     return (StringValidator)
-        satisfies(s -> s.matches(regex), String.format("must match pattern %s", regex), true);
+        satisfies(s -> s.matches(regex), String.format("must match pattern %s", regex), false);
   }
 
   public StringValidator startsWith(String prefix) {
     return (StringValidator)
-        satisfies(s -> s.startsWith(prefix), String.format("must start with '%s'", prefix), true);
+        satisfies(s -> s.startsWith(prefix), String.format("must start with '%s'", prefix), false);
   }
 
   public StringValidator endsWith(String suffix) {
     return (StringValidator)
-        satisfies(s -> s.endsWith(suffix), String.format("must end with '%s'", suffix), true);
+        satisfies(s -> s.endsWith(suffix), String.format("must end with '%s'", suffix), false);
   }
 }

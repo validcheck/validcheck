@@ -12,10 +12,11 @@ class ValueValidatorTest {
     check("value").notNull();
     check("name", "value").notNull();
     assertThatThrownBy(() -> check(null).notNull()).hasMessage("parameter must not be null");
-    assertThatThrownBy(() -> check("name", null).notNull()).hasMessage("'name' must not be null");
+    assertThatThrownBy(() -> check("name", (String) null).notNull())
+        .hasMessage("'name' must not be null");
 
-    check(null).isNull();
-    check("name", null).isNull();
+    check((String) null).isNull();
+    check("name", (String) null).isNull();
     assertThatThrownBy(() -> check("value").isNull())
         .hasMessage("parameter must be null, but it was 'value'");
     assertThatThrownBy(() -> check("name", "value").isNull())
