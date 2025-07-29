@@ -12,7 +12,7 @@ public class BatchCheckTest {
     assertThat(validation.hasErrors()).isFalse();
 
     validation.fail("Error 1");
-    validation.fail("Error 2");
+    validation.isFalse(true, "Error 2");
 
     assertThat(validation.hasErrors()).isTrue();
     assertThatThrownBy(validation::validate)

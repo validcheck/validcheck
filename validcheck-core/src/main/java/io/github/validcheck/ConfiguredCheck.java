@@ -7,7 +7,9 @@ public class ConfiguredCheck extends ValidationContext {
   }
 
   public void isTrue(boolean truth, String message) {
-    check(truth).satisfies(t -> t, message);
+    if (!truth) {
+      fail(message);
+    }
   }
 
   public void isFalse(boolean lie, String message) {
