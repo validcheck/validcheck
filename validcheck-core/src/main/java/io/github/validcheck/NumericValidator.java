@@ -28,4 +28,45 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
   public NumericValidator<T> when(boolean condition, Consumer<ValueValidator<T>> then) {
     return (NumericValidator<T>) super.when(condition, then);
   }
+
+  // --- Numeric specific methods --- //
+
+  public NumericValidator<T> isPositive() {
+    return (NumericValidator<T>) satisfies(n -> n.doubleValue() > 0, "must be positive", true);
+  }
+
+  public NumericValidator<T> isNegative() {
+    return (NumericValidator<T>) satisfies(n -> n.doubleValue() < 0, "must be negative", true);
+  }
+
+  public NumericValidator<T> isZero() {
+    return (NumericValidator<T>) satisfies(n -> n.doubleValue() == 0, "must be zero", true);
+  }
+
+  public NumericValidator<T> min(T minimum) {
+    return (NumericValidator<T>)
+        satisfies(
+            n -> n.doubleValue() >= minimum.doubleValue(),
+            String.format("must be at least %s", minimum),
+            true);
+  }
+
+  public NumericValidator<T> max(T maximum) {
+    return (NumericValidator<T>)
+        satisfies(
+            n -> n.doubleValue() <= maximum.doubleValue(),
+            String.format("must be at most %s", maximum),
+            true);
+  }
+
+  public NumericValidator<T> between(T minimum, T maximum) {
+    return (NumericValidator<T>)
+        satisfies(
+            n -> {
+              double val = n.doubleValue();
+              return val >= minimum.doubleValue() && val <= maximum.doubleValue();
+            },
+            String.format("must be between %s and %s", minimum, maximum),
+            true);
+  }
 }

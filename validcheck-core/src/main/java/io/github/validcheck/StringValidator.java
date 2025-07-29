@@ -36,6 +36,50 @@ public class StringValidator extends ValueValidator<String> {
   }
 
   public StringValidator notEmpty() {
-    return (StringValidator) satisfies(String::isEmpty, "must not be empty", false);
+    return (StringValidator) satisfies(s -> !s.isEmpty(), "must not be empty", false);
+  }
+
+  public StringValidator hasText() {
+    return (StringValidator)
+        satisfies(s -> s != null && !s.trim().isEmpty(), "must have text", false);
+  }
+
+  public StringValidator minLength(int minimum) {
+    return (StringValidator)
+        satisfies(
+            s -> s.length() >= minimum,
+            String.format("must be at least %d characters long", minimum),
+            true);
+  }
+
+  public StringValidator maxLength(int maximum) {
+    return (StringValidator)
+        satisfies(
+            s -> s.length() <= maximum,
+            String.format("must be at most %d characters long", maximum),
+            true);
+  }
+
+  public StringValidator length(int exact) {
+    return (StringValidator)
+        satisfies(
+            s -> s.length() == exact,
+            String.format("must be exactly %d characters long", exact),
+            true);
+  }
+
+  public StringValidator matches(String regex) {
+    return (StringValidator)
+        satisfies(s -> s.matches(regex), String.format("must match pattern %s", regex), true);
+  }
+
+  public StringValidator startsWith(String prefix) {
+    return (StringValidator)
+        satisfies(s -> s.startsWith(prefix), String.format("must start with '%s'", prefix), true);
+  }
+
+  public StringValidator endsWith(String suffix) {
+    return (StringValidator)
+        satisfies(s -> s.endsWith(suffix), String.format("must end with '%s'", suffix), true);
   }
 }
