@@ -32,20 +32,22 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
   // --- Numeric specific methods --- //
 
   public NumericValidator<T> isPositive() {
-    return (NumericValidator<T>) satisfies(n -> n.doubleValue() > 0, "must be positive", true);
+    return (NumericValidator<T>)
+        satisfiesInternal(n -> n.doubleValue() > 0, "must be positive", true);
   }
 
   public NumericValidator<T> isNegative() {
-    return (NumericValidator<T>) satisfies(n -> n.doubleValue() < 0, "must be negative", true);
+    return (NumericValidator<T>)
+        satisfiesInternal(n -> n.doubleValue() < 0, "must be negative", true);
   }
 
   public NumericValidator<T> isZero() {
-    return (NumericValidator<T>) satisfies(n -> n.doubleValue() == 0, "must be zero", true);
+    return (NumericValidator<T>) satisfiesInternal(n -> n.doubleValue() == 0, "must be zero", true);
   }
 
   public NumericValidator<T> min(T minimum) {
     return (NumericValidator<T>)
-        satisfies(
+        satisfiesInternal(
             n -> n.doubleValue() >= minimum.doubleValue(),
             String.format("must be at least %s", minimum),
             true);
@@ -53,7 +55,7 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
 
   public NumericValidator<T> max(T maximum) {
     return (NumericValidator<T>)
-        satisfies(
+        satisfiesInternal(
             n -> n.doubleValue() <= maximum.doubleValue(),
             String.format("must be at most %s", maximum),
             true);
@@ -61,12 +63,22 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
 
   public NumericValidator<T> between(T minimum, T maximum) {
     return (NumericValidator<T>)
-        satisfies(
+        satisfiesInternal(
             n -> {
               double val = n.doubleValue();
               return val >= minimum.doubleValue() && val <= maximum.doubleValue();
             },
             String.format("must be between %s and %s", minimum, maximum),
             true);
+  }
+
+  public NumericValidator<T> isNonNegative() {
+    return (NumericValidator<T>)
+        satisfiesInternal(n -> n.doubleValue() >= 0, "must be non-negative", true);
+  }
+
+  public NumericValidator<T> isNonZero() {
+    return (NumericValidator<T>)
+        satisfiesInternal(n -> n.doubleValue() != 0, "must be non-zero", true);
   }
 }

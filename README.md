@@ -48,13 +48,9 @@ import static io.github.validcheck.Check.check;
 public record User(String name, String email, int age) {
 
   public User {
-    check("name", name).notNull().notEmpty();
-    check("email", email).notNull().notEmpty().satisfies(
-        e -> e.contains("@"), "must be valid email format"
-    );
-    check("age", age).isPositive().satisfies(
-        a -> a <= 120, "must be reasonable age"
-    );
+    check("name", name).notNull().lengthBetween(2, 50);
+    check("email", email).notNull().isEmail();
+    check("age", age).isNonNegative().max(120);
   }
 
   // Usage example
@@ -74,13 +70,9 @@ public record CreateUserRequest(String name, String email, Integer age, String p
 
   public CreateUserRequest {
     var validation = batch();
-    validation.check("name", name).notNull().notEmpty();
-    validation.check("email", email).notNull().notEmpty().satisfies(
-        e -> e.contains("@"), "must contain @ symbol"
-    );
-    validation.check("age", age).notNull().isPositive().satisfies(
-        a -> a <= 120, "must be under 120"
-    );
+    validation.check("name", name).notNull().lengthBetween(1, 100);
+    validation.check("email", email).notNull().isEmail();
+    validation.check("age", age).notNull().isNonNegative().max(120);
     validation.check("phone", phone).when(phone != null,
         validator -> validator.satisfies(p -> p.matches("\\d{10}"), "must be 10 digits")
     );
@@ -168,12 +160,10 @@ import static io.github.validcheck.Check.check;
 public class UserService {
 
   public void updateProfile(String userId, String email, Integer age) {
-    check("userId", userId).notNull().notEmpty();
-    check("email", email).notNull().notEmpty().satisfies(
-        e -> e.contains("@"), "must be valid email"
-    );
+    check("userId", userId).notNull().lengthBetween(3, 50);
+    check("email", email).notNull().isEmail();
     check("age", age).when(age != null,
-        validator -> validator.isPositive().satisfies(a -> a <= 120, "must be under 120")
+        validator -> validator.isNonNegative().max(120)
     );
 
     // Business logic here

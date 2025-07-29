@@ -117,6 +117,36 @@ class NumericValidatorTest {
   }
 
   @Test
+  void isNonNegative() {
+    check("positive", 5).isNonNegative();
+    check("zero", 0).isNonNegative();
+    check("positiveDouble", 1.5).isNonNegative();
+    check("zeroDouble", 0.0).isNonNegative();
+    check("bigDecimal", new BigDecimal("10.5")).isNonNegative();
+
+    assertThatThrownBy(() -> check("negative", -1).isNonNegative())
+        .hasMessage("'negative' must be non-negative, but it was -1");
+    assertThatThrownBy(() -> check("negativeDouble", -0.5).isNonNegative())
+        .hasMessage("'negativeDouble' must be non-negative, but it was -0.5");
+  }
+
+  @Test
+  void isNonZero() {
+    check("positive", 5).isNonZero();
+    check("negative", -5).isNonZero();
+    check("positiveDouble", 1.5).isNonZero();
+    check("negativeDouble", -1.5).isNonZero();
+    check("bigDecimal", new BigDecimal("0.1")).isNonZero();
+
+    assertThatThrownBy(() -> check("zero", 0).isNonZero())
+        .hasMessage("'zero' must be non-zero, but it was 0");
+    assertThatThrownBy(() -> check("zeroDouble", 0.0).isNonZero())
+        .hasMessage("'zeroDouble' must be non-zero, but it was 0.0");
+    assertThatThrownBy(() -> check("zeroBigDecimal", new BigDecimal("0")).isNonZero())
+        .hasMessage("'zeroBigDecimal' must be non-zero, but it was 0");
+  }
+
+  @Test
   void edgeCases() {
     // Test with very small positive number
     check("tiny", 0.0001).isPositive();

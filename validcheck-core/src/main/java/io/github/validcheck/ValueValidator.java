@@ -28,18 +28,18 @@ public class ValueValidator<T> {
   }
 
   public ValueValidator<T> notNull() {
-    return satisfies(Objects::nonNull, "must not be null", false);
+    return satisfiesInternal(Objects::nonNull, "must not be null", false);
   }
 
   public ValueValidator<T> isNull() {
-    return satisfies(Objects::isNull, "must be null", true);
+    return satisfiesInternal(Objects::isNull, "must be null", true);
   }
 
   public ValueValidator<T> satisfies(Predicate<T> predicate, String message) {
-    return satisfies(predicate, message, false);
+    return satisfiesInternal(predicate, message, false);
   }
 
-  final ValueValidator<T> satisfies(
+  final ValueValidator<T> satisfiesInternal(
       Predicate<T> predicate, String message, boolean logActualValue) {
     if (!predicate.test(value)) {
       context.fail(formatMessage(message, logActualValue));

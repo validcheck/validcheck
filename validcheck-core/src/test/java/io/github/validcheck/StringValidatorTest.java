@@ -98,6 +98,49 @@ class StringValidatorTest {
   }
 
   @Test
+  void lengthBetween() {
+    check("valid", "hello").lengthBetween(3, 10);
+    check("exact", "hello").lengthBetween(5, 5);
+    check("minimum", "hello").lengthBetween(5, 10);
+    check("maximum", "hello").lengthBetween(3, 5);
+
+    assertThatThrownBy(() -> check("short", "hi").lengthBetween(5, 10))
+        .hasMessage("'short' must be between 5 and 10 characters long, but it was 'hi'");
+    assertThatThrownBy(() -> check("long", "very long text").lengthBetween(3, 8))
+        .hasMessage("'long' must be between 3 and 8 characters long, but it was 'very long text'");
+  }
+
+  @Test
+  void isEmail() {
+    check("valid", "test@example.com").isEmail();
+    check("simple", "a@b.c").isEmail();
+    check("long", "user.name+tag@example-domain.co.uk").isEmail();
+
+    assertThatThrownBy(() -> check("noAt", "testexample.com").isEmail())
+        .hasMessage("'noAt' must be a valid email address, but it was 'testexample.com'");
+    assertThatThrownBy(() -> check("startAt", "@example.com").isEmail())
+        .hasMessage("'startAt' must be a valid email address, but it was '@example.com'");
+    assertThatThrownBy(() -> check("endAt", "test@").isEmail())
+        .hasMessage("'endAt' must be a valid email address, but it was 'test@'");
+    assertThatThrownBy(() -> check("noChars", "").isEmail())
+        .hasMessage("'noChars' must be a valid email address, but it was ''");
+  }
+
+  @Test
+  void isBlank() {
+    check("null", (String) null).isBlank();
+    check("empty", "").isBlank();
+    check("spaces", "   ").isBlank();
+    check("tabs", "\t\t").isBlank();
+    check("mixed", " \t \n ").isBlank();
+
+    assertThatThrownBy(() -> check("text", "hello").isBlank())
+        .hasMessage("'text' must be blank, but it was 'hello'");
+    assertThatThrownBy(() -> check("textWithSpaces", " hello ").isBlank())
+        .hasMessage("'textWithSpaces' must be blank, but it was ' hello '");
+  }
+
+  @Test
   void inheritedMethods() {
     // Test that StringValidator properly inherits and chains with base methods
     check("text", "hello")

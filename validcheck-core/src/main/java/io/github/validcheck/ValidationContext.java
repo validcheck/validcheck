@@ -1,5 +1,6 @@
 package io.github.validcheck;
 
+import java.util.Collection;
 import java.util.List;
 
 public class ValidationContext {
@@ -55,6 +56,10 @@ public class ValidationContext {
 
   public <T extends Number> NumericValidator<T> check(String name, T value) {
     return new NumericValidator<>(this, name, value);
+  }
+
+  public <T extends Collection<?>> CollectionValidator<T> check(String name, T value) {
+    return new CollectionValidator<>(this, name, value);
   }
 
   public void fail(String message) {

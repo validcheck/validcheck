@@ -1,5 +1,7 @@
 package io.github.validcheck;
 
+import java.util.Collection;
+
 /**
  * Main entry point for validation operations in Java methods, records and other classes.
  *
@@ -90,6 +92,10 @@ public final class Check {
   }
 
   public static <T extends Number> NumericValidator<T> check(String name, T value) {
+    return DEFAULT_CONTEXT.check(name, value);
+  }
+
+  public static <T extends Collection<?>> CollectionValidator<T> check(String name, T value) {
     return DEFAULT_CONTEXT.check(name, value);
   }
 
