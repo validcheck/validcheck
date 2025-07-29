@@ -29,6 +29,13 @@ public class StringValidator extends ValueValidator<String> {
     return (StringValidator) super.when(condition, then);
   }
 
+  public StringValidator whenString(boolean condition, Consumer<StringValidator> then) {
+    if (condition) {
+      then.accept(this);
+    }
+    return this;
+  }
+
   // --- String specific methods --- //
 
   public StringValidator empty() {
@@ -104,7 +111,6 @@ public class StringValidator extends ValueValidator<String> {
 
   public StringValidator isBlank() {
     return (StringValidator)
-        satisfiesInternal(
-            s -> s == null || s.trim().isEmpty(), "must be blank", true);
+        satisfiesInternal(s -> s == null || s.trim().isEmpty(), "must be blank", true);
   }
 }

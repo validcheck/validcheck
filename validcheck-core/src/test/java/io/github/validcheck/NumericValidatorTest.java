@@ -110,10 +110,8 @@ class NumericValidatorTest {
 
     // Test conditional validation
     boolean strict = true;
-    check("conditional", 15)
-        .when(strict, validator -> ((NumericValidator<Integer>) validator).max(20));
-    check("conditional", 25)
-        .when(!strict, validator -> ((NumericValidator<Integer>) validator).max(20));
+    check("conditional", 15).whenNumeric(strict, validator -> validator.max(20));
+    check("conditional", 25).whenNumeric(!strict, validator -> validator.max(20));
   }
 
   @Test

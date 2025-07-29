@@ -30,6 +30,14 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
     return (CollectionValidator<T>) super.when(condition, then);
   }
 
+  public CollectionValidator<T> whenCollection(
+      boolean condition, Consumer<CollectionValidator<T>> then) {
+    if (condition) {
+      then.accept(this);
+    }
+    return this;
+  }
+
   // --- Collection specific methods --- //
 
   public CollectionValidator<T> empty() {

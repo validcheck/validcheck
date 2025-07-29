@@ -149,9 +149,7 @@ class StringValidatorTest {
         .notEmpty();
 
     // Test conditional validation
-    check("conditional", "test")
-        .when(true, validator -> ((StringValidator) validator).minLength(3));
-    check("conditional", "test")
-        .when(false, validator -> ((StringValidator) validator).minLength(10));
+    check("conditional", "test").whenString(true, validator -> validator.minLength(3));
+    check("conditional", "test").whenString(false, validator -> validator.minLength(10));
   }
 }

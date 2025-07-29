@@ -29,6 +29,13 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
     return (NumericValidator<T>) super.when(condition, then);
   }
 
+  public NumericValidator<T> whenNumeric(boolean condition, Consumer<NumericValidator<T>> then) {
+    if (condition) {
+      then.accept(this);
+    }
+    return this;
+  }
+
   // --- Numeric specific methods --- //
 
   public NumericValidator<T> isPositive() {

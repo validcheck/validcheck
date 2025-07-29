@@ -83,7 +83,8 @@ class CollectionValidatorTest {
 
     assertThatThrownBy(() -> check("small", List.of("a")).sizeBetween(3, 5))
         .hasMessage("'small' must have between 3 and 5 elements, but it was [a]");
-    assertThatThrownBy(() -> check("large", List.of("a", "b", "c", "d", "e", "f")).sizeBetween(2, 4))
+    assertThatThrownBy(
+            () -> check("large", List.of("a", "b", "c", "d", "e", "f")).sizeBetween(2, 4))
         .hasMessage("'large' must have between 2 and 4 elements, but it was [a, b, c, d, e, f]");
   }
 }
