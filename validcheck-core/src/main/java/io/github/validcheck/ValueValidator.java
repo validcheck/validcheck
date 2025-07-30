@@ -15,10 +15,10 @@ public class ValueValidator<T> {
     this.value = value;
   }
 
-  private final String formatMessage(String message, boolean logActualValue) {
+  private final String formatMessage(String message, boolean includeActualValue) {
     var paramName = name == null ? "parameter" : String.format("'%s'", name);
     var error = String.format("%s " + message, paramName);
-    if (logActualValue && context.config.logActualValue) {
+    if (includeActualValue && context.config.includeActualValue) {
       var stringValue = valueToString();
       var formattedValue =
           value instanceof String ? String.format("'%s'", stringValue) : stringValue;
@@ -31,11 +31,11 @@ public class ValueValidator<T> {
 
   private String valueToString() {
     var string = String.valueOf(value);
-    if (string.length() <= context.config.logValueMaxLength) {
+    if (string.length() <= context.config.actualValueMaxLength) {
       return string;
     }
 
-    return string.substring(0, context.config.logValueMaxLength) + "...";
+    return string.substring(0, context.config.actualValueMaxLength) + "...";
   }
 
   public ValueValidator<T> notNull() {
@@ -51,9 +51,9 @@ public class ValueValidator<T> {
   }
 
   final ValueValidator<T> satisfiesInternal(
-      Predicate<T> predicate, String message, boolean logActualValue) {
+      Predicate<T> predicate, String message, boolean includeActualValue) {
     if (!predicate.test(value)) {
-      context.fail(formatMessage(message, logActualValue));
+      context.fail(formatMessage(message, includeActualValue));
     }
 
     return this;

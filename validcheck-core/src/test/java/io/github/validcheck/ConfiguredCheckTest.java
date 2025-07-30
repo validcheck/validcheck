@@ -90,7 +90,7 @@ class ConfiguredCheckTest {
         .isInstanceOf(ValidationException.class)
         .hasMessage("'test' must not be null");
 
-    // Test with logActualValue = false
+    // Test with includeActualValue = false
     var noValueConfig = new ValidationConfig(true, false, null);
     var configuredNoValue = new ConfiguredCheck(noValueConfig);
 

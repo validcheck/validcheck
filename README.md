@@ -321,8 +321,8 @@ public class ConfigurationExample {
     var config =
         new ValidationConfig(
             false, // fillStackTrace - faster exceptions without stack traces
-            false, // logActualValue - hide sensitive values in error messages
-            512 // logValueMaxLength - limit the string length of value in the error message
+            false, // includeActualValue - hide sensitive values in error messages
+            512 // actualValueMaxLength - limit the string length of value in the error message
             );
 
     // Use configured validation
@@ -344,13 +344,13 @@ public class ConfigurationExample {
 ### Configuration Options
 
 - **fillStackTrace** (default: true) - Include stack trace in ValidationException
-- **logActualValue** (default: true) - Show actual values in error messages
-- **logValueMaxLength** (default: 128) - Max string length of value in the error message
+- **includeActualValue** (default: true) - Show actual values in error messages
+- **actualValueMaxLength** (default: 128) - Max string length of value in the error message
 
 **Performance tip:** Set `fillStackTrace = false` for better performance in high-throughput
 scenarios.
 
-**Security tip:** Set `logActualValue = false` when validating sensitive data like passwords or
+**Security tip:** Set `includeActualValue = false` when validating sensitive data like passwords or
 tokens, or taking input values untrusted sources
 
 ## Requirements

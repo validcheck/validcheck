@@ -6,13 +6,13 @@ public class ValidationConfig {
   public static final ValidationConfig DEFAULT = new ValidationConfig(true, true, null);
 
   final boolean fillStackTrace;
-  final boolean logActualValue;
-  final int logValueMaxLength;
+  final boolean includeActualValue;
+  final int actualValueMaxLength;
 
   public ValidationConfig(
-      boolean fillStackTrace, boolean logActualValue, Integer logValueMaxLength) {
+      boolean fillStackTrace, boolean includeActualValue, Integer actualValueMaxLength) {
     this.fillStackTrace = fillStackTrace;
-    this.logActualValue = logActualValue;
-    this.logValueMaxLength = Objects.requireNonNullElse(logValueMaxLength, 128);
+    this.includeActualValue = includeActualValue;
+    this.actualValueMaxLength = Objects.requireNonNullElse(actualValueMaxLength, 128);
   }
 }

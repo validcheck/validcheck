@@ -112,7 +112,7 @@ class CheckTest {
 
   @Test
   void batchWithDifferentConfigurations() {
-    // Test with logActualValue = true (default behavior)
+    // Test with includeActualValue = true (default behavior)
     var configWithValues = new ValidationConfig(true, true, null);
     var batchWithValues = withConfig(configWithValues).batch();
     batchWithValues.check("number", -5).isPositive();
@@ -123,7 +123,7 @@ class CheckTest {
         .hasMessageContaining(
             "'text' must be at least 10 characters long, but it was 'short'"); // Shows actual value
 
-    // Test with logActualValue = false
+    // Test with includeActualValue = false
     var configNoValues = new ValidationConfig(true, false, null);
     var batchNoValues = withConfig(configNoValues).batch();
     batchNoValues.check("number", -5).isPositive();
