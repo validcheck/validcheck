@@ -52,6 +52,10 @@ public final class Check {
     isTrue(!lie, message);
   }
 
+  public static void fail(String message) {
+    DEFAULT_CONTEXT.fail(message);
+  }
+
   public static <T> ValueValidator<T> check(T value) {
     return DEFAULT_CONTEXT.check(value);
   }

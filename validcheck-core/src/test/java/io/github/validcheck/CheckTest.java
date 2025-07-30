@@ -14,9 +14,10 @@ import org.junit.jupiter.api.Test;
 class CheckTest {
 
   @Test
-  void staticIsTrue() {
+  void staticIsTrueAndFail() {
     isTrue(true, "should not fail");
     assertThatThrownBy(() -> isTrue(false, "custom error")).hasMessage("parameter custom error");
+    assertThatThrownBy(() -> Check.fail("Error")).hasMessage("Error");
   }
 
   @Test
