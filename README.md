@@ -323,7 +323,7 @@ public class ConfigurationExample {
             false, // fillStackTrace - faster exceptions without stack traces
             false, // includeActualValue - hide sensitive values in error messages
             512 // actualValueMaxLength - limit the string length of value in the error message
-            );
+        );
 
     // Use configured validation
     var fastCheck = withConfig(config);
@@ -357,6 +357,11 @@ tokens, or taking input values untrusted sources
 
 - Java 11 or higher
 - Zero external dependencies
+
+## AI Disclosure
+
+This project was developed with AI assistance. See [AI.md](AI.md) for transparent disclosure of AI
+usage in development and documentation.
 
 ## License
 
