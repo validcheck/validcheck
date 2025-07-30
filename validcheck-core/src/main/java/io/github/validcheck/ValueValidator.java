@@ -4,6 +4,24 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+/**
+ * Base validator for any type of value with common validation methods.
+ *
+ * <p>This is the base class for all validators, providing common validation methods like null
+ * checks and custom predicate validation. Specific validator types like {@link StringValidator} and
+ * {@link NumericValidator} extend this class to provide type-specific validation methods.
+ *
+ * <p>Example usage:
+ *
+ * <pre>{@code
+ * check("value", value).notNull();
+ * check("config", config).satisfies(c -> c.isValid(), "must be valid");
+ * check("optional", optional).when(optional != null, v -> v.satisfies(...));
+ * }</pre>
+ *
+ * @param <T> the type of value being validated
+ * @since 1.0
+ */
 public class ValueValidator<T> {
   private final ValidationContext context;
   private final String name;
@@ -38,14 +56,64 @@ public class ValueValidator<T> {
     return string.substring(0, context.config.actualValueMaxLength) + "...";
   }
 
+  /**
+   * Validates that the value is not null.
+   *
+   * <p>This is one of the most commonly used validation methods and should typically be the first
+   * validation in a chain when null values are not allowed.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("name", name).notNull(); // other validations can follow
+   * }</pre>
+   *
+   * @return this validator for method chaining
+   * @throws ValidationException if the value is null
+   * @since 1.0
+   */
   public ValueValidator<T> notNull() {
     return satisfiesInternal(Objects::nonNull, "must not be null", false);
   }
 
+  /**
+   * Validates that the value is null.
+   *
+   * <p>This is useful for ensuring optional values are not provided when they shouldn't be.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("optionalField", optionalField).isNull();
+   * }</pre>
+   *
+   * @return this validator for method chaining
+   * @throws ValidationException if the value is not null
+   * @since 1.0
+   */
   public ValueValidator<T> isNull() {
     return satisfiesInternal(Objects::isNull, "must be null", true);
   }
 
+  /**
+   * Validates that the value satisfies the given predicate.
+   *
+   * <p>This is the most flexible validation method, allowing custom validation logic for any
+   * condition not covered by other validation methods.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("user", user).satisfies(u -> u.isActive(), "must be active");
+   * check("list", list).satisfies(l -> l.size() > 0, "must not be empty");
+   * }</pre>
+   *
+   * @param predicate the condition that must be true for the value
+   * @param message the error message if the predicate fails
+   * @return this validator for method chaining
+   * @throws ValidationException if the predicate returns false
+   * @since 1.0
+   */
   public ValueValidator<T> satisfies(Predicate<T> predicate, String message) {
     return satisfiesInternal(predicate, message, false);
   }
@@ -59,6 +127,27 @@ public class ValueValidator<T> {
     return this;
   }
 
+  /**
+   * Conditionally applies validation logic if the condition is true.
+   *
+   * <p>This method allows conditional validation based on external conditions or the value itself.
+   * The validation block is only executed if the condition is true.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("email", email)
+   *   .when(email != null, validator -> validator.satisfies(e -> e.contains("@"), "must be valid email"));
+   *
+   * check("optional", optional)
+   *   .when(isRequired, validator -> validator.notNull());
+   * }</pre>
+   *
+   * @param condition the condition to check
+   * @param then the validation logic to apply if condition is true
+   * @return this validator for method chaining
+   * @since 1.0
+   */
   public ValueValidator<T> when(boolean condition, Consumer<ValueValidator<T>> then) {
     if (condition) {
       then.accept(this);
