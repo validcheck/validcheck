@@ -21,6 +21,18 @@ class StringValidatorTest {
   }
 
   @Test
+  void notNullOrEmpty() {
+    check("text", "hello").notNullOrEmpty();
+    check("singleChar", "a").notNullOrEmpty();
+    check("spaces", "   ").notNullOrEmpty(); // spaces are allowed
+
+    assertThatThrownBy(() -> check("null", (String) null).notNullOrEmpty())
+        .hasMessage("'null' must not be null or empty");
+    assertThatThrownBy(() -> check("empty", "").notNullOrEmpty())
+        .hasMessage("'empty' must not be null or empty");
+  }
+
+  @Test
   void hasText() {
     check("text", "hello").hasText();
     check("spaces", "  hello  ").hasText();

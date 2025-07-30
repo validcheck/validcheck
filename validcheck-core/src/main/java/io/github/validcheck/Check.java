@@ -47,7 +47,7 @@ public final class Check {
    *
    * <pre>{@code
    * var validation = batch();
-   * validation.check("name", name).notNull().notEmpty();
+   * validation.check("name", name).notNullOrEmpty();
    * validation.check("age", age).isPositive().max(120);
    * validation.validate(); // Throws ValidationException with all errors if any failed
    * }</pre>
@@ -70,7 +70,7 @@ public final class Check {
    * <pre>{@code
    * var config = new ValidationConfig(false, false, 256);
    * var fastCheck = withConfig(config);
-   * fastCheck.check("password", password).notNull().notEmpty();
+   * fastCheck.check("password", password).notNullOrEmpty();
    * }</pre>
    *
    * @param config the validation configuration to use

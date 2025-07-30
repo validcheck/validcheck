@@ -6,8 +6,8 @@ public record CreateUserRequest(String name, String email, Integer age, String p
 
   public CreateUserRequest {
     var validation = batch();
-    validation.check("name", name).notNull().lengthBetween(1, 100);
-    validation.check("email", email).notNull().isEmail();
+    validation.check("name", name).notNullOrEmpty().lengthBetween(1, 100);
+    validation.check("email", email).notNullOrEmpty().isEmail();
     validation.check("age", age).notNull().isNonNegative().max(120);
     validation
         .check("phone", phone)

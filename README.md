@@ -15,7 +15,7 @@ and much easier to debug.
 ## Key Features
 
 - **Zero dependencies** - No reflection, no external frameworks, minimal overhead
-- **Fluent API** - Type-safe method chaining: `check("name", value).notNull().notEmpty()`
+- **Fluent API** - Type-safe method chaining: `check("name", value).notNullOrEmpty().lengthBetween(2, 50)`
 - **Fail-fast or Batch** - Stop on first error or collect all validation errors
 - **Explicit validation** - Clear validation logic exactly where you need it
 
@@ -48,8 +48,8 @@ import static io.github.validcheck.Check.check;
 public record User(String name, String email, int age) {
 
   public User {
-    check("name", name).notNull().lengthBetween(2, 50);
-    check("email", email).notNull().isEmail();
+    check("name", name).notNullOrEmpty().lengthBetween(2, 50);
+    check("email", email).notNullOrEmpty().isEmail();
     check("age", age).isNonNegative().max(120);
   }
 
@@ -168,8 +168,8 @@ import static io.github.validcheck.Check.check;
 public class UserService {
 
   public void updateProfile(String userId, String email, Integer age) {
-    check("userId", userId).notNull().lengthBetween(3, 50);
-    check("email", email).notNull().isEmail();
+    check("userId", userId).notNullOrEmpty().lengthBetween(3, 50);
+    check("email", email).notNullOrEmpty().isEmail();
     check("age", age).when(age != null, validator -> validator.isNonNegative().max(120));
 
     // Business logic here
@@ -328,7 +328,7 @@ public class ConfigurationExample {
     // Use configured validation
     var fastCheck = withConfig(config);
     String password = "secret123";
-    fastCheck.check("password", password).notNull().notEmpty();
+    fastCheck.check("password", password).notNullOrEmpty();
 
     // Or create batch with custom config
     var validation = withConfig(config).batch();

@@ -110,6 +110,31 @@ public class StringValidator extends ValueValidator<String> {
   }
 
   /**
+   * Validates that the string is not null or empty.
+   *
+   * <p>This is a convenience method equivalent to calling {@link #notNull()} followed by {@link
+   * #notEmpty()}. Use this when the string must have a value.
+   *
+   * <p>For strings that should have meaningful content (not just whitespace), consider using {@link
+   * #hasText()} instead.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("username", username).notNullOrEmpty();
+   * check("email", email).notNullOrEmpty().isEmail();
+   * }</pre>
+   *
+   * @return this validator for method chaining
+   * @throws ValidationException if the string is null or empty
+   * @since 1.0
+   */
+  public StringValidator notNullOrEmpty() {
+    return (StringValidator)
+        satisfiesInternal(s -> s != null && !s.isEmpty(), "must not be null or empty", false);
+  }
+
+  /**
    * Validates that the string has text (not null and not empty after trimming).
    *
    * <p>This method checks that the string is not null and contains at least one non-whitespace
