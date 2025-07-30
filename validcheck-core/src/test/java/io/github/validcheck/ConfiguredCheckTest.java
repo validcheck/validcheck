@@ -38,6 +38,12 @@ class ConfiguredCheckTest {
     var batch = configured.batch();
     assertThat(batch).isInstanceOf(BatchValidationContext.class);
     assertThat(batch.hasErrors()).isFalse();
+
+    batch.fail("Error 1");
+    batch.fail("Error 2");
+
+    assertThatThrownBy(batch::validate)
+        .hasMessage("Validation failed with 2 error(s):\n- Error 1\n- Error 2");
   }
 
   @Test
