@@ -26,6 +26,7 @@ public class ValueValidator<T> {
   private final ValidationContext context;
   private final String name;
   protected final T value;
+  private String customMessage;
 
   ValueValidator(ValidationContext context, String name, T value) {
     this.context = context;
@@ -33,7 +34,11 @@ public class ValueValidator<T> {
     this.value = value;
   }
 
-  private final String formatMessage(String message, boolean includeActualValue) {
+  private String formatMessage(String message, boolean includeActualValue) {
+    if (customMessage != null) {
+      return customMessage;
+    }
+
     var paramName = name == null ? "parameter" : String.format("'%s'", name);
     var error = String.format("%s " + message, paramName);
     if (includeActualValue && context.config.includeActualValue) {
@@ -153,6 +158,28 @@ public class ValueValidator<T> {
       then.accept(this);
     }
 
+    return this;
+  }
+
+  /**
+   * Overrides check(s) error message.
+   *
+   * <p>The method overrides the error message for all checks followed by the method call. This
+   * method doesn't change the error message for the preceding checks.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("email", email)
+   *   .withMessage("Invalid customer email address").isEmail();
+   * }</pre>
+   *
+   * @param customMessage the error message for this check
+   * @return this validator for method chaining
+   * @since 1.0
+   */
+  public ValueValidator<T> withMessage(String customMessage) {
+    this.customMessage = customMessage;
     return this;
   }
 }
