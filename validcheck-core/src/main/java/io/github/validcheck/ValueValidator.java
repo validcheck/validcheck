@@ -163,19 +163,19 @@ public class ValueValidator<T> {
   }
 
   /**
-   * Overrides check(s) error message.
+   * Sets a custom error message for subsequent validation methods.
    *
-   * <p>The method overrides the error message for all checks followed by the method call. This
-   * method doesn't change the error message for the preceding checks.
+   * <p>This method overrides the default error message for all validation methods called after it
+   * in the chain. It does not affect error messages for validation methods called before it.
    *
    * <p>Example:
    *
    * <pre>{@code
    * check("email", email)
-   *   .withMessage("Invalid customer email address").isEmail();
+   *   .withMessage("Invalid customer email address").notNull().satisfies(e -> e.contains("@"));
    * }</pre>
    *
-   * @param customMessage the error message for this check
+   * @param customMessage the custom error message to use for subsequent validations
    * @return this validator for method chaining
    * @since 1.0
    */
@@ -185,13 +185,22 @@ public class ValueValidator<T> {
   }
 
   /**
-   * Validates that the value is one of the specified. String representation of values will be
-   * included in the error message. You need to keep the number of values reasonable. TODO: add
-   * description and example
+   * Validates that the value is one of the specified values.
    *
-   * @param values allowed values, cannot contain null
+   * <p>This method checks that the value equals one of the provided values using {@link
+   * Object#equals}. It's useful for validating enums, status codes, or any finite set of allowed
+   * values.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("status", status).oneOf("ACTIVE", "INACTIVE", "PENDING");
+   * check("priority", priority).oneOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW);
+   * }</pre>
+   *
+   * @param values the allowed values
    * @return this validator for method chaining
-   * @throws ValidationException if the value is not one of the specified.
+   * @throws ValidationException if the value is not one of the specified values
    * @since 1.0
    */
   @SafeVarargs
