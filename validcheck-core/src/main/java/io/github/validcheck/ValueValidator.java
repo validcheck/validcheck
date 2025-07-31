@@ -1,5 +1,6 @@
 package io.github.validcheck;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -181,5 +182,21 @@ public class ValueValidator<T> {
   public ValueValidator<T> withMessage(String customMessage) {
     this.customMessage = customMessage;
     return this;
+  }
+
+  /**
+   * Validates that the value is one of the specified. String representation of values will be
+   * included in the error message. You need to keep the number of values reasonable. TODO: add
+   * description and example
+   *
+   * @param values allowed values, cannot contain null
+   * @return this validator for method chaining
+   * @throws ValidationException if the value is not one of the specified.
+   * @since 1.0
+   */
+  @SafeVarargs
+  public final ValueValidator<T> oneOf(T... values) {
+    final var list = Arrays.asList(values);
+    return satisfiesInternal(list::contains, String.format("must be one of %s", list), true);
   }
 }

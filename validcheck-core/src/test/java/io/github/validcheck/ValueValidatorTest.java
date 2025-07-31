@@ -35,6 +35,10 @@ class ValueValidatorTest {
                     .satisfies(o -> o.hashCode() == 0, "must have non-zero hashCode"))
         .hasMessage("parameter must have non-zero hashCode")
         .matches(e -> ((ValidationException) e).errors().size() == 1);
+
+    check("A").oneOf("A", "B", "C").notNull();
+    assertThatThrownBy(() -> check("D").oneOf("A", "B", "C", null))
+        .hasMessage("parameter must be one of [A, B, C, null], but it was 'D'");
   }
 
   @Test
