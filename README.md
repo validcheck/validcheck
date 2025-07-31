@@ -15,7 +15,8 @@ and much easier to debug.
 ## Key Features
 
 - **Zero dependencies** - No reflection, no external frameworks, minimal overhead
-- **Fluent API** - Type-safe method chaining: `check("name", value).notNullOrEmpty().lengthBetween(2, 50)`
+- **Fluent API** - Type-safe method chaining:
+  `check("name", value).notNullOrEmpty().lengthBetween(2, 50)`
 - **Fail-fast or Batch** - Stop on first error or collect all validation errors
 - **Explicit validation** - Clear validation logic exactly where you need it
 
@@ -304,6 +305,36 @@ public class OrderProcessor {
   }
 }
 ```
+
+## Real-World Example: Service Configuration
+
+See a comprehensive example of validating complex nested configurations:
+
+```java
+// Demonstrates 3-level nested validation with batch validation,
+// custom messages, and oneOf validation
+public record ApplicationConfig(
+        String name,
+        String version,
+        String environment,
+        DatabaseConfig database,
+        ServerConfig server,
+        LoggingConfig logging
+    ) {
+
+  public ApplicationConfig {
+    check("name", name).notNullOrEmpty().matches("[a-z-]+");
+    check("version", version).notNull().matches("\\d+\\.\\d+\\.\\d+");
+    check("environment", environment).oneOf(List.of("development", "staging", "production"));
+    check("database", database).notNull();
+    check("server", server).notNull();
+    check("logging", logging).notNull();
+  }
+}
+```
+
+**Full example:
+** [ServiceConfiguration.java](validcheck-examples/src/main/java/io/github/validcheck/example/config/ServiceConfiguration.java)
 
 ## Configuration
 
