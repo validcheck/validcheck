@@ -1,5 +1,6 @@
 package io.github.validcheck;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -43,6 +44,16 @@ public class StringValidator extends ValueValidator<String> {
   @Override
   public StringValidator when(boolean condition, Consumer<ValueValidator<String>> then) {
     return (StringValidator) super.when(condition, then);
+  }
+
+  @Override
+  public StringValidator withMessage(String customMessage) {
+    return (StringValidator) super.withMessage(customMessage);
+  }
+
+  @Override
+  public StringValidator oneOf(List<String> values) {
+    return (StringValidator) super.oneOf(values);
   }
 
   /**

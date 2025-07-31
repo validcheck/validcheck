@@ -1,6 +1,6 @@
 package io.github.validcheck;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -203,9 +203,7 @@ public class ValueValidator<T> {
    * @throws ValidationException if the value is not one of the specified values
    * @since 1.0
    */
-  @SafeVarargs
-  public final ValueValidator<T> oneOf(T... values) {
-    final var list = Arrays.asList(values);
-    return satisfiesInternal(list::contains, String.format("must be one of %s", list), true);
+  public ValueValidator<T> oneOf(List<T> values) {
+    return satisfiesInternal(values::contains, String.format("must be one of %s", values), true);
   }
 }

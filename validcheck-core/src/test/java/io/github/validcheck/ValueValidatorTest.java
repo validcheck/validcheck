@@ -4,6 +4,9 @@ import static io.github.validcheck.Check.check;
 import static io.github.validcheck.Check.withConfig;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 
 class ValueValidatorTest {
@@ -36,8 +39,9 @@ class ValueValidatorTest {
         .hasMessage("parameter must have non-zero hashCode")
         .matches(e -> ((ValidationException) e).errors().size() == 1);
 
-    check("A").oneOf("A", "B", "C").notNull();
-    assertThatThrownBy(() -> check("D").oneOf("A", "B", "C", null))
+    check("A").oneOf(List.of("A", "B", "C")).notNull();
+    assertThatThrownBy(
+            () -> check("D").oneOf(Stream.of("A", "B", "C", null).collect(Collectors.toList())))
         .hasMessage("parameter must be one of [A, B, C, null], but it was 'D'");
   }
 
