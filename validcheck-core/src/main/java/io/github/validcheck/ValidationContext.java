@@ -237,7 +237,7 @@ public class ValidationContext {
    * @return a collection validator for the value
    * @since 1.0
    */
-  public <T extends Collection<?>> CollectionValidator<T> check(T value) {
+  public <E, T extends Collection<E>> CollectionValidator<T> check(T value) {
     return new CollectionValidator<>(this, null, value);
   }
 
@@ -457,7 +457,7 @@ public class ValidationContext {
    * @return a collection validator for the named value
    * @since 1.0
    */
-  public <T extends Collection<?>> CollectionValidator<T> check(String name, T value) {
+  public <E, T extends Collection<E>> CollectionValidator<T> check(String name, T value) {
     return new CollectionValidator<>(this, name, value);
   }
 

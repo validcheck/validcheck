@@ -99,4 +99,14 @@ class CollectionValidatorTest {
         .hasMessage("parameter must have at least 1 elements, but it was []");
     check(Set.of("X")).whenCollection(true, v -> v.satisfies(s -> !s.isEmpty(), "Error"));
   }
+
+  @Test
+  void satisfies() {
+    check("valid", List.of("a", "a"))
+        .satisfies(l -> l.stream().allMatch(s -> s.equals("a")), "Error 1");
+    batch().check("valid", List.of(1, 2)).satisfies(l -> l.contains(1), "Error 2");
+    Check.withConfig(ValidationConfig.DEFAULT)
+        .check("valid", List.of(1, 2))
+        .satisfies(l -> l.contains(2), "Error 2");
+  }
 }

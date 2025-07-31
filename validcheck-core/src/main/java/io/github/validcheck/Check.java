@@ -355,7 +355,7 @@ public final class Check {
    * @return a collection validator for the value
    * @since 1.0
    */
-  public static <T extends Collection<?>> CollectionValidator<T> check(T value) {
+  public static <E, T extends Collection<E>> CollectionValidator<T> check(T value) {
     return DEFAULT_CONTEXT.check(value);
   }
 
@@ -529,7 +529,7 @@ public final class Check {
    * @return a collection validator for the named value
    * @since 1.0
    */
-  public static <T extends Collection<?>> CollectionValidator<T> check(String name, T value) {
+  public static <E, T extends Collection<E>> CollectionValidator<T> check(String name, T value) {
     return DEFAULT_CONTEXT.check(name, value);
   }
 }
