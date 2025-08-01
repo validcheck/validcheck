@@ -1,6 +1,5 @@
 package io.github.validcheck;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -52,7 +51,7 @@ public class StringValidator extends ValueValidator<String> {
   }
 
   @Override
-  public StringValidator oneOf(List<String> values) {
+  public StringValidator oneOf(String... values) {
     return (StringValidator) super.oneOf(values);
   }
 

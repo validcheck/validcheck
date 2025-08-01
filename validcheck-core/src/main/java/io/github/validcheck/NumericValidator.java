@@ -1,6 +1,5 @@
 package io.github.validcheck;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -50,11 +49,6 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
   @Override
   public NumericValidator<T> withMessage(String customMessage) {
     return (NumericValidator<T>) super.withMessage(customMessage);
-  }
-
-  @Override
-  public final NumericValidator<T> oneOf(List<T> values) {
-    return (NumericValidator<T>) super.oneOf(values);
   }
 
   /**

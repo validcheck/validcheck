@@ -70,7 +70,7 @@ public class ServiceConfiguration {
     public SslConfig {
       check("keystorePath", keystorePath).notNullOrEmpty().endsWith(".jks");
       check("keystorePassword", keystorePassword).notNull().minLength(6);
-      check("protocol", protocol).oneOf(List.of("TLS", "TLSv1.2", "TLSv1.3"));
+      check("protocol", protocol).oneOf("TLS", "TLSv1.2", "TLSv1.3");
     }
   }
 
@@ -84,7 +84,7 @@ public class ServiceConfiguration {
     public ApplicationConfig {
       check("name", name).notNullOrEmpty().matches("[a-z-]+");
       check("version", version).notNull().matches("\\d+\\.\\d+\\.\\d+");
-      check("environment", environment).oneOf(List.of("development", "staging", "production"));
+      check("environment", environment).oneOf("development", "staging", "production");
       check("database", database).notNull();
       check("server", server).notNull();
       check("logging", logging).notNull();
@@ -93,7 +93,7 @@ public class ServiceConfiguration {
 
   public record LoggingConfig(String level, String pattern, FileConfig file) {
     public LoggingConfig {
-      check("level", level).oneOf(List.of("DEBUG", "INFO", "WARN", "ERROR"));
+      check("level", level).oneOf("DEBUG", "INFO", "WARN", "ERROR");
       check("pattern", pattern).notNullOrEmpty();
       check("file", file).notNull();
     }

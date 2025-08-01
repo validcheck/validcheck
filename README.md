@@ -314,18 +314,17 @@ See a comprehensive example of validating complex nested configurations:
 // Demonstrates 3-level nested validation with batch validation,
 // custom messages, and oneOf validation
 public record ApplicationConfig(
-        String name,
-        String version,
-        String environment,
-        DatabaseConfig database,
-        ServerConfig server,
-        LoggingConfig logging
-    ) {
+    String name,
+    String version,
+    String environment,
+    DatabaseConfig database,
+    ServerConfig server,
+    LoggingConfig logging) {
 
   public ApplicationConfig {
     check("name", name).notNullOrEmpty().matches("[a-z-]+");
     check("version", version).notNull().matches("\\d+\\.\\d+\\.\\d+");
-    check("environment", environment).oneOf(List.of("development", "staging", "production"));
+    check("environment", environment).oneOf("development", "staging", "production");
     check("database", database).notNull();
     check("server", server).notNull();
     check("logging", logging).notNull();
@@ -333,8 +332,8 @@ public record ApplicationConfig(
 }
 ```
 
-**Full example:
-** [ServiceConfiguration.java](validcheck-examples/src/main/java/io/github/validcheck/example/config/ServiceConfiguration.java)
+**Full example:**
+[ServiceConfiguration.java](validcheck-examples/src/main/java/io/github/validcheck/example/config/ServiceConfiguration.java)
 
 ## Configuration
 

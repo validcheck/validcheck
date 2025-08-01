@@ -1,7 +1,6 @@
 package io.github.validcheck;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -51,11 +50,6 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
   @Override
   public CollectionValidator<T> withMessage(String customMessage) {
     return (CollectionValidator<T>) super.withMessage(customMessage);
-  }
-
-  @Override
-  public final CollectionValidator<T> oneOf(List<T> values) {
-    return (CollectionValidator<T>) super.oneOf(values);
   }
 
   /**
