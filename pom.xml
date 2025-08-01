@@ -72,8 +72,19 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>java-21+</id>
+      <activation>
+        <jdk>[21,)</jdk>
+      </activation>
+      <modules>
+        <module>validcheck-examples</module>
+      </modules>
+    </profile>
+  </profiles>
+
   <modules>
     <module>validcheck-core</module>
-    <module>validcheck-examples</module>
   </modules>
 </project>
