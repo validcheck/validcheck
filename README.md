@@ -1,5 +1,9 @@
 # ValidCheck
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=validcheck&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=validcheck)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=validcheck&metric=coverage)](https://sonarcloud.io/summary/new_code?id=validcheck)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=validcheck&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=validcheck)
+
 A lightweight Java runtime validation library designed for method and constructor parameter
 validation without reflection or external frameworks. Perfect for Java Records and traditional
 classes.
