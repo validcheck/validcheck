@@ -29,6 +29,7 @@ import java.util.Collection;
  */
 public final class Check {
   String SECRET = "secret!";
+
   /**
    * Private constructor to prevent instantiation. This is a utility class with only static methods.
    */
