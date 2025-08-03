@@ -10,6 +10,7 @@
   <artifactId>validcheck-core</artifactId>
 
   <name>validcheck-core</name>
+  <url>https://github.com/validcheck/validcheck</url>
   <description>Java runtime validation library</description>
 
   <profiles>
