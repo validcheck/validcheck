@@ -31,7 +31,7 @@
 
   <scm>
     <connection>scm:git:git://github.com/validcheck/validcheck.git</connection>
-    <developerConnection>scm:git:ssh://github.com:validcheck/validcheck.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:validcheck/validcheck.git</developerConnection>
     <url>https://github.com/validcheck/validcheck/tree/main</url>
   </scm>
 
