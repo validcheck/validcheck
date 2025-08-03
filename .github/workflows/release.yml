@@ -1,0 +1,87 @@
+name: Release to Maven Central
+
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'Release version (leave empty for automatic)'
+        required: false
+        type: string
+      development-version:
+        description: 'Next development version (leave empty for automatic)'
+        required: false
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Prepare release (with versions)
+        if: ${{ github.event.inputs.release-version != '' && github.event.inputs.development-version != '' }}
+        run: |
+          mvn release:prepare \
+            -DreleaseVersion=${{ github.event.inputs.release-version }} \
+            -DdevelopmentVersion=${{ github.event.inputs.development-version }} \
+            -Dtag=v${{ github.event.inputs.release-version }} \
+            --batch-mode \
+            --no-transfer-progress
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Prepare release (automatic versions)
+        if: ${{ github.event.inputs.release-version == '' || github.event.inputs.development-version == '' }}
+        run: |
+          mvn release:prepare \
+            --batch-mode \
+            --no-transfer-progress
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Perform release
+        run: |
+          mvn release:perform \
+            -Prelease \
+            --batch-mode \
+            --no-transfer-progress
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Create GitHub Release from Tag
+        run: |
+          # Get the latest tag (created by maven-release-plugin)
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          gh release create $LATEST_TAG \
+            --title "Release $LATEST_TAG" \
+            --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
