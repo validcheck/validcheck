@@ -26,8 +26,10 @@ import java.util.function.Predicate;
 public class ValueValidator<T> {
   private final ValidationContext context;
   private final String name;
+
   /** The value being validated. */
   protected final T value;
+
   private String customMessage;
 
   ValueValidator(ValidationContext context, String name, T value) {
