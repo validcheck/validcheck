@@ -30,8 +30,8 @@
   </developers>
 
   <scm>
-    <connection>scm:git:git://github.com/validcheck/validcheck.git</connection>
-    <developerConnection>scm:git:git@github.com:validcheck/validcheck.git</developerConnection>
+    <connection>scm:git:https://github.com/validcheck/validcheck.git</connection>
+    <developerConnection>scm:git:https://github.com/validcheck/validcheck.git</developerConnection>
     <url>https://github.com/validcheck/validcheck/tree/main</url>
   </scm>
 
@@ -121,7 +121,7 @@
             </execution>
           </executions>
         </plugin>
-        
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
@@ -157,7 +157,7 @@
         <module>validcheck-examples</module>
       </modules>
     </profile>
-    
+
     <profile>
       <id>release</id>
       <build>
@@ -175,7 +175,7 @@
               </execution>
             </executions>
           </plugin>
-          
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
@@ -189,7 +189,7 @@
               </execution>
             </executions>
           </plugin>
-          
+
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-gpg-plugin</artifactId>
@@ -204,7 +204,7 @@
               </execution>
             </executions>
           </plugin>
-          
+
           <plugin>
             <groupId>org.sonatype.plugins</groupId>
             <artifactId>nexus-staging-maven-plugin</artifactId>
