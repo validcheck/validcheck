@@ -20,7 +20,6 @@ class ConfiguredCheckTest {
 
   @Test
   void isTrueAndIsFalse() {
-    ;
     var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     configured.isTrue(true, "should not fail");
