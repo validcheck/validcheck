@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 public class StringValidator extends ValueValidator<String> {
 
   private static final String EMAIL_REGEX =
-      "^[\\p{L}\\p{N}._%+-]{1,64}@[\\p{L}\\p{N}.-]{1,253}\\.[\\p{L}]{2,63}$";
+      "^[a-zA-Z0-9_%+-]+([.][a-zA-Z0-9_%+-]+)*@[a-zA-Z0-9-]+([.][a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$";
   private static final int MAX_EMAIL_LENGTH = 320; // RFC 5321 limit
 
   StringValidator(ValidationContext context, String name, String value) {
@@ -322,11 +322,22 @@ public class StringValidator extends ValueValidator<String> {
   /**
    * Validates that the string is a valid email address format.
    *
-   * <p>This performs basic email validation that supports Unicode characters and follows a
-   * simplified RFC 5322 pattern with ReDoS protection. It includes length limits (320 chars total,
-   * 64 for local part, 253 for domain) and bounded quantifiers to prevent catastrophic
-   * backtracking. For production use with complex requirements, consider using a more comprehensive
-   * email validation library.
+   * <p>This performs basic email validation using ASCII characters only with ReDoS protection. The
+   * validation ensures proper structure and prevents common formatting issues:
+   *
+   * <ul>
+   *   <li>Requires exactly one '@' symbol separating local and domain parts
+   *   <li>Local part: alphanumeric, underscore, percent, plus, hyphen, and dots (not at
+   *       start/end/consecutive)
+   *   <li>Domain part: alphanumeric, hyphen, and dots for subdomains (not at start/end/consecutive)
+   *   <li>TLD: at least 2 alphabetic characters
+   *   <li>Total length limited to 320 characters (RFC 5321)
+   * </ul>
+   *
+   * <p>Valid examples: {@code a@b.co}, {@code user.name+tag@sub-domain.example.com}
+   *
+   * <p>For production use with international domains or complex requirements, consider using a more
+   * comprehensive email validation library.
    *
    * <p>Example:
    *

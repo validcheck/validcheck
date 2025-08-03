@@ -125,14 +125,11 @@ class StringValidatorTest {
   @Test
   void isEmail() {
     check("valid", "test@example.com").isEmail();
-    check("simple", "a@b.c").isEmail();
+    check("single", "a@b.co").isEmail();
     check("long", "user.name+tag@example-domain.co.uk").isEmail();
 
-    // Unicode support tests
-    check("unicode", "测试@example.com").isEmail();
-    check("unicodeDomain", "user@测试.com").isEmail();
-    check("fullUnicode", "用户@测试.中国").isEmail();
     check("numberLocal", "user123@example.com").isEmail();
+    check("dotAndPlus", "a.b+c@example.com").isEmail();
     check("numberDomain", "user@example123.com").isEmail();
 
     assertThatThrownBy(() -> check("noAt", "testexample.com").isEmail())
@@ -143,11 +140,13 @@ class StringValidatorTest {
         .hasMessage("'endAt' must be a valid email address, but it was 'test@'");
     assertThatThrownBy(() -> check("noChars", "").isEmail())
         .hasMessage("'noChars' must be a valid email address, but it was ''");
+    assertThatThrownBy(() -> check("startWithDot", ".a@testexample.com").isEmail())
+        .isInstanceOf(ValidationException.class);
 
     // ReDoS protection test - very long input should fail quickly
     String longEmail = "a".repeat(400) + "@example.com";
     assertThatThrownBy(() -> check("tooLong", longEmail).isEmail())
-        .hasMessage("'tooLong' must be a valid email address, but it was '" + longEmail + "'");
+        .hasMessageStartingWith("'tooLong' must be a valid email address, but it was 'aa");
   }
 
   @Test
