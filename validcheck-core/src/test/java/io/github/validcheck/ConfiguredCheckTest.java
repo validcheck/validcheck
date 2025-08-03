@@ -48,7 +48,6 @@ class ConfiguredCheckTest {
 
   @Test
   void checkStringMethods() {
-    ;
     var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test that string-specific methods are available
@@ -61,7 +60,6 @@ class ConfiguredCheckTest {
 
   @Test
   void checkNumericMethods() {
-    ;
     var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test all numeric type overloads work
@@ -106,7 +104,6 @@ class ConfiguredCheckTest {
 
   @Test
   void inheritedMethods() {
-    ;
     var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test generic check methods are inherited

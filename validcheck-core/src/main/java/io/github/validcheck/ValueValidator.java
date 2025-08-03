@@ -41,7 +41,7 @@ public class ValueValidator<T> {
     }
 
     var paramName = name == null ? "parameter" : String.format("'%s'", name);
-    var error = String.format("%s " + message, paramName);
+    var error = String.format("%s %s", paramName, message);
     if (includeActualValue && context.config.includeActualValue) {
       var stringValue = valueToString();
       var formattedValue =

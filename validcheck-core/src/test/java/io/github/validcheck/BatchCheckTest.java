@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-public class BatchCheckTest {
+class BatchCheckTest {
   @Test
   void basic() {
     var validation = Check.batch();
