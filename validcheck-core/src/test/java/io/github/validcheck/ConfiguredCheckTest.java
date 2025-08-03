@@ -43,7 +43,7 @@ class ConfiguredCheckTest {
     batch.fail("Error 2");
 
     assertThatThrownBy(batch::validate)
-        .hasMessage("Validation failed with 2 error(s):\n- Error 1\n- Error 2");
+        .hasMessage(String.format("Validation failed with 2 error(s):%n- Error 1%n- Error 2"));
   }
 
   @Test
