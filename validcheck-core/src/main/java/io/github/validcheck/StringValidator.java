@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 public class StringValidator extends ValueValidator<String> {
 
   private static final String EMAIL_REGEX =
-      "^[a-zA-Z0-9_%+-]+(?:[.][a-zA-Z0-9_%+-]+)*@[a-zA-Z0-9-]+(?:[.][a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$";
+      "^[a-zA-Z0-9_%+-]+(?:\\.[a-zA-Z0-9_%+-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$";
   private static final int MAX_EMAIL_LENGTH = 320; // RFC 5321 limit
 
   StringValidator(ValidationContext context, String name, String value) {
