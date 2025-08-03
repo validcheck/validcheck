@@ -21,7 +21,9 @@ import java.util.function.Predicate;
  */
 public class StringValidator extends ValueValidator<String> {
 
-  private static final String EMAIL_REGEX = "^[\\p{L}\\p{N}._%+-]+@[\\p{L}\\p{N}.-]+\\.[\\p{L}]+$";
+  private static final String EMAIL_REGEX =
+      "^[\\p{L}\\p{N}._%+-]{1,64}@[\\p{L}\\p{N}.-]{1,253}\\.[\\p{L}]{2,63}$";
+  private static final int MAX_EMAIL_LENGTH = 320; // RFC 5321 limit
 
   StringValidator(ValidationContext context, String name, String value) {
     super(context, name, value);
@@ -321,9 +323,10 @@ public class StringValidator extends ValueValidator<String> {
    * Validates that the string is a valid email address format.
    *
    * <p>This performs basic email validation that supports Unicode characters and follows a
-   * simplified RFC 5322 pattern. It accepts international domain names and Unicode characters in
-   * the local part. For production use with complex requirements, consider using a more
-   * comprehensive email validation library.
+   * simplified RFC 5322 pattern with ReDoS protection. It includes length limits (320 chars total,
+   * 64 for local part, 253 for domain) and bounded quantifiers to prevent catastrophic
+   * backtracking. For production use with complex requirements, consider using a more comprehensive
+   * email validation library.
    *
    * <p>Example:
    *
@@ -337,7 +340,10 @@ public class StringValidator extends ValueValidator<String> {
    */
   public StringValidator isEmail() {
     return (StringValidator)
-        satisfiesInternal(s -> s.matches(EMAIL_REGEX), "must be a valid email address", true);
+        satisfiesInternal(
+            s -> s.length() <= MAX_EMAIL_LENGTH && s.matches(EMAIL_REGEX),
+            "must be a valid email address",
+            true);
   }
 
   /**
