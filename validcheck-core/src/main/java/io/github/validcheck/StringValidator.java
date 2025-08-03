@@ -21,6 +21,8 @@ import java.util.function.Predicate;
  */
 public class StringValidator extends ValueValidator<String> {
 
+  private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]+$";
+
   StringValidator(ValidationContext context, String name, String value) {
     super(context, name, value);
   }
@@ -334,10 +336,7 @@ public class StringValidator extends ValueValidator<String> {
    */
   public StringValidator isEmail() {
     return (StringValidator)
-        satisfiesInternal(
-            s -> s.contains("@") && s.indexOf("@") > 0 && s.indexOf("@") < s.length() - 1,
-            "must be a valid email address",
-            true);
+        satisfiesInternal(s -> s.matches(EMAIL_REGEX), "must be a valid email address", true);
   }
 
   /**

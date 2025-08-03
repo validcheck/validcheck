@@ -66,8 +66,10 @@ public class BatchValidationContext extends ValidationContext {
 
   @Override
   String formatMessage(List<String> errors) {
-    final var prefix = String.format("Validation failed with %d error(s):\n", errors.size());
-    return errors.stream().map(m -> "- " + m).collect(Collectors.joining("\n", prefix, ""));
+    final var prefix = String.format("Validation failed with %d error(s):%n", errors.size());
+    return errors.stream()
+        .map(m -> "- " + m)
+        .collect(Collectors.joining(System.lineSeparator(), prefix, ""));
   }
 
   /**

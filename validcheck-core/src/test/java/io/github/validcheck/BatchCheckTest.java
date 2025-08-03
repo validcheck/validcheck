@@ -16,6 +16,6 @@ public class BatchCheckTest {
 
     assertThat(validation.hasErrors()).isTrue();
     assertThatThrownBy(validation::validate)
-        .hasMessage("Validation failed with 2 error(s):\n- Error 1\n- Error 2");
+        .hasMessage(String.format("Validation failed with 2 error(s):%n- Error 1%n- Error 2"));
   }
 }
