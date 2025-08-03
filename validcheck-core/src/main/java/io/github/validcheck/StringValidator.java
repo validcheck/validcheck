@@ -21,6 +21,10 @@ import java.util.function.Predicate;
  */
 public class StringValidator extends ValueValidator<String> {
 
+  private static final String EMAIL_REGEX =
+      "^[a-zA-Z0-9_%+-]+(?:\\.[a-zA-Z0-9_%+-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$";
+  private static final int MAX_EMAIL_LENGTH = 320; // RFC 5321 limit
+
   StringValidator(ValidationContext context, String name, String value) {
     super(context, name, value);
   }
@@ -318,8 +322,21 @@ public class StringValidator extends ValueValidator<String> {
   /**
    * Validates that the string is a valid email address format.
    *
-   * <p>This performs a basic email validation check that ensures the string contains an '@' symbol
-   * with at least one character before and after it. For production use, consider using a more
+   * <p>This performs basic email validation using ASCII characters only with ReDoS protection. The
+   * validation ensures proper structure and prevents common formatting issues:
+   *
+   * <ul>
+   *   <li>Requires exactly one '@' symbol separating local and domain parts
+   *   <li>Local part: alphanumeric, underscore, percent, plus, hyphen, and dots (not at
+   *       start/end/consecutive)
+   *   <li>Domain part: alphanumeric, hyphen, and dots for subdomains (not at start/end/consecutive)
+   *   <li>TLD: at least 2 alphabetic characters
+   *   <li>Total length limited to 320 characters (RFC 5321)
+   * </ul>
+   *
+   * <p>Valid examples: {@code a@b.co}, {@code user.name+tag@sub-domain.example.com}
+   *
+   * <p>For production use with international domains or complex requirements, consider using a more
    * comprehensive email validation library.
    *
    * <p>Example:
@@ -335,7 +352,7 @@ public class StringValidator extends ValueValidator<String> {
   public StringValidator isEmail() {
     return (StringValidator)
         satisfiesInternal(
-            s -> s.contains("@") && s.indexOf("@") > 0 && s.indexOf("@") < s.length() - 1,
+            s -> s.length() <= MAX_EMAIL_LENGTH && s.matches(EMAIL_REGEX),
             "must be a valid email address",
             true);
   }

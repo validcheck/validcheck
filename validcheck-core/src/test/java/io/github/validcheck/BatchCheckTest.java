@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.jupiter.api.Test;
 
-public class BatchCheckTest {
+class BatchCheckTest {
   @Test
   void basic() {
     var validation = Check.batch();
@@ -16,6 +16,6 @@ public class BatchCheckTest {
 
     assertThat(validation.hasErrors()).isTrue();
     assertThatThrownBy(validation::validate)
-        .hasMessage("Validation failed with 2 error(s):\n- Error 1\n- Error 2");
+        .hasMessage(String.format("Validation failed with 2 error(s):%n- Error 1%n- Error 2"));
   }
 }

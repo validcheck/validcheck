@@ -14,6 +14,8 @@ oversight and decision-making throughout the development process.
 
 - **Claude (Anthropic)** - Claude-3.5-Sonnet and Claude-4-Sonnet models
 - **Usage:** Code generation assistance, documentation writing, and refactoring suggestions
+- **GitHub Copilot** - AI-powered code completion and review assistance
+- **Usage:** Code reviews, suggestions during development, and code completion
 
 ## What AI Was Used For
 
@@ -30,6 +32,7 @@ oversight and decision-making throughout the development process.
 - **Testing** - AI assisted with test case generation, human-verified for completeness
 - **Refactoring** - AI suggested improvements (e.g., renaming `logActualValue` to
   `includeActualValue`)
+- **Code Reviews** - GitHub Copilot provided suggestions during development and review processes
 
 ## Human Oversight
 

@@ -1,6 +1,7 @@
 package io.github.validcheck;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -26,13 +27,12 @@ class ValidationExceptionTest {
     var returnedErrors = exception.errors();
 
     // Verify returned list is immutable
-    assertThat(returnedErrors).isEqualTo(originalErrors);
-    assertThat(returnedErrors).isNotSameAs(originalErrors);
+    assertThat(returnedErrors).isEqualTo(originalErrors).isNotSameAs(originalErrors);
 
     // Should throw UnsupportedOperationException when trying to modify
     try {
       returnedErrors.add("New error");
-      assertThat(false).as("Expected UnsupportedOperationException").isTrue();
+      fail("Expected UnsupportedOperationException");
     } catch (UnsupportedOperationException e) {
       // Expected
     }

@@ -125,8 +125,12 @@ class StringValidatorTest {
   @Test
   void isEmail() {
     check("valid", "test@example.com").isEmail();
-    check("simple", "a@b.c").isEmail();
+    check("singleLocalPart", "a@b.co").isEmail();
     check("long", "user.name+tag@example-domain.co.uk").isEmail();
+
+    check("numberLocal", "user123@example.com").isEmail();
+    check("dotAndPlus", "a.b+c@example.com").isEmail();
+    check("numberDomain", "user@example123.com").isEmail();
 
     assertThatThrownBy(() -> check("noAt", "testexample.com").isEmail())
         .hasMessage("'noAt' must be a valid email address, but it was 'testexample.com'");
@@ -136,6 +140,19 @@ class StringValidatorTest {
         .hasMessage("'endAt' must be a valid email address, but it was 'test@'");
     assertThatThrownBy(() -> check("noChars", "").isEmail())
         .hasMessage("'noChars' must be a valid email address, but it was ''");
+    assertThatThrownBy(() -> check("startWithDot", ".a@testexample.com").isEmail())
+        .isInstanceOf(ValidationException.class);
+    assertThatThrownBy(() -> check("endWithDot", "a.@testexample.com").isEmail())
+        .isInstanceOf(ValidationException.class);
+    assertThatThrownBy(() -> check("consecutiveDots1", "b..a@testexample.com").isEmail())
+        .isInstanceOf(ValidationException.class);
+    assertThatThrownBy(() -> check("consecutiveDots2", "a@testexample..com").isEmail())
+        .isInstanceOf(ValidationException.class);
+
+    // ReDoS protection test - very long input should fail quickly
+    String longEmail = "a".repeat(400) + "@example.com";
+    assertThatThrownBy(() -> check("tooLong", longEmail).isEmail())
+        .hasMessageStartingWith("'tooLong' must be a valid email address, but it was 'aa");
   }
 
   @Test
