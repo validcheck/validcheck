@@ -142,6 +142,12 @@ class StringValidatorTest {
         .hasMessage("'noChars' must be a valid email address, but it was ''");
     assertThatThrownBy(() -> check("startWithDot", ".a@testexample.com").isEmail())
         .isInstanceOf(ValidationException.class);
+    assertThatThrownBy(() -> check("endWithDot", "a.@testexample.com").isEmail())
+        .isInstanceOf(ValidationException.class);
+    assertThatThrownBy(() -> check("consecutiveDots1", "b..a@testexample.com").isEmail())
+        .isInstanceOf(ValidationException.class);
+    assertThatThrownBy(() -> check("consecutiveDots2", "a@testexample..com").isEmail())
+        .isInstanceOf(ValidationException.class);
 
     // ReDoS protection test - very long input should fail quickly
     String longEmail = "a".repeat(400) + "@example.com";
