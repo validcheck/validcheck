@@ -125,7 +125,7 @@ class StringValidatorTest {
   @Test
   void isEmail() {
     check("valid", "test@example.com").isEmail();
-    check("single", "a@b.co").isEmail();
+    check("singleLocalPart", "a@b.co").isEmail();
     check("long", "user.name+tag@example-domain.co.uk").isEmail();
 
     check("numberLocal", "user123@example.com").isEmail();
