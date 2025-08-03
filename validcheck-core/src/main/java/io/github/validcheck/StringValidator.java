@@ -21,7 +21,7 @@ import java.util.function.Predicate;
  */
 public class StringValidator extends ValueValidator<String> {
 
-  private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]+$";
+  private static final String EMAIL_REGEX = "^[\\p{L}\\p{N}._%+-]+@[\\p{L}\\p{N}.-]+\\.[\\p{L}]+$";
 
   StringValidator(ValidationContext context, String name, String value) {
     super(context, name, value);
@@ -320,8 +320,9 @@ public class StringValidator extends ValueValidator<String> {
   /**
    * Validates that the string is a valid email address format.
    *
-   * <p>This performs a basic email validation check that ensures the string contains an '@' symbol
-   * with at least one character before and after it. For production use, consider using a more
+   * <p>This performs basic email validation that supports Unicode characters and follows a
+   * simplified RFC 5322 pattern. It accepts international domain names and Unicode characters in
+   * the local part. For production use with complex requirements, consider using a more
    * comprehensive email validation library.
    *
    * <p>Example:

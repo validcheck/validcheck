@@ -128,6 +128,13 @@ class StringValidatorTest {
     check("simple", "a@b.c").isEmail();
     check("long", "user.name+tag@example-domain.co.uk").isEmail();
 
+    // Unicode support tests
+    check("unicode", "测试@example.com").isEmail();
+    check("unicodeDomain", "user@测试.com").isEmail();
+    check("fullUnicode", "用户@测试.中国").isEmail();
+    check("numberLocal", "user123@example.com").isEmail();
+    check("numberDomain", "user@example123.com").isEmail();
+
     assertThatThrownBy(() -> check("noAt", "testexample.com").isEmail())
         .hasMessage("'noAt' must be a valid email address, but it was 'testexample.com'");
     assertThatThrownBy(() -> check("startAt", "@example.com").isEmail())
