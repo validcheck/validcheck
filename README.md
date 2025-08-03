@@ -318,12 +318,12 @@ See a comprehensive example of validating complex nested configurations:
 // Demonstrates 3-level nested validation with batch validation,
 // custom messages, and oneOf validation
 public record ApplicationConfig(
-    String name,
-    String version,
-    String environment,
-    DatabaseConfig database,
-    ServerConfig server,
-    LoggingConfig logging) {
+        String name,
+        String version,
+        String environment,
+        DatabaseConfig database,
+        ServerConfig server,
+        LoggingConfig logging) {
 
   public ApplicationConfig {
     check("name", name).notNullOrEmpty().matches("[a-z-]+");
@@ -338,6 +338,13 @@ public record ApplicationConfig(
 
 **Full example:**
 [ServiceConfiguration.java](validcheck-examples/src/main/java/io/github/validcheck/example/config/ServiceConfiguration.java)
+
+## Performance
+
+ValidCheck delivers good performance comparing to traditional Bean Validation frameworks.
+
+See detailed [Performance Benchmark Report](validcheck-examples/BENCHMARK_REPORT.md) comparing
+ValidCheck vs Jakarta Bean Validation.
 
 ## Configuration
 
