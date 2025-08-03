@@ -15,9 +15,7 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,7 +41,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           # Configure git to use token authentication
           git config --global credential.helper store
-          echo "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
+          echo "https://x-access-token:${{ secrets.RELEASE_TOKEN }}@github.com" > ~/.git-credentials
 
       - name: Prepare release (with versions)
         if: ${{ github.event.inputs.release-version != '' && github.event.inputs.development-version != '' }}
@@ -89,4 +87,4 @@ jobs:
             --title "Release $LATEST_TAG" \
             --generate-notes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
