@@ -24,6 +24,7 @@ import java.util.List;
  * @since 1.0
  */
 public class ValidationException extends IllegalArgumentException {
+  /** The list of validation error messages. */
   private final List<String> errors;
 
   ValidationException(String message, List<String> errors) {

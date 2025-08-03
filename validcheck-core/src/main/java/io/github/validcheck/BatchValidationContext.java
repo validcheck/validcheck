@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A validation context that collects multiple validation errors before throwing.
+ *
+ * <p>Unlike the standard {@link ValidationContext} which throws immediately on the first error,
+ * this context accumulates all validation errors and throws them together when {@link #validate()}
+ * is called.
+ *
+ * @since 1.0
+ */
 public class BatchValidationContext extends ValidationContext {
   private final List<String> errors;
 

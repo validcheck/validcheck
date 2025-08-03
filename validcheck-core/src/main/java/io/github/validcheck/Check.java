@@ -350,6 +350,7 @@ public final class Check {
    * check(tags).minSize(1).maxSize(10);
    * }</pre>
    *
+   * @param <E> the element type of the Collection
    * @param <T> the Collection subtype
    * @param value the Collection value to validate (may be null)
    * @return a collection validator for the value
@@ -523,6 +524,7 @@ public final class Check {
    * check("tags", tags).minSize(1).maxSize(10);
    * }</pre>
    *
+   * @param <E> the element type of the Collection
    * @param <T> the Collection subtype
    * @param name the parameter name for error messages
    * @param value the Collection value to validate (may be null)
