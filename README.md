@@ -20,7 +20,7 @@ and much easier to debug.
 
 - **Zero dependencies** - No reflection, no external frameworks, minimal overhead
 - **Fluent API** - Type-safe method chaining:
-  `check("name", value).notNullOrEmpty().lengthBetween(2, 50)`
+  `check(value, "name").notNullOrEmpty().lengthBetween(2, 50)`
 - **Fail-fast or Batch** - Stop on first error or collect all validation errors
 - **Explicit validation** - Clear validation logic exactly where you need it
 
@@ -53,9 +53,9 @@ import static io.github.validcheck.Check.check;
 public record User(String name, String email, int age) {
 
   public User {
-    check("name", name).notNullOrEmpty().lengthBetween(2, 50);
-    check("email", email).notNullOrEmpty().isEmail();
-    check("age", age).isNonNegative().max(120);
+    check(name, "name").notNullOrEmpty().lengthBetween(2, 50);
+    check(email, "email").notNullOrEmpty().isEmail();
+    check(age, "age").isNonNegative().max(120);
   }
 
   // Usage example
@@ -75,11 +75,11 @@ public record CreateUserRequest(String name, String email, Integer age, String p
 
   public CreateUserRequest {
     var validation = batch();
-    validation.check("name", name).notNull().lengthBetween(1, 100);
-    validation.check("email", email).notNull().isEmail();
-    validation.check("age", age).notNull().isNonNegative().max(120);
+    validation.check(name, "name").notNull().lengthBetween(1, 100);
+    validation.check(email, "email").notNull().isEmail();
+    validation.check(age, "age").notNull().isNonNegative().max(120);
     validation
-        .check("phone", phone)
+        .check(phone, "phone")
         .when(
             phone != null,
             validator -> validator.satisfies(p -> p.matches("\\d{10}"), "must be 10 digits"));
@@ -114,7 +114,7 @@ public class ErrorHandlingExample {
 
   public static void main(String[] args) {
     try {
-      check("age", -5).isPositive();
+      check(-5, "age").isPositive();
     } catch (ValidationException e) {
       System.out.println(e.getMessage()); // "'age' must be positive, but it was -5"
       List<String> errors = e.errors();   // Single error in list
@@ -136,7 +136,7 @@ public class BatchErrorExample {
   public static void main(String[] args) {
     var validation = batch();
     validation.check("name", "").notEmpty();
-    validation.check("age", -1).isPositive();
+    validation.check(-1, "age").isPositive();
 
     try {
       validation.validate();
@@ -157,7 +157,7 @@ public class BatchErrorExample {
 
 ### Entry Points
 
-- `Check.check(String name, T value)` - Create validator for named parameter
+- `Check.check(T value, String name)` - Create validator for named parameter
 - `Check.check(T value)` - Create validator for unnamed parameter
 - `Check.batch()` - Create batch validation context
 - `Check.isTrue(boolean condition, String message)` - Assert condition
@@ -173,9 +173,9 @@ import static io.github.validcheck.Check.check;
 public class UserService {
 
   public void updateProfile(String userId, String email, Integer age) {
-    check("userId", userId).notNullOrEmpty().lengthBetween(3, 50);
-    check("email", email).notNullOrEmpty().isEmail();
-    check("age", age).when(age != null, validator -> validator.isNonNegative().max(120));
+    check(userId, "userId").notNullOrEmpty().lengthBetween(3, 50);
+    check(email, "email").notNullOrEmpty().isEmail();
+    check(age, "age").when(age != null, validator -> validator.isNonNegative().max(120));
 
     // Business logic here
     System.out.println("Profile updated for user: " + userId);
@@ -203,11 +203,11 @@ public class BankAccount {
   private final BigDecimal initialBalance;
 
   public BankAccount(String accountNumber, BigDecimal initialBalance) {
-    check("accountNumber", accountNumber)
+    check(accountNumber, "accountNumber")
         .notNull()
         .satisfies(a -> a.matches("\\d{8,12}"), "must be 8-12 digits");
 
-    check("initialBalance", initialBalance)
+    check(initialBalance, "initialBalance")
         .notNull()
         .satisfies(b -> b.compareTo(BigDecimal.ZERO) >= 0, "cannot be negative");
 
@@ -270,14 +270,14 @@ class Order {
 public class OrderProcessor {
 
   void processOrder(Order order) {
-    check("order", order)
+    check(order, "order")
         .notNull()
         .satisfies(o -> !o.getItems().isEmpty(), "must have at least one item")
         .satisfies(o -> o.getCustomer() != null, "must have a customer")
         .satisfies(o -> o.getTotal().compareTo(BigDecimal.ZERO) > 0, "total must be positive");
 
     // Additional business rules
-    check("order items", order.getItems())
+    check(order.getItems(), "order items")
         .satisfies(
             items -> items.stream().allMatch(item -> item.getQuantity() > 0),
             "all items must have positive quantity");
@@ -326,12 +326,12 @@ public record ApplicationConfig(
         LoggingConfig logging) {
 
   public ApplicationConfig {
-    check("name", name).notNullOrEmpty().matches("[a-z-]+");
-    check("version", version).notNull().matches("\\d+\\.\\d+\\.\\d+");
-    check("environment", environment).oneOf("development", "staging", "production");
-    check("database", database).notNull();
-    check("server", server).notNull();
-    check("logging", logging).notNull();
+    check(name, "name").notNullOrEmpty().matches("[a-z-]+");
+    check(version, "version").notNull().matches("\\d+\\.\\d+\\.\\d+");
+    check(environment, "environment").oneOf("development", "staging", "production");
+    check(database, "database").notNull();
+    check(server, "server").notNull();
+    check(logging, "logging").notNull();
   }
 }
 ```
@@ -369,12 +369,12 @@ public class ConfigurationExample {
     // Use configured validation
     var fastCheck = withConfig(config);
     String password = "secret123";
-    fastCheck.check("password", password).notNullOrEmpty();
+    fastCheck.check(password, "password").notNullOrEmpty();
 
     // Or create batch with custom config
     var validation = withConfig(config).batch();
     String secret = "topsecret";
-    validation.check("secret", secret).notNull();
+    validation.check(secret, "secret").notNull();
     validation.validate();
 
     System.out.println("Configuration example completed successfully");

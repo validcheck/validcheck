@@ -35,14 +35,14 @@ class Order {
 public class OrderProcessor {
 
   void processOrder(Order order) {
-    check("order", order)
+    check(order, "order")
         .notNull()
         .satisfies(o -> !o.getItems().isEmpty(), "must have at least one item")
         .satisfies(o -> o.getCustomer() != null, "must have a customer")
         .satisfies(o -> o.getTotal().compareTo(BigDecimal.ZERO) > 0, "total must be positive");
 
     // Additional business rules
-    check("order items", order.getItems())
+    check(order.getItems(), "order items")
         .satisfies(
             items -> items.stream().allMatch(item -> item.getQuantity() > 0),
             "all items must have positive quantity");

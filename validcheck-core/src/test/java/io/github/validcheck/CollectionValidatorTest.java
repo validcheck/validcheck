@@ -14,80 +14,80 @@ class CollectionValidatorTest {
 
   @Test
   void notNull() {
-    Check.check("list", List.of("a", "b")).notNull();
+    Check.check(List.of("a", "b"), "list").notNull();
 
-    assertThatThrownBy(() -> check("list", (Collection<String>) null).notNull())
+    assertThatThrownBy(() -> check((Collection<String>) null, "list").notNull())
         .hasMessage("'list' must not be null");
   }
 
   @Test
   void isNull() {
-    check("list", (Collection<String>) null).isNull();
+    check((Collection<String>) null, "list").isNull();
 
-    assertThatThrownBy(() -> check("list", List.of("a")).isNull())
+    assertThatThrownBy(() -> check(List.of("a"), "list").isNull())
         .hasMessage("'list' must be null, but it was [a]");
   }
 
   @Test
   void empty() {
-    check("list", Collections.emptyList()).empty();
+    check(Collections.emptyList(), "list").empty();
     check(Collections.emptyList()).empty();
 
-    assertThatThrownBy(() -> check("list", List.of("a")).empty())
+    assertThatThrownBy(() -> check(List.of("a"), "list").empty())
         .hasMessage("'list' must be empty, but it was [a]");
   }
 
   @Test
   void notEmpty() {
-    check("list", List.of("a", "b")).notEmpty();
+    check(List.of("a", "b"), "list").notEmpty();
 
-    assertThatThrownBy(() -> check("list", Collections.emptyList()).notEmpty())
+    assertThatThrownBy(() -> check(Collections.emptyList(), "list").notEmpty())
         .hasMessage("'list' must not be empty");
 
-    assertThatThrownBy(() -> check("list", (Collection<String>) null).notEmpty())
+    assertThatThrownBy(() -> check((Collection<String>) null, "list").notEmpty())
         .hasMessage("'list' must not be empty");
   }
 
   @Test
   void size() {
-    check("list", List.of("a", "b")).size(2);
+    check(List.of("a", "b"), "list").size(2);
 
-    assertThatThrownBy(() -> check("list", List.of("a")).size(2))
+    assertThatThrownBy(() -> check(List.of("a"), "list").size(2))
         .hasMessage("'list' must have size 2, but it was [a]");
   }
 
   @Test
   void minSize() {
-    check("list", List.of("a", "b", "c")).minSize(2);
-    check("exact", List.of("a", "b")).minSize(2);
+    check(List.of("a", "b", "c"), "list").minSize(2);
+    check(List.of("a", "b"), "exact").minSize(2);
 
-    assertThatThrownBy(() -> check("small", List.of("a")).minSize(3))
+    assertThatThrownBy(() -> check(List.of("a"), "small").minSize(3))
         .hasMessage("'small' must have at least 3 elements, but it was [a]");
-    assertThatThrownBy(() -> check("empty", Collections.emptyList()).minSize(1))
+    assertThatThrownBy(() -> check(Collections.emptyList(), "empty").minSize(1))
         .hasMessage("'empty' must have at least 1 elements, but it was []");
   }
 
   @Test
   void maxSize() {
-    check("list", List.of("a")).maxSize(3);
-    check("exact", List.of("a", "b")).maxSize(2);
-    check("empty", Collections.emptyList()).maxSize(0);
+    check(List.of("a"), "list").maxSize(3);
+    check(List.of("a", "b"), "exact").maxSize(2);
+    check(Collections.emptyList(), "empty").maxSize(0);
 
-    assertThatThrownBy(() -> check("large", List.of("a", "b", "c", "d")).maxSize(2))
+    assertThatThrownBy(() -> check(List.of("a", "b", "c", "d"), "large").maxSize(2))
         .hasMessage("'large' must have at most 2 elements, but it was [a, b, c, d]");
   }
 
   @Test
   void sizeBetween() {
-    check("valid", List.of("a", "b", "c")).sizeBetween(2, 5);
-    check("minimum", List.of("a", "b")).sizeBetween(2, 5);
-    check("maximum", List.of("a", "b", "c", "d", "e")).sizeBetween(2, 5);
-    check("exact", List.of("a", "b", "c")).sizeBetween(3, 3);
+    check(List.of("a", "b", "c"), "valid").sizeBetween(2, 5);
+    check(List.of("a", "b"), "minimum").sizeBetween(2, 5);
+    check(List.of("a", "b", "c", "d", "e"), "maximum").sizeBetween(2, 5);
+    check(List.of("a", "b", "c"), "exact").sizeBetween(3, 3);
 
-    assertThatThrownBy(() -> check("small", List.of("a")).sizeBetween(3, 5))
+    assertThatThrownBy(() -> check(List.of("a"), "small").sizeBetween(3, 5))
         .hasMessage("'small' must have between 3 and 5 elements, but it was [a]");
     assertThatThrownBy(
-            () -> check("large", List.of("a", "b", "c", "d", "e", "f")).sizeBetween(2, 4))
+            () -> check(List.of("a", "b", "c", "d", "e", "f"), "large").sizeBetween(2, 4))
         .hasMessage("'large' must have between 2 and 4 elements, but it was [a, b, c, d, e, f]");
   }
 
@@ -102,11 +102,11 @@ class CollectionValidatorTest {
 
   @Test
   void satisfies() {
-    check("valid", List.of("a", "a"))
+    check(List.of("a", "a"), "valid")
         .satisfies(l -> l.stream().allMatch(s -> s.equals("a")), "Error 1");
-    batch().check("valid", List.of(1, 2)).satisfies(l -> l.contains(1), "Error 2");
+    batch().check(List.of(1, 2), "valid").satisfies(l -> l.contains(1), "Error 2");
     Check.withConfig(ValidationConfig.DEFAULT)
-        .check("valid", List.of(1, 2))
+        .check(List.of(1, 2), "valid")
         .satisfies(l -> l.contains(2), "Error 2");
   }
 }

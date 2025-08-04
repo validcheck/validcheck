@@ -18,15 +18,15 @@ public record OrderRecord(
   public OrderRecord {
     var validation = CHECK.batch();
 
-    validation.check("orderId", orderId).notNullOrEmpty().matches("ORD-\\d{8}");
+    validation.check(orderId, "orderId").notNullOrEmpty().matches("ORD-\\d{8}");
 
     validation
-        .check("orderDate", orderDate)
+        .check(orderDate, "orderDate")
         .notNull()
         .satisfies(date -> !date.isAfter(LocalDateTime.now()), "cannot be in the future");
 
     validation
-        .check("totalAmount", totalAmount)
+        .check(totalAmount, "totalAmount")
         .notNull()
         .satisfies(amount -> amount.compareTo(new BigDecimal("0.01")) >= 0, "must be at least 0.01")
         .satisfies(
@@ -34,20 +34,20 @@ public record OrderRecord(
             "cannot exceed 999999.99");
 
     validation
-        .check("status", status)
+        .check(status, "status")
         .notNullOrEmpty()
         .oneOf("PENDING", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED");
 
-    validation.check("shippingAddress", shippingAddress).notNull();
+    validation.check(shippingAddress, "shippingAddress").notNull();
 
     validation
-        .check("items", items)
+        .check(items, "items")
         .notNull()
         .satisfies(itemList -> !itemList.isEmpty(), "must have at least one item")
         .satisfies(itemList -> itemList.size() <= 50, "cannot have more than 50 items");
 
     if (notes != null) {
-      validation.check("notes", notes).maxLength(500);
+      validation.check(notes, "notes").maxLength(500);
     }
 
     validation.validate();

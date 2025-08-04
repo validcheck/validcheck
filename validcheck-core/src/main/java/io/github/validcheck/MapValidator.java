@@ -14,10 +14,10 @@ import java.util.function.Predicate;
  * <p>Example usage:
  *
  * <pre>{@code
- * check("config", config).notNull().notEmpty();
- * check("headers", headers).minSize(1).maxSize(10);
- * check("properties", properties).sizeBetween(5, 100);
- * check("metadata", metadata).containsKey("version");
+ * check(config, "config").notNull().notEmpty();
+ * check(headers, "headers").minSize(1).maxSize(10);
+ * check(properties, "properties").sizeBetween(5, 100);
+ * check(metadata, "metadata").containsKey("version");
  * }</pre>
  *
  * @param <T> the map type (HashMap, TreeMap, etc.)
@@ -25,8 +25,8 @@ import java.util.function.Predicate;
  */
 public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
 
-  MapValidator(ValidationContext context, String name, T value) {
-    super(context, name, value);
+  MapValidator(ValidationContext context, T value, String name) {
+    super(context, value, name);
   }
 
   @Override
@@ -63,7 +63,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config)
+   * check(config, "config")
    *   .whenMap(isRequired, validator -> validator.notEmpty());
    * }</pre>
    *
@@ -87,7 +87,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("errors", errors).empty();
+   * check(errors, "errors").empty();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -106,7 +106,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config).notEmpty();
+   * check(config, "config").notEmpty();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -124,7 +124,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("coordinates", coordinates).size(2);
+   * check(coordinates, "coordinates").size(2);
    * }</pre>
    *
    * @param expected the exact required size
@@ -144,7 +144,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config).minSize(1);
+   * check(config, "config").minSize(1);
    * }</pre>
    *
    * @param minimum the minimum required number of key-value pairs (inclusive)
@@ -166,7 +166,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("headers", headers).maxSize(10);
+   * check(headers, "headers").maxSize(10);
    * }</pre>
    *
    * @param maximum the maximum allowed number of key-value pairs (inclusive)
@@ -188,7 +188,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("properties", properties).sizeBetween(5, 100);
+   * check(properties, "properties").sizeBetween(5, 100);
    * }</pre>
    *
    * @param minimum the minimum required number of key-value pairs (inclusive)
@@ -211,8 +211,8 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config).containsKey("version");
-   * check("headers", headers).containsKey("Content-Type");
+   * check(config, "config").containsKey("version");
+   * check(headers, "headers").containsKey("Content-Type");
    * }</pre>
    *
    * @param key the key that must be present in the map
@@ -232,7 +232,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config).doesNotContainKey("password");
+   * check(config, "config").doesNotContainKey("password");
    * }</pre>
    *
    * @param key the key that must not be present in the map
@@ -252,7 +252,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("statuses", statuses).containsValue("ACTIVE");
+   * check(statuses, "statuses").containsValue("ACTIVE");
    * }</pre>
    *
    * @param value the value that must be present in the map
@@ -272,7 +272,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("statuses", statuses).doesNotContainValue("DELETED");
+   * check(statuses, "statuses").doesNotContainValue("DELETED");
    * }</pre>
    *
    * @param value the value that must not be present in the map
@@ -294,7 +294,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config).containsAllKeys("host", "port", "database");
+   * check(config, "config").containsAllKeys("host", "port", "database");
    * }</pre>
    *
    * @param keys the keys that must all be present in the map

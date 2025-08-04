@@ -7,9 +7,9 @@ public class RecordExample {
   public record User(String name, String email, int age) {
 
     public User {
-      check("name", name).notNullOrEmpty().lengthBetween(2, 50);
-      check("email", email).notNullOrEmpty().isEmail();
-      check("age", age).isNonNegative().max(120);
+      check(name, "name").notNullOrEmpty().lengthBetween(2, 50);
+      check(email, "email").notNullOrEmpty().isEmail();
+      check(age, "age").isNonNegative().max(120);
     }
   }
 

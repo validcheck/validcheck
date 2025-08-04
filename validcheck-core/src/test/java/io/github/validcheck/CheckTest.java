@@ -18,7 +18,7 @@ class CheckTest {
     isTrue(true, "should not fail");
     assertThatThrownBy(() -> isTrue(false, "custom error")).hasMessage("parameter custom error");
     assertThatThrownBy(() -> Check.fail("Error")).hasMessage("Error");
-    assertThatThrownBy(() -> Check.check("field", "").withMessage("Custom").isNull())
+    assertThatThrownBy(() -> Check.check("", "field").withMessage("Custom").isNull())
         .hasMessage("Custom");
   }
 
@@ -38,9 +38,9 @@ class CheckTest {
   @Test
   void batchValidationSuccess() {
     var batch = batch();
-    batch.check("name", "John").notNull().notEmpty();
-    batch.check("age", 25).isPositive();
-    batch.check("email", "john@example.com").notNull().matches(".*@.*");
+    batch.check("John", "name").notNull().notEmpty();
+    batch.check(25, "age").isPositive();
+    batch.check("john@example.com", "email").notNull().matches(".*@.*");
 
     // Should not throw when all validations pass
     batch.validate();
@@ -50,9 +50,9 @@ class CheckTest {
   @Test
   void batchValidationSingleError() {
     var batch = batch();
-    batch.check("name", "John").notNull();
-    batch.check("age", -5).isPositive(); // This will fail
-    batch.check("email", "john@example.com").notNull();
+    batch.check("John", "name").notNull();
+    batch.check(-5, "age").isPositive(); // This will fail
+    batch.check("john@example.com", "email").notNull();
 
     assertThat(batch.hasErrors()).isTrue();
     assertThatThrownBy(batch::validate)
@@ -64,9 +64,9 @@ class CheckTest {
   @Test
   void batchValidationMultipleErrors() {
     var batch = batch();
-    batch.check("name", (String) null).notNull(); // Error 1
-    batch.check("age", -5).isPositive(); // Error 2
-    batch.check("email", "").notEmpty(); // Error 3
+    batch.check((String) null, "name").notNull(); // Error 1
+    batch.check(-5, "age").isPositive(); // Error 2
+    batch.check("", "email").notEmpty(); // Error 3
 
     assertThat(batch.hasErrors()).isTrue();
     assertThatThrownBy(batch::validate)
@@ -96,15 +96,15 @@ class CheckTest {
   @Test
   void batchIncludeOtherBatch() {
     var batch1 = batch();
-    batch1.check("name", (String) null).notNull();
+    batch1.check((String) null, "name").notNull();
 
     var batch2 = batch();
-    batch2.check("age", -5).isPositive();
+    batch2.check(-5, "age").isPositive();
 
     var mainBatch = batch();
     mainBatch.include(batch1);
     mainBatch.include(batch2);
-    mainBatch.check("email", "").notEmpty();
+    mainBatch.check("", "email").notEmpty();
 
     assertThatThrownBy(mainBatch::validate)
         .hasMessageContaining("Validation failed with 3 error(s)")
@@ -118,8 +118,8 @@ class CheckTest {
     // Test with includeActualValue = true (default behavior)
     var configWithValues = new ValidationConfig(true, true, null);
     var batchWithValues = withConfig(configWithValues).batch();
-    batchWithValues.check("number", -5).isPositive();
-    batchWithValues.check("text", "short").minLength(10);
+    batchWithValues.check(-5, "number").isPositive();
+    batchWithValues.check("short", "text").minLength(10);
 
     assertThatThrownBy(batchWithValues::validate)
         .hasMessageContaining("'number' must be positive, but it was -5") // Shows actual value
@@ -129,8 +129,8 @@ class CheckTest {
     // Test with includeActualValue = false
     var configNoValues = new ValidationConfig(true, false, null);
     var batchNoValues = withConfig(configNoValues).batch();
-    batchNoValues.check("number", -5).isPositive();
-    batchNoValues.check("text", "short").minLength(10);
+    batchNoValues.check(-5, "number").isPositive();
+    batchNoValues.check("short", "text").minLength(10);
 
     assertThatThrownBy(batchNoValues::validate)
         .hasMessageContaining("'number' must be positive") // No actual value shown
@@ -144,7 +144,7 @@ class CheckTest {
     // Test with fillStackTrace = false
     var configNoStack = new ValidationConfig(false, true, 2);
     var batchNoStack = withConfig(configNoStack).batch();
-    batchNoStack.check("value", (String) null).notNull();
+    batchNoStack.check((String) null, "value").notNull();
 
     var exception =
         assertThatThrownBy(batchNoStack::validate).isInstanceOf(ValidationException.class);
@@ -168,10 +168,10 @@ class CheckTest {
   @Test
   void checkGenericMethods() {
     // Test generic check methods
-    check("name", "value").notNull();
+    check("value", "name").notNull();
     check("value").notNull();
 
-    assertThatThrownBy(() -> check("name", (String) null).notNull())
+    assertThatThrownBy(() -> check((String) null, "name").notNull())
         .hasMessage("'name' must not be null");
     assertThatThrownBy(() -> check((String) null).notNull())
         .hasMessage("parameter must not be null");
@@ -180,26 +180,26 @@ class CheckTest {
   @Test
   void checkStringMethods() {
     // Test that string-specific methods are available
-    check("text", "hello").notEmpty().hasText().minLength(3);
+    check("hello", "text").notEmpty().hasText().minLength(3);
 
-    assertThat(check("text", "hello")).isInstanceOf(StringValidator.class);
+    assertThat(check("hello", "text")).isInstanceOf(StringValidator.class);
   }
 
   @Test
   void checkNumericMethods() {
     // Test all numeric type overloads
-    assertThat(check("int", 5)).isInstanceOf(NumericValidator.class);
-    assertThat(check("integer", Integer.valueOf(5))).isInstanceOf(NumericValidator.class);
-    assertThat(check("long", 5L)).isInstanceOf(NumericValidator.class);
-    assertThat(check("longObj", Long.valueOf(5L))).isInstanceOf(NumericValidator.class);
-    assertThat(check("double", 5.0)).isInstanceOf(NumericValidator.class);
-    assertThat(check("doubleObj", Double.valueOf(5.0))).isInstanceOf(NumericValidator.class);
-    assertThat(check("float", 5.0f)).isInstanceOf(NumericValidator.class);
-    assertThat(check("floatObj", Float.valueOf(5.0f))).isInstanceOf(NumericValidator.class);
-    assertThat(check("bigDecimal", new BigDecimal("5"))).isInstanceOf(NumericValidator.class);
+    assertThat(check(5, "int")).isInstanceOf(NumericValidator.class);
+    assertThat(check(Integer.valueOf(5), "integer")).isInstanceOf(NumericValidator.class);
+    assertThat(check(5L, "long")).isInstanceOf(NumericValidator.class);
+    assertThat(check(Long.valueOf(5L), "longObj")).isInstanceOf(NumericValidator.class);
+    assertThat(check(5.0, "double")).isInstanceOf(NumericValidator.class);
+    assertThat(check(Double.valueOf(5.0), "doubleObj")).isInstanceOf(NumericValidator.class);
+    assertThat(check(5.0f, "float")).isInstanceOf(NumericValidator.class);
+    assertThat(check(Float.valueOf(5.0f), "floatObj")).isInstanceOf(NumericValidator.class);
+    assertThat(check(new BigDecimal("5"), "bigDecimal")).isInstanceOf(NumericValidator.class);
 
     // Test that numeric-specific methods are available
-    check("positive", 5).isPositive().min(1).max(10);
+    check(5, "positive").isPositive().min(1).max(10);
   }
 
   @Test
@@ -222,13 +222,13 @@ class CheckTest {
   @Test
   void methodChaining() {
     // Test that all methods return validators that can be chained
-    check("complex", "test@example.com")
+    check("test@example.com", "complex")
         .notNull()
         .notEmpty()
         .hasText()
         .minLength(5)
         .matches(".*@.*");
 
-    check("number", 42).notNull().isPositive().min(1).max(100).between(40, 50);
+    check(42, "number").notNull().isPositive().min(1).max(100).between(40, 50);
   }
 }

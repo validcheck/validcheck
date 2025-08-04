@@ -36,8 +36,8 @@ public class BatchValidationContext extends ValidationContext {
    *
    * <pre>{@code
    * var validation = batch();
-   * validation.check("name", name).notNull().notEmpty();
-   * validation.check("age", age).isPositive().max(120);
+   * validation.check(name, "name").notNull().notEmpty();
+   * validation.check(age, "age").isPositive().max(120);
    * validation.validate(); // Throws if any validation failed
    * }</pre>
    *
@@ -60,7 +60,7 @@ public class BatchValidationContext extends ValidationContext {
    * <pre>{@code
    * var mainValidation = batch();
    * var nestedValidation = batch();
-   * nestedValidation.check("field", value).notNull();
+   * nestedValidation.check(value, "field").notNull();
    * mainValidation.include(nestedValidation);
    * mainValidation.validate(); // Will include errors from both contexts
    * }</pre>
@@ -90,7 +90,7 @@ public class BatchValidationContext extends ValidationContext {
    *
    * <pre>{@code
    * var validation = batch();
-   * validation.check("name", name).notNull();
+   * validation.check(name, "name").notNull();
    * if (validation.hasErrors()) {
    *   // Handle errors without throwing
    *   return;

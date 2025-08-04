@@ -18,28 +18,28 @@ public record UserRecord(
   public UserRecord {
     var validation = CHECK.batch();
 
-    validation.check("firstName", firstName).notNullOrEmpty().lengthBetween(1, 50);
+    validation.check(firstName, "firstName").notNullOrEmpty().lengthBetween(1, 50);
 
-    validation.check("lastName", lastName).notNullOrEmpty().lengthBetween(1, 50);
+    validation.check(lastName, "lastName").notNullOrEmpty().lengthBetween(1, 50);
 
-    validation.check("email", email).notNullOrEmpty().isEmail();
+    validation.check(email, "email").notNullOrEmpty().isEmail();
 
-    validation.check("age", age).notNull().isNonNegative().min(18).max(120);
+    validation.check(age, "age").notNull().isNonNegative().min(18).max(120);
 
     if (birthDate != null) {
       validation
-          .check("birthDate", birthDate)
+          .check(birthDate, "birthDate")
           .satisfies(date -> date.isBefore(LocalDate.now()), "must be in the past");
     }
 
     if (phone != null) {
-      validation.check("phone", phone).matches("\\d{10}");
+      validation.check(phone, "phone").matches("\\d{10}");
     }
 
-    validation.check("address", address).notNull();
+    validation.check(address, "address").notNull();
 
     validation
-        .check("orders", orders)
+        .check(orders, "orders")
         .notNull()
         .satisfies(orderList -> !orderList.isEmpty(), "must have at least one order")
         .satisfies(orderList -> orderList.size() <= 100, "cannot have more than 100 orders");

@@ -14,7 +14,7 @@ import java.util.List;
  *
  * <pre>{@code
  * try {
- *   check("age", -5).isPositive();
+ *   check(-5, "age").isPositive();
  * } catch (ValidationException e) {
  *   System.out.println(e.getMessage()); // "'age' must be positive, but it was -5"
  *   List<String> errors = e.errors();   // ["'age' must be positive, but it was -5"]
@@ -43,8 +43,8 @@ public class ValidationException extends IllegalArgumentException {
    * <pre>{@code
    * try {
    *   var validation = batch();
-   *   validation.check("name", "").notEmpty();
-   *   validation.check("age", -1).isPositive();
+   *   validation.check("", "name").notEmpty();
+   *   validation.check(-1, "age").isPositive();
    *   validation.validate();
    * } catch (ValidationException e) {
    *   List<String> allErrors = e.errors();

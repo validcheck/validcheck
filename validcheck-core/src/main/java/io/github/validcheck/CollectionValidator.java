@@ -13,9 +13,9 @@ import java.util.function.Predicate;
  * <p>Example usage:
  *
  * <pre>{@code
- * check("items", items).notNull().notEmpty();
- * check("tags", tags).minSize(1).maxSize(10);
- * check("results", results).sizeBetween(5, 100);
+ * check(items, "items").notNull().notEmpty();
+ * check(tags, "tags").minSize(1).maxSize(10);
+ * check(results, "results").sizeBetween(5, 100);
  * }</pre>
  *
  * @param <T> the collection type (List, Set, etc.)
@@ -23,8 +23,8 @@ import java.util.function.Predicate;
  */
 public class CollectionValidator<T extends Collection<?>> extends ValueValidator<T> {
 
-  CollectionValidator(ValidationContext context, String name, T value) {
-    super(context, name, value);
+  CollectionValidator(ValidationContext context, T value, String name) {
+    super(context, value, name);
   }
 
   @Override
@@ -61,7 +61,7 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
    * <p>Example:
    *
    * <pre>{@code
-   * check("items", items)
+   * check(items, "items")
    *   .whenCollection(isRequired, validator -> validator.notEmpty());
    * }</pre>
    *
@@ -86,7 +86,7 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
    * <p>Example:
    *
    * <pre>{@code
-   * check("errors", errors).empty();
+   * check(errors, "errors").empty();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -105,7 +105,7 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
    * <p>Example:
    *
    * <pre>{@code
-   * check("items", items).notEmpty();
+   * check(items, "items").notEmpty();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -123,7 +123,7 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
    * <p>Example:
    *
    * <pre>{@code
-   * check("coordinates", coordinates).size(2);
+   * check(coordinates, "coordinates").size(2);
    * }</pre>
    *
    * @param expected the exact required size
@@ -143,7 +143,7 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
    * <p>Example:
    *
    * <pre>{@code
-   * check("items", items).minSize(1);
+   * check(items, "items").minSize(1);
    * }</pre>
    *
    * @param minimum the minimum required number of elements (inclusive)
@@ -165,7 +165,7 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
    * <p>Example:
    *
    * <pre>{@code
-   * check("tags", tags).maxSize(10);
+   * check(tags, "tags").maxSize(10);
    * }</pre>
    *
    * @param maximum the maximum allowed number of elements (inclusive)
@@ -187,7 +187,7 @@ public class CollectionValidator<T extends Collection<?>> extends ValueValidator
    * <p>Example:
    *
    * <pre>{@code
-   * check("results", results).sizeBetween(5, 100);
+   * check(results, "results").sizeBetween(5, 100);
    * }</pre>
    *
    * @param minimum the minimum required number of elements (inclusive)

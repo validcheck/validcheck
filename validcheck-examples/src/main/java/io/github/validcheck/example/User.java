@@ -5,9 +5,9 @@ import static io.github.validcheck.Check.check;
 public record User(String name, String email, int age) {
 
   public User {
-    check("name", name).notNull().lengthBetween(2, 50);
-    check("email", email).notNull().isEmail();
-    check("age", age).isNonNegative().max(120);
+    check(name, "name").notNull().lengthBetween(2, 50);
+    check(email, "email").notNull().isEmail();
+    check(age, "age").isNonNegative().max(120);
   }
 
   // Usage example

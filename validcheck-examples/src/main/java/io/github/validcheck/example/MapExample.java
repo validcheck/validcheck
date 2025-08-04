@@ -35,16 +35,16 @@ public class MapExample {
     var headers = Map.of("Content-Type", "application/json", "Authorization", "Bearer token123");
 
     // Validate map is not null and not empty
-    check("headers", headers).notNull().notEmpty();
+    check(headers, "headers").notNull().notEmpty();
 
     // Validate map size
-    check("headers", headers).size(2);
+    check(headers, "headers").size(2);
 
     // Validate key presence
-    check("headers", headers).containsKey("Content-Type").containsKey("Authorization");
+    check(headers, "headers").containsKey("Content-Type").containsKey("Authorization");
 
     // Validate value presence
-    check("headers", headers).containsValue("application/json");
+    check(headers, "headers").containsValue("application/json");
 
     System.out.println("✓ Headers validation passed\n");
   }
@@ -59,10 +59,10 @@ public class MapExample {
     config.put("username", "admin");
 
     // Validate configuration completeness
-    check("config", config).notNull().minSize(3).containsAllKeys("host", "port", "database");
+    check(config, "config").notNull().minSize(3).containsAllKeys("host", "port", "database");
 
     // Validate no sensitive data in keys
-    check("config", config).doesNotContainKey("password");
+    check(config, "config").doesNotContainKey("password");
 
     System.out.println("✓ Configuration validation passed\n");
   }
@@ -73,10 +73,10 @@ public class MapExample {
     var metadata = Map.of("version", "1.0", "author", "user");
 
     var validation = batch();
-    validation.check("metadata", metadata).notNull().notEmpty();
-    validation.check("metadata", metadata).minSize(2).maxSize(10);
-    validation.check("metadata", metadata).containsKey("version");
-    validation.check("metadata", metadata).containsValue("1.0");
+    validation.check(metadata, "metadata").notNull().notEmpty();
+    validation.check(metadata, "metadata").minSize(2).maxSize(10);
+    validation.check(metadata, "metadata").containsKey("version");
+    validation.check(metadata, "metadata").containsValue("1.0");
 
     // This will pass since all validations are satisfied
     validation.validate();

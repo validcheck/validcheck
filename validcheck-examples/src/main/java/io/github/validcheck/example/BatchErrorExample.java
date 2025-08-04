@@ -9,8 +9,8 @@ public class BatchErrorExample {
 
   public static void main(String[] args) {
     var validation = batch();
-    validation.check("name", "").notEmpty();
-    validation.check("age", -1).isPositive();
+    validation.check("", "name").notEmpty();
+    validation.check(-1, "age").isPositive();
 
     try {
       validation.validate();

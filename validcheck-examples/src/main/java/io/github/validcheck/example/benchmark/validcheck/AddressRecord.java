@@ -8,15 +8,15 @@ public record AddressRecord(
   public AddressRecord {
     var validation = CHECK.batch();
 
-    validation.check("street", street).notNullOrEmpty().lengthBetween(5, 100);
+    validation.check(street, "street").notNullOrEmpty().lengthBetween(5, 100);
 
-    validation.check("city", city).notNullOrEmpty().lengthBetween(2, 50);
+    validation.check(city, "city").notNullOrEmpty().lengthBetween(2, 50);
 
-    validation.check("state", state).notNullOrEmpty().length(2);
+    validation.check(state, "state").notNullOrEmpty().length(2);
 
-    validation.check("zipCode", zipCode).notNullOrEmpty().matches("\\d{5}(-\\d{4})?");
+    validation.check(zipCode, "zipCode").notNullOrEmpty().matches("\\d{5}(-\\d{4})?");
 
-    validation.check("country", country).notNullOrEmpty().lengthBetween(2, 50);
+    validation.check(country, "country").notNullOrEmpty().lengthBetween(2, 50);
 
     validation.validate();
   }
