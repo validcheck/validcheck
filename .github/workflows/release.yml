@@ -66,6 +66,16 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
+      - name: Prepare release (with development version only)
+        if: ${{ github.event.inputs.release-version == '' && github.event.inputs.development-version != '' }}
+        run: |
+          mvn release:prepare \
+            -DdevelopmentVersion=${{ github.event.inputs.development-version }} \
+            --batch-mode \
+            --no-transfer-progress
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
       - name: Prepare release (automatic versions)
         if: ${{ github.event.inputs.release-version == '' && github.event.inputs.development-version == '' }}
         run: |
