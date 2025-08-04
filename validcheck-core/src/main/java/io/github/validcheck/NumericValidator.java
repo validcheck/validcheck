@@ -22,8 +22,8 @@ import java.util.function.Predicate;
  */
 public class NumericValidator<T extends Number> extends ValueValidator<T> {
 
-  NumericValidator(ValidationContext context, String name, T value) {
-    super(context, name, value);
+  NumericValidator(ValidationContext context, T value, String name) {
+    super(context, value, name);
   }
 
   @Override

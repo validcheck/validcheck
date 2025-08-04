@@ -32,7 +32,7 @@ public class ValueValidator<T> {
 
   private String customMessage;
 
-  ValueValidator(ValidationContext context, String name, T value) {
+  ValueValidator(ValidationContext context, T value, String name) {
     this.context = context;
     this.name = name;
     this.value = value;

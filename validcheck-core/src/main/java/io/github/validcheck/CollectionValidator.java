@@ -23,8 +23,8 @@ import java.util.function.Predicate;
  */
 public class CollectionValidator<T extends Collection<?>> extends ValueValidator<T> {
 
-  CollectionValidator(ValidationContext context, String name, T value) {
-    super(context, name, value);
+  CollectionValidator(ValidationContext context, T value, String name) {
+    super(context, value, name);
   }
 
   @Override

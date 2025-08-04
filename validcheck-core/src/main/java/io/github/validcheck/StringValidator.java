@@ -25,8 +25,8 @@ public class StringValidator extends ValueValidator<String> {
       "^[a-zA-Z0-9_%+-]+(?:\\.[a-zA-Z0-9_%+-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$";
   private static final int MAX_EMAIL_LENGTH = 320; // RFC 5321 limit
 
-  StringValidator(ValidationContext context, String name, String value) {
-    super(context, name, value);
+  StringValidator(ValidationContext context, String value, String name) {
+    super(context, value, name);
   }
 
   @Override

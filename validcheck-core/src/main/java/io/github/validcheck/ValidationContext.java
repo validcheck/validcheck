@@ -71,7 +71,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public StringValidator check(String value) {
-    return new StringValidator(this, null, value);
+    return new StringValidator(this, value, null);
   }
 
   /**
@@ -96,7 +96,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Integer> check(Integer value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -121,7 +121,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Integer> check(int value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -132,7 +132,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Long> check(Long value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -143,7 +143,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Long> check(long value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -154,7 +154,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Double> check(Double value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -165,7 +165,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Double> check(double value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -176,7 +176,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Float> check(Float value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -187,7 +187,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Float> check(float value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -213,7 +213,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <T extends Number> NumericValidator<T> check(T value) {
-    return new NumericValidator<>(this, null, value);
+    return new NumericValidator<>(this, value, null);
   }
 
   /**
@@ -240,7 +240,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <E, T extends Collection<E>> CollectionValidator<T> check(T value) {
-    return new CollectionValidator<>(this, null, value);
+    return new CollectionValidator<>(this, value, null);
   }
 
   /**
@@ -266,7 +266,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <T> ValueValidator<T> check(T value, String name) {
-    return new ValueValidator<>(this, name, value);
+    return new ValueValidator<>(this, value, name);
   }
 
   /**
@@ -292,7 +292,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public StringValidator check(String value, String name) {
-    return new StringValidator(this, name, value);
+    return new StringValidator(this, value, name);
   }
 
   /**
@@ -308,7 +308,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Integer> check(Integer value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -334,7 +334,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Integer> check(int value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -346,7 +346,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Long> check(Long value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -358,7 +358,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Long> check(long value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -370,7 +370,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Double> check(Double value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -382,7 +382,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Double> check(double value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -394,7 +394,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Float> check(Float value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -406,7 +406,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public NumericValidator<Float> check(float value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -433,7 +433,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <T extends Number> NumericValidator<T> check(T value, String name) {
-    return new NumericValidator<>(this, name, value);
+    return new NumericValidator<>(this, value, name);
   }
 
   /**
@@ -461,7 +461,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <E, T extends Collection<E>> CollectionValidator<T> check(T value, String name) {
-    return new CollectionValidator<>(this, name, value);
+    return new CollectionValidator<>(this, value, name);
   }
 
   /**
@@ -485,7 +485,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <K, V, T extends Map<K, V>> MapValidator<T> check(T value) {
-    return new MapValidator<>(this, null, value);
+    return new MapValidator<>(this, value, null);
   }
 
   /**
@@ -510,7 +510,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <K, V, T extends Map<K, V>> MapValidator<T> check(T value, String name) {
-    return new MapValidator<>(this, name, value);
+    return new MapValidator<>(this, value, name);
   }
 
   /**

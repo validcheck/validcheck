@@ -25,8 +25,8 @@ import java.util.function.Predicate;
  */
 public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
 
-  MapValidator(ValidationContext context, String name, T value) {
-    super(context, name, value);
+  MapValidator(ValidationContext context, T value, String name) {
+    super(context, value, name);
   }
 
   @Override
