@@ -1,7 +1,9 @@
 package io.github.validcheck;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Main entry point for validation operations in Java methods, records and other classes.
@@ -58,6 +60,12 @@ public final class Check {
    */
   public static BatchValidationContext batch() {
     return new BatchValidationContext(ValidationConfig.DEFAULT);
+  }
+
+  @SafeVarargs
+  public static void validate(Consumer<ValidationContext>... checks) {
+    var context = new BatchValidationContext(ValidationConfig.DEFAULT);
+    Arrays.stream(checks).forEach(c -> c.accept(context));
   }
 
   /**

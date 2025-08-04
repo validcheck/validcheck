@@ -61,9 +61,9 @@ class MapValidatorTest {
     check("exact", Map.of("key1", "value1", "key2", "value2")).minSize(2);
 
     assertThatThrownBy(() -> check("small", Map.of("key", "value")).minSize(3))
-        .hasMessage("'small' must have at least 3 entries, but it was {key=value}");
+        .hasMessage("'small' must have at least 3 entry(ies), but it was {key=value}");
     assertThatThrownBy(() -> check("empty", Collections.emptyMap()).minSize(1))
-        .hasMessage("'empty' must have at least 1 entries, but it was {}");
+        .hasMessage("'empty' must have at least 1 entry(ies), but it was {}");
   }
 
   @Test
@@ -74,7 +74,7 @@ class MapValidatorTest {
 
     var largeMap = Map.of("key1", "value1", "key2", "value2", "key3", "value3", "key4", "value4");
     assertThatThrownBy(() -> check("large", largeMap).maxSize(2))
-        .hasMessageContaining("'large' must have at most 2 entries");
+        .hasMessageContaining("'large' must have at most 2 entry(ies)");
   }
 
   @Test
@@ -90,7 +90,7 @@ class MapValidatorTest {
     check("exact", Map.of("key1", "value1", "key2", "value2", "key3", "value3")).sizeBetween(3, 3);
 
     assertThatThrownBy(() -> check("small", Map.of("key", "value")).sizeBetween(3, 5))
-        .hasMessage("'small' must have between 3 and 5 entries, but it was {key=value}");
+        .hasMessage("'small' must have between 3 and 5 entry(ies), but it was {key=value}");
 
     var largeMap = new TreeMap<String, String>();
     largeMap.put("key1", "value1");
@@ -101,7 +101,7 @@ class MapValidatorTest {
     largeMap.put("key6", "value6");
     assertThatThrownBy(() -> check("large", largeMap).sizeBetween(2, 4))
         .hasMessage(
-            "'large' must have between 2 and 4 entries, but it was {key1=value1, key2=value2, key3=value3, key4=value4, key5=value5, key6=value6}");
+            "'large' must have between 2 and 4 entry(ies), but it was {key1=value1, key2=value2, key3=value3, key4=value4, key5=value5, key6=value6}");
   }
 
   @Test
@@ -152,7 +152,7 @@ class MapValidatorTest {
         .check(Map.of("key", "value"))
         .when(true, v -> ((MapValidator<Map<String, String>>) v).maxSize(1));
     assertThatThrownBy(() -> check(Collections.emptyMap()).whenMap(true, m -> m.minSize(1)))
-        .hasMessage("parameter must have at least 1 entries, but it was {}");
+        .hasMessage("parameter must have at least 1 entry(ies), but it was {}");
     check(Map.of("key", "value")).whenMap(true, v -> v.satisfies(m -> !m.isEmpty(), "Error"));
   }
 
@@ -166,5 +166,12 @@ class MapValidatorTest {
     Check.withConfig(ValidationConfig.DEFAULT)
         .check("valid", Map.of("key1", 1, "key2", 2))
         .satisfies(m -> m.containsValue(2), "Error 2");
+  }
+
+  @Test
+  void withMessage() {
+    assertThatThrownBy(
+            () -> check("map", Collections.emptyMap()).withMessage("Custom error").notEmpty())
+        .hasMessage("Custom error");
   }
 }

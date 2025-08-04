@@ -156,7 +156,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
     return (MapValidator<T>)
         satisfiesInternal(
             m -> m.size() >= minimum,
-            String.format("must have at least %d entries", minimum),
+            String.format("must have at least %d entry(ies)", minimum),
             true);
   }
 
@@ -177,7 +177,9 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
   public MapValidator<T> maxSize(int maximum) {
     return (MapValidator<T>)
         satisfiesInternal(
-            m -> m.size() <= maximum, String.format("must have at most %d entries", maximum), true);
+            m -> m.size() <= maximum,
+            String.format("must have at most %d entry(ies)", maximum),
+            true);
   }
 
   /**
@@ -199,7 +201,7 @@ public class MapValidator<T extends Map<?, ?>> extends ValueValidator<T> {
     return (MapValidator<T>)
         satisfiesInternal(
             m -> m.size() >= minimum && m.size() <= maximum,
-            String.format("must have between %d and %d entries", minimum, maximum),
+            String.format("must have between %d and %d entry(ies)", minimum, maximum),
             true);
   }
 
