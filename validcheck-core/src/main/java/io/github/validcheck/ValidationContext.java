@@ -2,6 +2,7 @@ package io.github.validcheck;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base context for validation operations.
@@ -461,6 +462,55 @@ public class ValidationContext {
    */
   public <E, T extends Collection<E>> CollectionValidator<T> check(String name, T value) {
     return new CollectionValidator<>(this, name, value);
+  }
+
+  /**
+   * Creates a map validator for the given Map value without a parameter name.
+   *
+   * <p>Use this for validating maps (HashMap, TreeMap, etc.) with access to map-specific validation
+   * methods.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check(properties).notNull().notEmpty();
+   * check(headers).minSize(1).maxSize(10);
+   * }</pre>
+   *
+   * @param <K> the key type of the Map
+   * @param <V> the value type of the Map
+   * @param <T> the Map subtype
+   * @param value the Map value to validate (may be null)
+   * @return a map validator for the value
+   * @since 1.0
+   */
+  public <K, V, T extends Map<K, V>> MapValidator<T> check(T value) {
+    return new MapValidator<>(this, null, value);
+  }
+
+  /**
+   * Creates a map validator for the given named Map value.
+   *
+   * <p>The parameter name will be included in error messages and you get access to map-specific
+   * validation methods.
+   *
+   * <p>Example:
+   *
+   * <pre>{@code
+   * check("config", config).notNull().notEmpty();
+   * check("headers", headers).minSize(1).containsKey("Content-Type");
+   * }</pre>
+   *
+   * @param <K> the key type of the Map
+   * @param <V> the value type of the Map
+   * @param <T> the Map subtype
+   * @param name the parameter name for error messages
+   * @param value the Map value to validate (may be null)
+   * @return a map validator for the named value
+   * @since 1.0
+   */
+  public <K, V, T extends Map<K, V>> MapValidator<T> check(String name, T value) {
+    return new MapValidator<>(this, name, value);
   }
 
   /**
