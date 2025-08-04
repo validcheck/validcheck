@@ -13,16 +13,16 @@ import java.util.Map;
  *
  * <pre>{@code
  * // Fail-fast validation
- * Check.check("name", name).notNull().hasText();
- * Check.check("age", age).isPositive().max(120);
+ * Check.check(name, "name").notNull().hasText();
+ * Check.check(age, "age").isPositive().max(120);
  *
  * // With static import
- * check("name", name).notNull().hasText();
+ * check(name, "name").notNull().hasText();
  *
  * // Batch validation
  * var validation = batch();
- * validation.check("name", name).notNull().hasText();
- * validation.check("age", age).isPositive().max(120);
+ * validation.check(name, "name").notNull().hasText();
+ * validation.check(age, "age").isPositive().max(120);
  * validation.validate();
  * }</pre>
  *
@@ -48,8 +48,8 @@ public final class Check {
    *
    * <pre>{@code
    * var validation = batch();
-   * validation.check("name", name).notNullOrEmpty();
-   * validation.check("age", age).isPositive().max(120);
+   * validation.check(name, "name").notNullOrEmpty();
+   * validation.check(age, "age").isPositive().max(120);
    * validation.validate(); // Throws ValidationException with all errors if any failed
    * }</pre>
    *
@@ -71,7 +71,7 @@ public final class Check {
    * <pre>{@code
    * var config = new ValidationConfig(false, false, 256);
    * var fastCheck = withConfig(config);
-   * fastCheck.check("password", password).notNullOrEmpty();
+   * fastCheck.check(password, "password").notNullOrEmpty();
    * }</pre>
    *
    * @param config the validation configuration to use
@@ -324,18 +324,18 @@ public final class Check {
    * <p>Example:
    *
    * <pre>{@code
-   * check("userId", userId).notNull();
-   * check("config", config).satisfies(c -> c.isValid(), "must be valid");
+   * check(userId, "userId").notNull();
+   * check(config, "config").satisfies(c -> c.isValid(), "must be valid");
    * }</pre>
    *
    * @param <T> the type of the value
-   * @param name the parameter name for error messages
    * @param value the value to validate
+   * @param name the parameter name for error messages
    * @return a validator for the named value
    * @since 1.0
    */
-  public static <T> ValueValidator<T> check(String name, T value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static <T> ValueValidator<T> check(T value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
@@ -370,17 +370,17 @@ public final class Check {
    * <p>Example:
    *
    * <pre>{@code
-   * check("email", email).notNull().isEmail();
-   * check("name", name).notEmpty().lengthBetween(2, 50);
+   * check(email, "email").notNull().isEmail();
+   * check(name, "name").notEmpty().lengthBetween(2, 50);
    * }</pre>
    *
-   * @param name the parameter name for error messages
    * @param value the string value to validate
+   * @param name the parameter name for error messages
    * @return a string validator for the named value
    * @since 1.0
    */
-  public static StringValidator check(String name, String value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static StringValidator check(String value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
@@ -392,101 +392,101 @@ public final class Check {
    * <p>Example:
    *
    * <pre>{@code
-   * check("age", age).isPositive().max(120);
-   * check("quantity", quantity).isNonNegative().min(1);
+   * check(age, "age").isPositive().max(120);
+   * check(quantity, "quantity").isNonNegative().min(1);
    * }</pre>
    *
-   * @param name the parameter name for error messages
    * @param value the int value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Integer> check(String name, int value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Integer> check(int value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
    * Creates a numeric validator for the given named Integer value.
    *
-   * @param name the parameter name for error messages
    * @param value the Integer value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Integer> check(String name, Integer value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Integer> check(Integer value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
    * Creates a numeric validator for the given named long value.
    *
-   * @param name the parameter name for error messages
    * @param value the long value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Long> check(String name, long value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Long> check(long value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
    * Creates a numeric validator for the given named Long value.
    *
-   * @param name the parameter name for error messages
    * @param value the Long value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Long> check(String name, Long value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Long> check(Long value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
    * Creates a numeric validator for the given named double value.
    *
-   * @param name the parameter name for error messages
    * @param value the double value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Double> check(String name, double value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Double> check(double value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
    * Creates a numeric validator for the given named Double value.
    *
-   * @param name the parameter name for error messages
    * @param value the Double value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Double> check(String name, Double value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Double> check(Double value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
    * Creates a numeric validator for the given named float value.
    *
-   * @param name the parameter name for error messages
    * @param value the float value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Float> check(String name, float value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Float> check(float value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
    * Creates a numeric validator for the given named Float value.
    *
-   * @param name the parameter name for error messages
    * @param value the Float value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static NumericValidator<Float> check(String name, Float value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static NumericValidator<Float> check(Float value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
@@ -498,18 +498,18 @@ public final class Check {
    * <p>Example:
    *
    * <pre>{@code
-   * check("price", bigDecimal).notNull().isPositive();
-   * check("id", bigInteger).min(BigInteger.ONE);
+   * check(bigDecimal, "price").notNull().isPositive();
+   * check(bigInteger, "id").min(BigInteger.ONE);
    * }</pre>
    *
    * @param <T> the Number subtype
-   * @param name the parameter name for error messages
    * @param value the Number value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public static <T extends Number> NumericValidator<T> check(String name, T value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static <T extends Number> NumericValidator<T> check(T value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
@@ -521,19 +521,19 @@ public final class Check {
    * <p>Example:
    *
    * <pre>{@code
-   * check("items", items).notNull().notEmpty();
-   * check("tags", tags).minSize(1).maxSize(10);
+   * check(items, "items").notNull().notEmpty();
+   * check(tags, "tags").minSize(1).maxSize(10);
    * }</pre>
    *
    * @param <E> the element type of the Collection
    * @param <T> the Collection subtype
-   * @param name the parameter name for error messages
    * @param value the Collection value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a collection validator for the named value
    * @since 1.0
    */
-  public static <E, T extends Collection<E>> CollectionValidator<T> check(String name, T value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static <E, T extends Collection<E>> CollectionValidator<T> check(T value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 
   /**
@@ -569,19 +569,19 @@ public final class Check {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config).notNull().notEmpty();
-   * check("headers", headers).minSize(1).containsKey("Content-Type");
+   * check(config, "config").notNull().notEmpty();
+   * check(headers, "headers").minSize(1).containsKey("Content-Type");
    * }</pre>
    *
    * @param <K> the key type of the Map
    * @param <V> the value type of the Map
    * @param <T> the Map subtype
-   * @param name the parameter name for error messages
    * @param value the Map value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a map validator for the named value
    * @since 1.0
    */
-  public static <K, V, T extends Map<K, V>> MapValidator<T> check(String name, T value) {
-    return DEFAULT_CONTEXT.check(name, value);
+  public static <K, V, T extends Map<K, V>> MapValidator<T> check(T value, String name) {
+    return DEFAULT_CONTEXT.check(value, name);
   }
 }

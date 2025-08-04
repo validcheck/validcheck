@@ -10,94 +10,94 @@ class NumericValidatorTest {
 
   @Test
   void isPositive() {
-    check("positive", 5).isPositive();
-    check("positive", 1.5).isPositive();
-    check("positive", new BigDecimal("0.1")).isPositive();
+    check(5, "positive").isPositive();
+    check(1.5, "positive").isPositive();
+    check(new BigDecimal("0.1"), "positive").isPositive();
 
-    assertThatThrownBy(() -> check("zero", 0).isPositive())
+    assertThatThrownBy(() -> check(0, "zero").isPositive())
         .hasMessage("'zero' must be positive, but it was 0");
-    assertThatThrownBy(() -> check("negative", -5).isPositive())
+    assertThatThrownBy(() -> check(-5, "negative").isPositive())
         .hasMessage("'negative' must be positive, but it was -5");
   }
 
   @Test
   void isNegative() {
-    check("negative", -5).isNegative();
-    check("negative", -1.5).isNegative();
-    check("negative", new BigDecimal("-0.1")).isNegative();
+    check(-5, "negative").isNegative();
+    check(-1.5, "negative").isNegative();
+    check(new BigDecimal("-0.1"), "negative").isNegative();
 
-    assertThatThrownBy(() -> check("zero", 0).isNegative())
+    assertThatThrownBy(() -> check(0, "zero").isNegative())
         .hasMessage("'zero' must be negative, but it was 0");
-    assertThatThrownBy(() -> check("positive", 5).isNegative())
+    assertThatThrownBy(() -> check(5, "positive").isNegative())
         .hasMessage("'positive' must be negative, but it was 5");
   }
 
   @Test
   void isZero() {
-    check("zero", 0).isZero();
-    check("zero", 0.0).isZero();
-    check("zero", new BigDecimal("0")).isZero();
+    check(0, "zero").isZero();
+    check(0.0, "zero").isZero();
+    check(new BigDecimal("0"), "zero").isZero();
 
-    assertThatThrownBy(() -> check("positive", 1).isZero())
+    assertThatThrownBy(() -> check(1, "positive").isZero())
         .hasMessage("'positive' must be zero, but it was 1");
-    assertThatThrownBy(() -> check("negative", -1).isZero())
+    assertThatThrownBy(() -> check(-1, "negative").isZero())
         .hasMessage("'negative' must be zero, but it was -1");
   }
 
   @Test
   void min() {
-    check("valid", 10).min(5);
-    check("equal", 5).min(5);
-    check("double", 10.5).min(10.0);
+    check(10, "valid").min(5);
+    check(5, "equal").min(5);
+    check(10.5, "double").min(10.0);
 
-    assertThatThrownBy(() -> check("tooSmall", 3).min(5))
+    assertThatThrownBy(() -> check(3, "tooSmall").min(5))
         .hasMessage("'tooSmall' must be at least 5, but it was 3");
   }
 
   @Test
   void max() {
-    check("valid", 3).max(5);
-    check("equal", 5).max(5);
-    check("double", 10.0).max(10.5);
+    check(3, "valid").max(5);
+    check(5, "equal").max(5);
+    check(10.0, "double").max(10.5);
 
-    assertThatThrownBy(() -> check("tooLarge", 7).max(5))
+    assertThatThrownBy(() -> check(7, "tooLarge").max(5))
         .hasMessage("'tooLarge' must be at most 5, but it was 7");
   }
 
   @Test
   void between() {
-    check("valid", 5).between(1, 10);
-    check("minBoundary", 1).between(1, 10);
-    check("maxBoundary", 10).between(1, 10);
-    check("double", 5.5).between(1.0, 10.0);
+    check(5, "valid").between(1, 10);
+    check(1, "minBoundary").between(1, 10);
+    check(10, "maxBoundary").between(1, 10);
+    check(5.5, "double").between(1.0, 10.0);
 
-    assertThatThrownBy(() -> check("tooSmall", 0).between(1, 10))
+    assertThatThrownBy(() -> check(0, "tooSmall").between(1, 10))
         .hasMessage("'tooSmall' must be between 1 and 10, but it was 0");
-    assertThatThrownBy(() -> check("tooLarge", 11).between(1, 10))
+    assertThatThrownBy(() -> check(11, "tooLarge").between(1, 10))
         .hasMessage("'tooLarge' must be between 1 and 10, but it was 11");
   }
 
   @Test
   void chainedValidations() {
-    check("valid", 25).notNull().isPositive().min(18).max(120).between(20, 30);
+    check(25, "valid").notNull().isPositive().min(18).max(120).between(20, 30);
   }
 
   @Test
   void differentNumericTypes() {
     // Integer
-    check("int", 42).isPositive().min(1).max(100);
+    check(42, "int").isPositive().min(1).max(100);
 
     // Long
-    check("long", 42L).isPositive().min(1L).max(100L);
+    check(42L, "long").isPositive().min(1L).max(100L);
 
     // Double
-    check("double", 42.5).isPositive().min(1.0).max(100.0);
+    check(42.5, "double").isPositive().min(1.0).max(100.0);
 
     // Float
-    check("float", 42.5f).isPositive().min(1.0f).max(100.0f);
+    check(42.5f, "float").isPositive().min(1.0f).max(100.0f);
 
     // BigDecimal
-    check("bigDecimal", new BigDecimal("42.5"))
+    check(new BigDecimal("42.5"), "bigDecimal")
         .isPositive()
         .min(new BigDecimal("1"))
         .max(new BigDecimal("100"));
@@ -106,55 +106,55 @@ class NumericValidatorTest {
   @Test
   void inheritedMethods() {
     // Test that NumericValidator properly inherits and chains with base methods
-    check("number", 42).notNull().satisfies(n -> n % 2 == 0, "must be even").isPositive();
+    check(42, "number").notNull().satisfies(n -> n % 2 == 0, "must be even").isPositive();
 
     // Test conditional validation
     boolean strict = true;
-    check("conditional", 15).whenNumeric(strict, validator -> validator.max(20));
-    check("conditional", 25)
+    check(15, "conditional").whenNumeric(strict, validator -> validator.max(20));
+    check(25, "conditional")
         .when(!strict, validator -> ((NumericValidator<Integer>) validator).max(20));
   }
 
   @Test
   void isNonNegative() {
-    check("positive", 5).isNonNegative();
-    check("zero", 0).isNonNegative();
-    check("positiveDouble", 1.5).isNonNegative();
-    check("zeroDouble", 0.0).isNonNegative();
-    check("bigDecimal", new BigDecimal("10.5")).isNonNegative();
+    check(5, "positive").isNonNegative();
+    check(0, "zero").isNonNegative();
+    check(1.5, "positiveDouble").isNonNegative();
+    check(0.0, "zeroDouble").isNonNegative();
+    check(new BigDecimal("10.5"), "bigDecimal").isNonNegative();
 
-    assertThatThrownBy(() -> check("negative", -1).isNonNegative())
+    assertThatThrownBy(() -> check(-1, "negative").isNonNegative())
         .hasMessage("'negative' must be non-negative, but it was -1");
-    assertThatThrownBy(() -> check("negativeDouble", -0.5).isNonNegative())
+    assertThatThrownBy(() -> check(-0.5, "negativeDouble").isNonNegative())
         .hasMessage("'negativeDouble' must be non-negative, but it was -0.5");
   }
 
   @Test
   void isNonZero() {
-    check("positive", 5).isNonZero();
-    check("negative", -5).isNonZero();
-    check("positiveDouble", 1.5).isNonZero();
-    check("negativeDouble", -1.5).isNonZero();
-    check("bigDecimal", new BigDecimal("0.1")).isNonZero();
+    check(5, "positive").isNonZero();
+    check(-5, "negative").isNonZero();
+    check(1.5, "positiveDouble").isNonZero();
+    check(-1.5, "negativeDouble").isNonZero();
+    check(new BigDecimal("0.1"), "bigDecimal").isNonZero();
 
-    assertThatThrownBy(() -> check("zero", 0).isNonZero())
+    assertThatThrownBy(() -> check(0, "zero").isNonZero())
         .hasMessage("'zero' must be non-zero, but it was 0");
-    assertThatThrownBy(() -> check("zeroDouble", 0.0).isNonZero())
+    assertThatThrownBy(() -> check(0.0, "zeroDouble").isNonZero())
         .hasMessage("'zeroDouble' must be non-zero, but it was 0.0");
-    assertThatThrownBy(() -> check("zeroBigDecimal", new BigDecimal("0")).isNonZero())
+    assertThatThrownBy(() -> check(new BigDecimal("0"), "zeroBigDecimal").isNonZero())
         .hasMessage("'zeroBigDecimal' must be non-zero, but it was 0");
   }
 
   @Test
   void edgeCases() {
     // Test with very small positive number
-    check("tiny", 0.0001).isPositive();
+    check(0.0001, "tiny").isPositive();
 
     // Test with very small negative number
-    check("tiny", -0.0001).isNegative();
+    check(-0.0001, "tiny").isNegative();
 
     // Test boundary conditions
-    check("boundary", Integer.MAX_VALUE).isPositive();
-    check("boundary", Integer.MIN_VALUE).isNegative();
+    check(Integer.MAX_VALUE, "boundary").isPositive();
+    check(Integer.MIN_VALUE, "boundary").isNegative();
   }
 }

@@ -14,7 +14,7 @@ class ConfiguredCheckTest {
     var configured = new ConfiguredCheck(config);
 
     // Verify config is used - should not include actual value in error message
-    assertThatThrownBy(() -> configured.check("value", "test").isNull())
+    assertThatThrownBy(() -> configured.check("test", "value").isNull())
         .hasMessage("'value' must be null"); // No actual value shown due to config
   }
 
@@ -50,10 +50,10 @@ class ConfiguredCheckTest {
     var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test that string-specific methods are available
-    assertThat(configured.check("text", "hello")).isInstanceOf(StringValidator.class);
-    configured.check("text", "hello").notEmpty().hasText().minLength(3);
+    assertThat(configured.check("hello", "text")).isInstanceOf(StringValidator.class);
+    configured.check("hello", "text").notEmpty().hasText().minLength(3);
 
-    assertThatThrownBy(() -> configured.check("empty", "").notEmpty())
+    assertThatThrownBy(() -> configured.check("", "empty").notEmpty())
         .hasMessage("'empty' must not be empty");
   }
 
@@ -62,24 +62,24 @@ class ConfiguredCheckTest {
     var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test all numeric type overloads work
-    assertThat(configured.check("int", 5)).isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("integer", Integer.valueOf(5)))
+    assertThat(configured.check(5, "int")).isInstanceOf(NumericValidator.class);
+    assertThat(configured.check(Integer.valueOf(5), "integer"))
         .isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("long", 5L)).isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("longObj", Long.valueOf(5L))).isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("double", 5.0)).isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("doubleObj", Double.valueOf(5.0)))
+    assertThat(configured.check(5L, "long")).isInstanceOf(NumericValidator.class);
+    assertThat(configured.check(Long.valueOf(5L), "longObj")).isInstanceOf(NumericValidator.class);
+    assertThat(configured.check(5.0, "double")).isInstanceOf(NumericValidator.class);
+    assertThat(configured.check(Double.valueOf(5.0), "doubleObj"))
         .isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("float", 5.0f)).isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("floatObj", Float.valueOf(5.0f)))
+    assertThat(configured.check(5.0f, "float")).isInstanceOf(NumericValidator.class);
+    assertThat(configured.check(Float.valueOf(5.0f), "floatObj"))
         .isInstanceOf(NumericValidator.class);
-    assertThat(configured.check("bigDecimal", new BigDecimal("5")))
+    assertThat(configured.check(new BigDecimal("5"), "bigDecimal"))
         .isInstanceOf(NumericValidator.class);
 
     // Test that numeric-specific methods are available
-    configured.check("positive", 5).isPositive().min(1).max(10);
+    configured.check(5, "positive").isPositive().min(1).max(10);
 
-    assertThatThrownBy(() -> configured.check("negative", -5).isPositive())
+    assertThatThrownBy(() -> configured.check(-5, "negative").isPositive())
         .hasMessage("'negative' must be positive, but it was -5");
   }
 
@@ -89,7 +89,7 @@ class ConfiguredCheckTest {
     var noStackConfig = new ValidationConfig(false, true, null);
     var configured = new ConfiguredCheck(noStackConfig);
 
-    assertThatThrownBy(() -> configured.check("test", (String) null).notNull())
+    assertThatThrownBy(() -> configured.check((String) null, "test").notNull())
         .isInstanceOf(ValidationException.class)
         .hasMessage("'test' must not be null");
 
@@ -97,7 +97,7 @@ class ConfiguredCheckTest {
     var noValueConfig = new ValidationConfig(true, false, null);
     var configuredNoValue = new ConfiguredCheck(noValueConfig);
 
-    assertThatThrownBy(() -> configuredNoValue.check("test", "value").isNull())
+    assertThatThrownBy(() -> configuredNoValue.check("value", "test").isNull())
         .hasMessage("'test' must be null"); // No actual value shown
   }
 
@@ -106,7 +106,7 @@ class ConfiguredCheckTest {
     var configured = new ConfiguredCheck(ValidationConfig.DEFAULT);
 
     // Test generic check methods are inherited
-    configured.check("generic", "value").notNull();
+    configured.check("value", "generic").notNull();
     configured.check("value").notNull();
 
     // Test that fail method works

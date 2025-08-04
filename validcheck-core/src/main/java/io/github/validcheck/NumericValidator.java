@@ -12,9 +12,9 @@ import java.util.function.Predicate;
  * <p>Example usage:
  *
  * <pre>{@code
- * check("age", age).isPositive().max(120);
- * check("quantity", quantity).isNonNegative().min(1);
- * check("price", price).between(BigDecimal.ZERO, BigDecimal.valueOf(1000));
+ * check(age, "age").isPositive().max(120);
+ * check(quantity, "quantity").isNonNegative().min(1);
+ * check(price, "price").between(BigDecimal.ZERO, BigDecimal.valueOf(1000));
  * }</pre>
  *
  * @param <T> the number type (Integer, Long, Double, Float, BigDecimal, etc.)
@@ -60,7 +60,7 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("discount", discount)
+   * check(discount, "discount")
    *   .whenNumeric(isPercentage, validator -> validator.between(0.0, 100.0));
    * }</pre>
    *
@@ -84,8 +84,8 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("age", age).isPositive();
-   * check("price", price).isPositive();
+   * check(age, "age").isPositive();
+   * check(price, "price").isPositive();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -103,7 +103,7 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("debt", debt).isNegative();
+   * check(debt, "debt").isNegative();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -121,7 +121,7 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("balance", balance).isZero();
+   * check(balance, "balance").isZero();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -138,8 +138,8 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("age", age).min(18);
-   * check("price", price).min(BigDecimal.ZERO);
+   * check(age, "age").min(18);
+   * check(price, "price").min(BigDecimal.ZERO);
    * }</pre>
    *
    * @param minimum the minimum allowed value (inclusive)
@@ -161,8 +161,8 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("age", age).max(120);
-   * check("percentage", percentage).max(100.0);
+   * check(age, "age").max(120);
+   * check(percentage, "percentage").max(100.0);
    * }</pre>
    *
    * @param maximum the maximum allowed value (inclusive)
@@ -184,8 +184,8 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("grade", grade).between(0, 100);
-   * check("temperature", temperature).between(-273.15, 1000.0);
+   * check(grade, "grade").between(0, 100);
+   * check(temperature, "temperature").between(-273.15, 1000.0);
    * }</pre>
    *
    * @param minimum the minimum allowed value (inclusive)
@@ -211,8 +211,8 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("quantity", quantity).isNonNegative();
-   * check("distance", distance).isNonNegative();
+   * check(quantity, "quantity").isNonNegative();
+   * check(distance, "distance").isNonNegative();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -230,8 +230,8 @@ public class NumericValidator<T extends Number> extends ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("divisor", divisor).isNonZero();
-   * check("velocity", velocity).isNonZero();
+   * check(divisor, "divisor").isNonZero();
+   * check(velocity, "velocity").isNonZero();
    * }</pre>
    *
    * @return this validator for method chaining

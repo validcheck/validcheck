@@ -11,22 +11,22 @@ class ValueValidatorTest {
   @Test
   void basic() {
     check("value").notNull();
-    check("name", "value").notNull();
+    check("value", "name").notNull();
     assertThatThrownBy(() -> check((String) null).notNull())
         .hasMessage("parameter must not be null");
-    assertThatThrownBy(() -> check("name", (String) null).notNull())
+    assertThatThrownBy(() -> check((String) null, "name").notNull())
         .hasMessage("'name' must not be null");
 
     check((String) null).isNull();
-    check("name", (String) null).isNull();
+    check((String) null, "name").isNull();
     assertThatThrownBy(() -> check("value").isNull())
         .hasMessage("parameter must be null, but it was 'value'");
-    assertThatThrownBy(() -> check("name", "value").isNull())
+    assertThatThrownBy(() -> check("value", "name").isNull())
         .hasMessage("'name' must be null, but it was 'value'");
 
     assertThatThrownBy(
             () ->
-                check("name", new Object())
+                check(new Object(), "name")
                     .satisfies(o -> o.hashCode() == 0, "must have non-zero hashCode"))
         .hasMessage("'name' must have non-zero hashCode");
     assertThatThrownBy(

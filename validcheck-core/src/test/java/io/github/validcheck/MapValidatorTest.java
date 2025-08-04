@@ -13,83 +13,83 @@ class MapValidatorTest {
 
   @Test
   void notNull() {
-    Check.check("map", Map.of("key", "value")).notNull();
+    Check.check(Map.of("key", "value"), "map").notNull();
 
-    assertThatThrownBy(() -> check("map", (Map<String, String>) null).notNull())
+    assertThatThrownBy(() -> check((Map<String, String>) null, "map").notNull())
         .hasMessage("'map' must not be null");
   }
 
   @Test
   void isNull() {
-    check("map", (Map<String, String>) null).isNull();
+    check((Map<String, String>) null, "map").isNull();
 
-    assertThatThrownBy(() -> check("map", Map.of("key", "value")).isNull())
+    assertThatThrownBy(() -> check(Map.of("key", "value"), "map").isNull())
         .hasMessage("'map' must be null, but it was {key=value}");
   }
 
   @Test
   void empty() {
-    check("map", Collections.emptyMap()).empty();
+    check(Collections.emptyMap(), "map").empty();
     check(Collections.emptyMap()).empty();
 
-    assertThatThrownBy(() -> check("map", Map.of("key", "value")).empty())
+    assertThatThrownBy(() -> check(Map.of("key", "value"), "map").empty())
         .hasMessage("'map' must be empty, but it was {key=value}");
   }
 
   @Test
   void notEmpty() {
-    check("map", Map.of("key", "value")).notEmpty();
+    check(Map.of("key", "value"), "map").notEmpty();
 
-    assertThatThrownBy(() -> check("map", Collections.emptyMap()).notEmpty())
+    assertThatThrownBy(() -> check(Collections.emptyMap(), "map").notEmpty())
         .hasMessage("'map' must not be empty");
 
-    assertThatThrownBy(() -> check("map", (Map<String, String>) null).notEmpty())
+    assertThatThrownBy(() -> check((Map<String, String>) null, "map").notEmpty())
         .hasMessage("'map' must not be empty");
   }
 
   @Test
   void size() {
-    check("map", Map.of("key1", "value1", "key2", "value2")).size(2);
+    check(Map.of("key1", "value1", "key2", "value2"), "map").size(2);
 
-    assertThatThrownBy(() -> check("map", Map.of("key", "value")).size(2))
+    assertThatThrownBy(() -> check(Map.of("key", "value"), "map").size(2))
         .hasMessage("'map' must have size 2, but it was {key=value}");
   }
 
   @Test
   void minSize() {
-    check("map", Map.of("key1", "value1", "key2", "value2", "key3", "value3")).minSize(2);
-    check("exact", Map.of("key1", "value1", "key2", "value2")).minSize(2);
+    check(Map.of("key1", "value1", "key2", "value2", "key3", "value3"), "map").minSize(2);
+    check(Map.of("key1", "value1", "key2", "value2"), "exact").minSize(2);
 
-    assertThatThrownBy(() -> check("small", Map.of("key", "value")).minSize(3))
+    assertThatThrownBy(() -> check(Map.of("key", "value"), "small").minSize(3))
         .hasMessage("'small' must have at least 3 entry(ies), but it was {key=value}");
-    assertThatThrownBy(() -> check("empty", Collections.emptyMap()).minSize(1))
+    assertThatThrownBy(() -> check(Collections.emptyMap(), "empty").minSize(1))
         .hasMessage("'empty' must have at least 1 entry(ies), but it was {}");
   }
 
   @Test
   void maxSize() {
-    check("map", Map.of("key", "value")).maxSize(3);
-    check("exact", Map.of("key1", "value1", "key2", "value2")).maxSize(2);
-    check("empty", Collections.emptyMap()).maxSize(0);
+    check(Map.of("key", "value"), "map").maxSize(3);
+    check(Map.of("key1", "value1", "key2", "value2"), "exact").maxSize(2);
+    check(Collections.emptyMap(), "empty").maxSize(0);
 
     var largeMap = Map.of("key1", "value1", "key2", "value2", "key3", "value3", "key4", "value4");
-    assertThatThrownBy(() -> check("large", largeMap).maxSize(2))
+    assertThatThrownBy(() -> check(largeMap, "large").maxSize(2))
         .hasMessageContaining("'large' must have at most 2 entry(ies)");
   }
 
   @Test
   void sizeBetween() {
-    check("valid", Map.of("key1", "value1", "key2", "value2", "key3", "value3")).sizeBetween(2, 5);
-    check("minimum", Map.of("key1", "value1", "key2", "value2")).sizeBetween(2, 5);
+    check(Map.of("key1", "value1", "key2", "value2", "key3", "value3"), "valid").sizeBetween(2, 5);
+    check(Map.of("key1", "value1", "key2", "value2"), "minimum").sizeBetween(2, 5);
     check(
-            "maximum",
             Map.of(
                 "key1", "value1", "key2", "value2", "key3", "value3", "key4", "value4", "key5",
-                "value5"))
+                "value5"),
+            "maximum")
         .sizeBetween(2, 5);
-    check("exact", Map.of("key1", "value1", "key2", "value2", "key3", "value3")).sizeBetween(3, 3);
+    check(Map.of("key1", "value1", "key2", "value2", "key3", "value3"), "exact").sizeBetween(3, 3);
 
-    assertThatThrownBy(() -> check("small", Map.of("key", "value")).sizeBetween(3, 5))
+    assertThatThrownBy(() -> check(Map.of("key", "value"), "small").sizeBetween(3, 5))
         .hasMessage("'small' must have between 3 and 5 entry(ies), but it was {key=value}");
 
     var largeMap = new TreeMap<String, String>();
@@ -99,49 +99,49 @@ class MapValidatorTest {
     largeMap.put("key4", "value4");
     largeMap.put("key5", "value5");
     largeMap.put("key6", "value6");
-    assertThatThrownBy(() -> check("large", largeMap).sizeBetween(2, 4))
+    assertThatThrownBy(() -> check(largeMap, "large").sizeBetween(2, 4))
         .hasMessage(
             "'large' must have between 2 and 4 entry(ies), but it was {key1=value1, key2=value2, key3=value3, key4=value4, key5=value5, key6=value6}");
   }
 
   @Test
   void containsKey() {
-    check("map", Map.of("key1", "value1", "key2", "value2")).containsKey("key1");
+    check(Map.of("key1", "value1", "key2", "value2"), "map").containsKey("key1");
 
-    assertThatThrownBy(() -> check("map", Map.of("key1", "value1")).containsKey("key2"))
+    assertThatThrownBy(() -> check(Map.of("key1", "value1"), "map").containsKey("key2"))
         .hasMessage("'map' must contain key 'key2'");
   }
 
   @Test
   void doesNotContainKey() {
-    check("map", Map.of("key1", "value1", "key2", "value2")).doesNotContainKey("key3");
+    check(Map.of("key1", "value1", "key2", "value2"), "map").doesNotContainKey("key3");
 
-    assertThatThrownBy(() -> check("map", Map.of("key1", "value1")).doesNotContainKey("key1"))
+    assertThatThrownBy(() -> check(Map.of("key1", "value1"), "map").doesNotContainKey("key1"))
         .hasMessage("'map' must not contain key 'key1'");
   }
 
   @Test
   void containsValue() {
-    check("map", Map.of("key1", "value1", "key2", "value2")).containsValue("value1");
+    check(Map.of("key1", "value1", "key2", "value2"), "map").containsValue("value1");
 
-    assertThatThrownBy(() -> check("map", Map.of("key1", "value1")).containsValue("value2"))
+    assertThatThrownBy(() -> check(Map.of("key1", "value1"), "map").containsValue("value2"))
         .hasMessage("'map' must contain value 'value2'");
   }
 
   @Test
   void doesNotContainValue() {
-    check("map", Map.of("key1", "value1", "key2", "value2")).doesNotContainValue("value3");
+    check(Map.of("key1", "value1", "key2", "value2"), "map").doesNotContainValue("value3");
 
-    assertThatThrownBy(() -> check("map", Map.of("key1", "value1")).doesNotContainValue("value1"))
+    assertThatThrownBy(() -> check(Map.of("key1", "value1"), "map").doesNotContainValue("value1"))
         .hasMessage("'map' must not contain value 'value1'");
   }
 
   @Test
   void containsAllKeys() {
-    check("map", Map.of("key1", "value1", "key2", "value2", "key3", "value3"))
+    check(Map.of("key1", "value1", "key2", "value2", "key3", "value3"), "map")
         .containsAllKeys("key1", "key2");
 
-    assertThatThrownBy(() -> check("map", Map.of("key1", "value1")).containsAllKeys("key1", "key2"))
+    assertThatThrownBy(() -> check(Map.of("key1", "value1"), "map").containsAllKeys("key1", "key2"))
         .hasMessage("'map' must contain all keys [key1, key2]");
   }
 
@@ -158,20 +158,20 @@ class MapValidatorTest {
 
   @Test
   void satisfies() {
-    check("valid", Map.of("key1", "value1", "key2", "value1"))
+    check(Map.of("key1", "value1", "key2", "value1"), "valid")
         .satisfies(m -> m.values().stream().allMatch(v -> v.equals("value1")), "Error 1");
     batch()
-        .check("valid", Map.of("key1", 1, "key2", 2))
+        .check(Map.of("key1", 1, "key2", 2), "valid")
         .satisfies(m -> m.containsValue(1), "Error 2");
     Check.withConfig(ValidationConfig.DEFAULT)
-        .check("valid", Map.of("key1", 1, "key2", 2))
+        .check(Map.of("key1", 1, "key2", 2), "valid")
         .satisfies(m -> m.containsValue(2), "Error 2");
   }
 
   @Test
   void withMessage() {
     assertThatThrownBy(
-            () -> check("map", Collections.emptyMap()).withMessage("Custom error").notEmpty())
+            () -> check(Collections.emptyMap(), "map").withMessage("Custom error").notEmpty())
         .hasMessage("Custom error");
   }
 }

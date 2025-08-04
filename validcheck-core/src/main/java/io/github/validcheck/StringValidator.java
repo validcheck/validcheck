@@ -12,9 +12,9 @@ import java.util.function.Predicate;
  * <p>Example usage:
  *
  * <pre>{@code
- * check("email", email).notNull().isEmail();
- * check("name", name).notEmpty().lengthBetween(2, 50);
- * check("code", code).matches("[A-Z]{3}-\\d{4}");
+ * check(email, "email").notNull().isEmail();
+ * check(name, "name").notEmpty().lengthBetween(2, 50);
+ * check(code, "code").matches("[A-Z]{3}-\\d{4}");
  * }</pre>
  *
  * @since 1.0
@@ -68,7 +68,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("url", url)
+   * check(url, "url")
    *   .whenString(url.startsWith("https"), validator -> validator.minLength(8));
    * }</pre>
    *
@@ -92,7 +92,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("optional", optional).empty();
+   * check(optional, "optional").empty();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -112,7 +112,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("name", name).notNull().notEmpty();
+   * check(name, "name").notNull().notEmpty();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -135,8 +135,8 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("username", username).notNullOrEmpty();
-   * check("email", email).notNullOrEmpty().isEmail();
+   * check(username, "username").notNullOrEmpty();
+   * check(email, "email").notNullOrEmpty().isEmail();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -157,7 +157,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("comment", comment).hasText();
+   * check(comment, "comment").hasText();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -175,7 +175,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("password", password).minLength(8);
+   * check(password, "password").minLength(8);
    * }</pre>
    *
    * @param minimum the minimum required length (inclusive)
@@ -197,7 +197,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("username", username).maxLength(20);
+   * check(username, "username").maxLength(20);
    * }</pre>
    *
    * @param maximum the maximum allowed length (inclusive)
@@ -219,7 +219,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("countryCode", countryCode).length(2);
+   * check(countryCode, "countryCode").length(2);
    * }</pre>
    *
    * @param exact the exact required length
@@ -241,8 +241,8 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("phone", phone).matches("\\d{10}");
-   * check("code", code).matches("[A-Z]{3}-\\d{4}");
+   * check(phone, "phone").matches("\\d{10}");
+   * check(code, "code").matches("[A-Z]{3}-\\d{4}");
    * }</pre>
    *
    * @param regex the regular expression pattern to match
@@ -262,7 +262,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("url", url).startsWith("https://");
+   * check(url, "url").startsWith("https://");
    * }</pre>
    *
    * @param prefix the required prefix
@@ -282,7 +282,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("filename", filename).endsWith(".txt");
+   * check(filename, "filename").endsWith(".txt");
    * }</pre>
    *
    * @param suffix the required suffix
@@ -302,7 +302,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("name", name).lengthBetween(2, 50);
+   * check(name, "name").lengthBetween(2, 50);
    * }</pre>
    *
    * @param minimum the minimum required length (inclusive)
@@ -342,7 +342,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("email", email).notNull().isEmail();
+   * check(email, "email").notNull().isEmail();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -366,7 +366,7 @@ public class StringValidator extends ValueValidator<String> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("optional", optional).isBlank();
+   * check(optional, "optional").isBlank();
    * }</pre>
    *
    * @return this validator for method chaining

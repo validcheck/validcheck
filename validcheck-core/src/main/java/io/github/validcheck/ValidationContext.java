@@ -46,7 +46,7 @@ public class ValidationContext {
    * @since 1.0
    */
   public <T> ValueValidator<T> check(T value) {
-    return check(null, value);
+    return check(value, null);
   }
 
   /**
@@ -253,19 +253,19 @@ public class ValidationContext {
    *
    * <pre>{@code
    * var configured = new ConfiguredCheck(config);
-   * configured.check("userId", userId).notNull();
+   * configured.check(userId, "userId").notNull();
    *
    * var batch = batch();
-   * batch.check("config", config).satisfies(c -> c.isValid(), "must be valid");
+   * batch.check(config, "config").satisfies(c -> c.isValid(), "must be valid");
    * }</pre>
    *
    * @param <T> the type of the value
-   * @param name the parameter name for error messages
    * @param value the value to validate
+   * @param name the parameter name for error messages
    * @return a validator for the named value
    * @since 1.0
    */
-  public <T> ValueValidator<T> check(String name, T value) {
+  public <T> ValueValidator<T> check(T value, String name) {
     return new ValueValidator<>(this, name, value);
   }
 
@@ -280,18 +280,18 @@ public class ValidationContext {
    *
    * <pre>{@code
    * var configured = new ConfiguredCheck(config);
-   * configured.check("email", email).notNull().isEmail();
+   * configured.check(email, "email").notNull().isEmail();
    *
    * var batch = batch();
-   * batch.check("name", name).notEmpty().lengthBetween(2, 50);
+   * batch.check(name, "name").notEmpty().lengthBetween(2, 50);
    * }</pre>
    *
-   * @param name the parameter name for error messages
    * @param value the string value to validate
+   * @param name the parameter name for error messages
    * @return a string validator for the named value
    * @since 1.0
    */
-  public StringValidator check(String name, String value) {
+  public StringValidator check(String value, String name) {
     return new StringValidator(this, name, value);
   }
 
@@ -302,12 +302,12 @@ public class ValidationContext {
    * validation methods. This method is available on {@link ConfiguredCheck} and {@link
    * BatchValidationContext} instances.
    *
-   * @param name the parameter name for error messages
    * @param value the Integer value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Integer> check(String name, Integer value) {
+  public NumericValidator<Integer> check(Integer value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
@@ -322,90 +322,90 @@ public class ValidationContext {
    *
    * <pre>{@code
    * var configured = new ConfiguredCheck(config);
-   * configured.check("age", age).isPositive().max(120);
+   * configured.check(age, "age").isPositive().max(120);
    *
    * var batch = batch();
-   * batch.check("quantity", quantity).isNonNegative().min(1);
+   * batch.check(quantity, "quantity").isNonNegative().min(1);
    * }</pre>
    *
-   * @param name the parameter name for error messages
    * @param value the int value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Integer> check(String name, int value) {
+  public NumericValidator<Integer> check(int value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
   /**
    * Creates a numeric validator for the given named Long value.
    *
-   * @param name the parameter name for error messages
    * @param value the Long value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Long> check(String name, Long value) {
+  public NumericValidator<Long> check(Long value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
   /**
    * Creates a numeric validator for the given named long value.
    *
-   * @param name the parameter name for error messages
    * @param value the long value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Long> check(String name, long value) {
+  public NumericValidator<Long> check(long value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
   /**
    * Creates a numeric validator for the given named Double value.
    *
-   * @param name the parameter name for error messages
    * @param value the Double value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Double> check(String name, Double value) {
+  public NumericValidator<Double> check(Double value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
   /**
    * Creates a numeric validator for the given named double value.
    *
-   * @param name the parameter name for error messages
    * @param value the double value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Double> check(String name, double value) {
+  public NumericValidator<Double> check(double value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
   /**
    * Creates a numeric validator for the given named Float value.
    *
-   * @param name the parameter name for error messages
    * @param value the Float value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Float> check(String name, Float value) {
+  public NumericValidator<Float> check(Float value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
   /**
    * Creates a numeric validator for the given named float value.
    *
-   * @param name the parameter name for error messages
    * @param value the float value to validate
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public NumericValidator<Float> check(String name, float value) {
+  public NumericValidator<Float> check(float value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
@@ -420,19 +420,19 @@ public class ValidationContext {
    *
    * <pre>{@code
    * var configured = new ConfiguredCheck(config);
-   * configured.check("price", bigDecimal).notNull().isPositive();
+   * configured.check(bigDecimal, "price").notNull().isPositive();
    *
    * var batch = batch();
-   * batch.check("id", bigInteger).min(BigInteger.ONE);
+   * batch.check(bigInteger, "id").min(BigInteger.ONE);
    * }</pre>
    *
    * @param <T> the Number subtype
-   * @param name the parameter name for error messages
    * @param value the Number value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a numeric validator for the named value
    * @since 1.0
    */
-  public <T extends Number> NumericValidator<T> check(String name, T value) {
+  public <T extends Number> NumericValidator<T> check(T value, String name) {
     return new NumericValidator<>(this, name, value);
   }
 
@@ -447,20 +447,20 @@ public class ValidationContext {
    *
    * <pre>{@code
    * var configured = new ConfiguredCheck(config);
-   * configured.check("items", items).notNull().notEmpty();
+   * configured.check(items, "items").notNull().notEmpty();
    *
    * var batch = batch();
-   * batch.check("tags", tags).minSize(1).maxSize(10);
+   * batch.check(tags, "tags").minSize(1).maxSize(10);
    * }</pre>
    *
    * @param <E> the element type of the Collection
    * @param <T> the Collection subtype
-   * @param name the parameter name for error messages
    * @param value the Collection value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a collection validator for the named value
    * @since 1.0
    */
-  public <E, T extends Collection<E>> CollectionValidator<T> check(String name, T value) {
+  public <E, T extends Collection<E>> CollectionValidator<T> check(T value, String name) {
     return new CollectionValidator<>(this, name, value);
   }
 
@@ -497,19 +497,19 @@ public class ValidationContext {
    * <p>Example:
    *
    * <pre>{@code
-   * check("config", config).notNull().notEmpty();
-   * check("headers", headers).minSize(1).containsKey("Content-Type");
+   * check(config, "config").notNull().notEmpty();
+   * check(headers, "headers").minSize(1).containsKey("Content-Type");
    * }</pre>
    *
    * @param <K> the key type of the Map
    * @param <V> the value type of the Map
    * @param <T> the Map subtype
-   * @param name the parameter name for error messages
    * @param value the Map value to validate (may be null)
+   * @param name the parameter name for error messages
    * @return a map validator for the named value
    * @since 1.0
    */
-  public <K, V, T extends Map<K, V>> MapValidator<T> check(String name, T value) {
+  public <K, V, T extends Map<K, V>> MapValidator<T> check(T value, String name) {
     return new MapValidator<>(this, name, value);
   }
 

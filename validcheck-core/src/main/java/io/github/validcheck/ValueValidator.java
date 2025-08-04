@@ -15,9 +15,9 @@ import java.util.function.Predicate;
  * <p>Example usage:
  *
  * <pre>{@code
- * check("value", value).notNull();
- * check("config", config).satisfies(c -> c.isValid(), "must be valid");
- * check("optional", optional).when(optional != null, v -> v.satisfies(...));
+ * check(value, "value").notNull();
+ * check(config, "config").satisfies(c -> c.isValid(), "must be valid");
+ * check(optional, "optional").when(optional != null, v -> v.satisfies(...));
  * }</pre>
  *
  * @param <T> the type of value being validated
@@ -74,7 +74,7 @@ public class ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("name", name).notNull(); // other validations can follow
+   * check(name, "name").notNull(); // other validations can follow
    * }</pre>
    *
    * @return this validator for method chaining
@@ -93,7 +93,7 @@ public class ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("optionalField", optionalField).isNull();
+   * check(optionalField, "optionalField").isNull();
    * }</pre>
    *
    * @return this validator for method chaining
@@ -113,8 +113,8 @@ public class ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("user", user).satisfies(u -> u.isActive(), "must be active");
-   * check("list", list).satisfies(l -> l.size() > 0, "must not be empty");
+   * check(user, "user").satisfies(u -> u.isActive(), "must be active");
+   * check(list, "list").satisfies(l -> l.size() > 0, "must not be empty");
    * }</pre>
    *
    * @param predicate the condition that must be true for the value
@@ -145,10 +145,10 @@ public class ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("email", email)
+   * check(email, "email")
    *   .when(email != null, validator -> validator.satisfies(e -> e.contains("@"), "must be valid email"));
    *
-   * check("optional", optional)
+   * check(optional, "optional")
    *   .when(isRequired, validator -> validator.notNull());
    * }</pre>
    *
@@ -174,7 +174,7 @@ public class ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("email", email)
+   * check(email, "email")
    *   .withMessage("Invalid customer email address").notNull().satisfies(e -> e.contains("@"));
    * }</pre>
    *
@@ -197,8 +197,8 @@ public class ValueValidator<T> {
    * <p>Example:
    *
    * <pre>{@code
-   * check("status", status).oneOf("ACTIVE", "INACTIVE", "PENDING");
-   * check("priority", priority).oneOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW);
+   * check(status, "status").oneOf("ACTIVE", "INACTIVE", "PENDING");
+   * check(priority, "priority").oneOf(Priority.HIGH, Priority.MEDIUM, Priority.LOW);
    * }</pre>
    *
    * @param values the allowed values

@@ -12,7 +12,7 @@ package io.github.validcheck;
  * <pre>{@code
  * var config = new ValidationConfig(false, false, 256);
  * var configuredCheck = new ConfiguredCheck(config);
- * configuredCheck.check("password", password).notNull().notEmpty();
+ * configuredCheck.check(password, "password").notNull().notEmpty();
  * }</pre>
  *
  * @since 1.0
@@ -78,8 +78,8 @@ public class ConfiguredCheck extends ValidationContext {
    * <pre>{@code
    * var configured = new ConfiguredCheck(config);
    * var batch = configured.batch();
-   * batch.check("name", name).notNull();
-   * batch.check("age", age).isPositive();
+   * batch.check(name, "name").notNull();
+   * batch.check(age, "age").isPositive();
    * batch.validate();
    * }</pre>
    *

@@ -22,15 +22,15 @@ public class ServiceConfiguration {
       String password,
       ConnectionPool pool) {
     public DatabaseConfig {
-      check("host", host).notNullOrEmpty().lengthBetween(3, 255);
-      check("port", port).between(1, 65535);
-      check("database", database).notNullOrEmpty().matches("[a-zA-Z0-9_]+");
-      check("username", username).notNullOrEmpty().lengthBetween(2, 50);
-      check("password", password)
+      check(host, "host").notNullOrEmpty().lengthBetween(3, 255);
+      check(port, "port").between(1, 65535);
+      check(database, "database").notNullOrEmpty().matches("[a-zA-Z0-9_]+");
+      check(username, "username").notNullOrEmpty().lengthBetween(2, 50);
+      check(password, "password")
           .withMessage("Database password must be at least 8 characters long for security")
           .notNull()
           .minLength(8);
-      check("pool", pool).notNull();
+      check(pool, "pool").notNull();
     }
   }
 
@@ -39,19 +39,19 @@ public class ServiceConfiguration {
     public ConnectionPool {
       // Use batch validation to collect all size-related errors
       var validation = batch();
-      validation.check("minSize", minSize).isPositive().max(100);
-      validation.check("maxSize", maxSize).isPositive().max(1000);
-      validation.check("timeoutSeconds", timeoutSeconds).between(1, 3600);
+      validation.check(minSize, "minSize").isPositive().max(100);
+      validation.check(maxSize, "maxSize").isPositive().max(1000);
+      validation.check(timeoutSeconds, "timeoutSeconds").between(1, 3600);
       validation.validate();
 
-      check("healthCheck", healthCheck).notNull();
+      check(healthCheck, "healthCheck").notNull();
     }
   }
 
   public record HealthCheck(boolean enabled, int intervalSeconds, String query) {
     public HealthCheck {
-      check("intervalSeconds", intervalSeconds).between(5, 300);
-      check("query", query)
+      check(intervalSeconds, "intervalSeconds").between(5, 300);
+      check(query, "query")
           .whenString(enabled, validator -> validator.notNullOrEmpty().startsWith("SELECT"));
     }
   }
@@ -59,18 +59,18 @@ public class ServiceConfiguration {
   public record ServerConfig(
       String host, int port, boolean sslEnabled, SslConfig ssl, List<String> allowedOrigins) {
     public ServerConfig {
-      check("host", host).notNullOrEmpty();
-      check("port", port).between(1024, 65535);
-      check("ssl", ssl).when(sslEnabled, ValueValidator::notNull);
-      check("allowedOrigins", allowedOrigins).notNull().minSize(1);
+      check(host, "host").notNullOrEmpty();
+      check(port, "port").between(1024, 65535);
+      check(ssl, "ssl").when(sslEnabled, ValueValidator::notNull);
+      check(allowedOrigins, "allowedOrigins").notNull().minSize(1);
     }
   }
 
   public record SslConfig(String keystorePath, String keystorePassword, String protocol) {
     public SslConfig {
-      check("keystorePath", keystorePath).notNullOrEmpty().endsWith(".jks");
-      check("keystorePassword", keystorePassword).notNull().minLength(6);
-      check("protocol", protocol).oneOf("TLS", "TLSv1.2", "TLSv1.3");
+      check(keystorePath, "keystorePath").notNullOrEmpty().endsWith(".jks");
+      check(keystorePassword, "keystorePassword").notNull().minLength(6);
+      check(protocol, "protocol").oneOf("TLS", "TLSv1.2", "TLSv1.3");
     }
   }
 
@@ -82,28 +82,28 @@ public class ServiceConfiguration {
       ServerConfig server,
       LoggingConfig logging) {
     public ApplicationConfig {
-      check("name", name).notNullOrEmpty().matches("[a-z-]+");
-      check("version", version).notNull().matches("\\d+\\.\\d+\\.\\d+");
-      check("environment", environment).oneOf("development", "staging", "production");
-      check("database", database).notNull();
-      check("server", server).notNull();
-      check("logging", logging).notNull();
+      check(name, "name").notNullOrEmpty().matches("[a-z-]+");
+      check(version, "version").notNull().matches("\\d+\\.\\d+\\.\\d+");
+      check(environment, "environment").oneOf("development", "staging", "production");
+      check(database, "database").notNull();
+      check(server, "server").notNull();
+      check(logging, "logging").notNull();
     }
   }
 
   public record LoggingConfig(String level, String pattern, FileConfig file) {
     public LoggingConfig {
-      check("level", level).oneOf("DEBUG", "INFO", "WARN", "ERROR");
-      check("pattern", pattern).notNullOrEmpty();
-      check("file", file).notNull();
+      check(level, "level").oneOf("DEBUG", "INFO", "WARN", "ERROR");
+      check(pattern, "pattern").notNullOrEmpty();
+      check(file, "file").notNull();
     }
   }
 
   public record FileConfig(String path, String maxSize, int maxHistory) {
     public FileConfig {
-      check("path", path).notNullOrEmpty().endsWith(".log");
-      check("maxSize", maxSize).notNull().matches("\\d+[KMG]B");
-      check("maxHistory", maxHistory).between(1, 365);
+      check(path, "path").notNullOrEmpty().endsWith(".log");
+      check(maxSize, "maxSize").notNull().matches("\\d+[KMG]B");
+      check(maxHistory, "maxHistory").between(1, 365);
     }
   }
 

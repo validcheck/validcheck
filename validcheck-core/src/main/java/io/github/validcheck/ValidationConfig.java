@@ -19,7 +19,7 @@ import java.util.Objects;
  * var secureConfig = new ValidationConfig(true, false, 64);
  *
  * var configured = Check.withConfig(secureConfig);
- * configured.check("password", password).notNull();
+ * configured.check(password, "password").notNull();
  * }</pre>
  *
  * @since 1.0

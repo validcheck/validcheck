@@ -18,12 +18,12 @@ public class ConfigurationExample {
     // Use configured validation
     var fastCheck = withConfig(config);
     String password = "secret123";
-    fastCheck.check("password", password).notNull().notEmpty();
+    fastCheck.check(password, "password").notNull().notEmpty();
 
     // Or create batch with custom config
     var validation = withConfig(config).batch();
     String secret = "topsecret";
-    validation.check("secret", secret).notNull();
+    validation.check(secret, "secret").notNull();
     validation.validate();
 
     System.out.println("Configuration example completed successfully");
