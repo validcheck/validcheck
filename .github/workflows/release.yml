@@ -67,7 +67,7 @@ jobs:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Prepare release (automatic versions)
-        if: ${{ github.event.inputs.release-version == '' }}
+        if: ${{ github.event.inputs.release-version == '' && github.event.inputs.development-version == '' }}
         run: |
           mvn release:prepare \
             --batch-mode \
