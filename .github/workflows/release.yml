@@ -43,7 +43,7 @@ jobs:
           git config --global credential.helper store
           echo "https://x-access-token:${{ secrets.RELEASE_TOKEN }}@github.com" > ~/.git-credentials
 
-      - name: Prepare release (with versions)
+      - name: Prepare release (with both versions)
         if: ${{ github.event.inputs.release-version != '' && github.event.inputs.development-version != '' }}
         run: |
           mvn release:prepare \
@@ -55,8 +55,19 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
+      - name: Prepare release (with release version only)
+        if: ${{ github.event.inputs.release-version != '' && github.event.inputs.development-version == '' }}
+        run: |
+          mvn release:prepare \
+            -DreleaseVersion=${{ github.event.inputs.release-version }} \
+            -Dtag=v${{ github.event.inputs.release-version }} \
+            --batch-mode \
+            --no-transfer-progress
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
       - name: Prepare release (automatic versions)
-        if: ${{ github.event.inputs.release-version == '' || github.event.inputs.development-version == '' }}
+        if: ${{ github.event.inputs.release-version == '' }}
         run: |
           mvn release:prepare \
             --batch-mode \
