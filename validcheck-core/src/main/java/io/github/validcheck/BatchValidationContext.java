@@ -112,48 +112,54 @@ public class BatchValidationContext extends ValidationContext {
    * Records a validation error if the given condition is false.
    *
    * <p>Unlike the static {@link Check#isTrue(boolean, String)} method, this does not immediately
-   * throw an exception but adds the error to the batch for later validation.
+   * throw an exception but adds the error to the batch for later validation. Returns this context
+   * for method chaining.
    *
    * <p>Example:
    *
    * <pre>{@code
    * var validation = batch();
-   * validation.isTrue(user.isActive(), "User must be active");
-   * validation.isTrue(order.getItems().size() > 0, "Order must have items");
-   * validation.validate(); // Throws with all errors if any condition was false
+   * validation.isTrue(user.isActive(), "User must be active")
+   *          .isTrue(order.getItems().size() > 0, "Order must have items")
+   *          .validate(); // Throws with all errors if any condition was false
    * }</pre>
    *
    * @param truth the condition to check
    * @param message the error message if the condition is false
+   * @return this batch validation context for method chaining
    * @since 1.0
    */
-  public void isTrue(boolean truth, String message) {
+  public BatchValidationContext isTrue(boolean truth, String message) {
     if (!truth) {
       fail(message);
     }
+    return this;
   }
 
   /**
    * Records a validation error if the given condition is true.
    *
    * <p>Unlike the static {@link Check#isFalse(boolean, String)} method, this does not immediately
-   * throw an exception but adds the error to the batch for later validation.
+   * throw an exception but adds the error to the batch for later validation. Returns this context
+   * for method chaining.
    *
    * <p>Example:
    *
    * <pre>{@code
    * var validation = batch();
-   * validation.isFalse(user.isBlocked(), "User must not be blocked");
-   * validation.isFalse(account.isExpired(), "Account must not be expired");
-   * validation.validate(); // Throws with all errors if any condition was true
+   * validation.isFalse(user.isBlocked(), "User must not be blocked")
+   *          .isFalse(account.isExpired(), "Account must not be expired")
+   *          .validate(); // Throws with all errors if any condition was true
    * }</pre>
    *
    * @param lie the condition to check (should be false)
    * @param message the error message if the condition is true
+   * @return this batch validation context for method chaining
    * @since 1.0
    */
-  public void isFalse(boolean lie, String message) {
+  public BatchValidationContext isFalse(boolean lie, String message) {
     isTrue(!lie, message);
+    return this;
   }
 
   /**
