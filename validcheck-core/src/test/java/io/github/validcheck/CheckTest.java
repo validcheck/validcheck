@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 
 class CheckTest {
@@ -59,6 +61,37 @@ class CheckTest {
         .isInstanceOf(ValidationException.class)
         .hasMessageContaining("Validation failed with 1 error(s)")
         .hasMessageContaining("- 'age' must be positive");
+  }
+
+  @Test
+  void batchChainingSuccess() {
+    batch()
+        .check("xxx", x -> x.withMessage("X").notNullOrEmpty())
+        .check(new Object(), ValueValidator::notNull)
+        .check(1, c -> c.between(0, 10))
+        .check(BigDecimal.ZERO, c -> c.between(BigDecimal.ZERO, BigDecimal.TEN))
+        .check(List.of(), CollectionValidator::empty)
+        .check(List.of(""), c -> c.satisfies(l -> l.get(0).isEmpty(), "ok"))
+        .check(Map.of(), c -> c.satisfies(Map::isEmpty, "ok"))
+        .validate();
+  }
+
+  @Test
+  void batchChainingErrors() {
+    assertThatThrownBy(
+            () ->
+                batch()
+                    .check("", "ignored", x -> x.withMessage("Error").isNull())
+                    .check(new Object(), "newObject", ValueValidator::isNull)
+                    .check(1, "int", c -> c.between(2, 10))
+                    .check(Map.of("", ""), "newMap", c -> c.satisfies(Map::isEmpty, "is not OK"))
+                    .validate())
+        .isInstanceOf(ValidationException.class)
+        .hasMessageContaining("'int' must be between 2 and 10, but it was 1")
+        .hasMessageContaining("newObject' must be null, but it was")
+        .hasMessageContaining("newMap' is not OK")
+        .hasMessageNotContaining("ignored")
+        .matches(e -> ((ValidationException) e).errors().size() == 4);
   }
 
   @Test
