@@ -64,16 +64,17 @@ public class BatchValidationContext extends ValidationContext {
    * var mainValidation = batch();
    * var nestedValidation = batch();
    * nestedValidation.check(value, "field").notNull();
-   * mainValidation.include(nestedValidation);
-   * mainValidation.validate(); // Will include errors from both contexts
+   * mainValidation.include(nestedValidation).validate(); // Will include errors from both contexts
    * }</pre>
    *
    * @param context the batch validation context whose errors to include
+   * @return this batch validation context for method chaining
    * @throws NullPointerException if context is null
    * @since 1.0
    */
-  public void include(BatchValidationContext context) {
+  public BatchValidationContext include(BatchValidationContext context) {
     errors.addAll(context.errors);
+    return this;
   }
 
   @Override
