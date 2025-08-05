@@ -33,14 +33,14 @@ Add to your Maven `pom.xml`:
 <dependency>
   <groupId>io.github.validcheck</groupId>
   <artifactId>validcheck-core</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
 </dependency>
 ```
 
 Or Gradle `build.gradle`:
 
 ```gradle
-implementation 'io.github.validcheck:validcheck-core:0.1.0'
+implementation 'io.github.validcheck:validcheck-core:0.1.1'
 ```
 
 ## Quick Start with Java Records
