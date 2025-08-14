@@ -130,11 +130,9 @@ public class ValueValidator<T> {
 
   final ValueValidator<T> satisfiesInternal(
       Predicate<T> predicate, String message, boolean includeActualValue) {
-    if (!failed) {
-      if (!predicate.test(value)) {
-        failed = true;
-        context.fail(formatMessage(message, includeActualValue));
-      }
+    if (!failed && !predicate.test(value)) {
+      failed = true;
+      context.fail(formatMessage(message, includeActualValue));
     }
 
     return this;
