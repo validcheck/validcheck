@@ -4,7 +4,7 @@
   <parent>
     <groupId>io.github.validcheck</groupId>
     <artifactId>validcheck-parent</artifactId>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.9.0</version>
   </parent>
 
   <artifactId>validcheck-core</artifactId>
