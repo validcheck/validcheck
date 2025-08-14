@@ -53,12 +53,14 @@ class CheckTest {
     batch.check("John", "name").notNull();
     batch.check(-5, "age").isPositive(); // This will fail
     batch.check("john@example.com", "email").notNull();
+    batch.check((String) null, "email").notNull().isEmail();
 
     assertThat(batch.hasErrors()).isTrue();
     assertThatThrownBy(batch::validate)
         .isInstanceOf(ValidationException.class)
-        .hasMessageContaining("Validation failed with 1 error(s)")
-        .hasMessageContaining("- 'age' must be positive");
+        .hasMessageContaining("Validation failed with 2 error(s)")
+        .hasMessageContaining("- 'age' must be positive")
+        .hasMessageContaining("- 'email' must not be null");
   }
 
   @Test

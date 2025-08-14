@@ -31,6 +31,7 @@ public class ValueValidator<T> {
   protected final T value;
 
   private String customMessage;
+  private boolean failed;
 
   ValueValidator(ValidationContext context, T value, String name) {
     this.context = context;
@@ -129,7 +130,8 @@ public class ValueValidator<T> {
 
   final ValueValidator<T> satisfiesInternal(
       Predicate<T> predicate, String message, boolean includeActualValue) {
-    if (!predicate.test(value)) {
+    if (!failed && !predicate.test(value)) {
+      failed = true;
       context.fail(formatMessage(message, includeActualValue));
     }
 
